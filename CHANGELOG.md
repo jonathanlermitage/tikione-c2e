@@ -1,4 +1,4 @@
-## TikiOne Steam Cleaner Change Log
+## TikiOne C2E Change Log
 
 ### 0.0.2 (WIP)
 * le sommaire est correctement affiché (style + liens vers articles + nombre de colonnes adapté à l'écran), reprennant la mise en forme du site. Reste à faire : le rendre flottant et pourvoir le masquer via un burger.
