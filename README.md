@@ -5,7 +5,7 @@ Fonctionne sous Windows, MacOS, Linux, BSD. Version Anrdroid prévue.
 
 ## Avancement
 
-Développement en cours. Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master/CHANGELOG.md). pour l'avancée des travaux.
+Développement en cours. Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master/CHANGELOG.md) pour l'avancée des travaux.
 
 La version 1.0.0 (première version stable, incluant l'export HTML) sera l'occasion de vous fournir un programme exécutable, ainsi que les instructions de compilation pour les plus curieux (spoiler : j'utilise Java 8 et Maven). Dans l'attente, vous ne trouverez que les fichiers source.
 
