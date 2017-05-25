@@ -12,9 +12,9 @@ La version 1.0.0 (première version stable, incluant l'export HTML) sera l'occas
 ## Motivation
 
 Lors du Kickstarter ayant financé la version numérique de CanardPC, une compatibilité Pocket avait été annoncée - Pocket permettant de télécharger une page web pour la consulter hors ligne. Des raisons techniques empêchent aujourd'hui CanardPC de respecter cette promesse.  
-Pour faire court, Pocket ne sait pas s'authentifier avec votre login/mot de passe pour télécharger les pages de vos magazines, et il n'est pas prévu que cela change. C'est hélas le genre de déconvenue que l'on ne rencontre qu'une fois le développement commencé ; ne blâmez donc pas trop Canard PC ;)
+Pour faire court, Pocket ne sait pas s'authentifier avec votre login/mot de passe pour télécharger les pages de vos magazines, et il n'est pas prévu que cela change. C'est hélas le genre de déconvenue que l'on ne rencontre qu'une fois le développement commencé ; ne blâmez donc pas trop CanardPC ;)
 
-TikiOne C2E a pour objectif de contenter les canards laisés, en leur permettant de télécharger leurs magazines dans divers formats pour une lecture hors ligne.  
+TikiOne C2E a pour objectif de contenter les canards laisés, en leur permettant de télécharger leurs magazines dans divers formats pour une lecture hors-ligne.  
 
 ## Auteur
 
