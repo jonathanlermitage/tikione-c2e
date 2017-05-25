@@ -47,7 +47,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             w.write(header);
         
             // toc
-            w.write("<div class='toc'>\n");
+            w.write("<div id='toc'>\n");
             w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.getNumber() + "</h1>\n");
             w.write("<div class='toc-columns-container'>\n");
             for (TocCategory category : magazine.getToc()) {
@@ -55,11 +55,13 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 for (TocItem tocItem : category.getItems()) {
                     w.write("<h3 class='toc-item-title'><a href='#"
                             + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD)
-                            + "'>" + tocItem.getTitle() + "</a></h3>\n\n");
+                            + "' " +
+                            " onclick='showToc(false);'>" + tocItem.getTitle() + "</a></h3>\n\n");
                 }
             }
             w.write("</div>\n");
             w.write("</div>\n");
+            w.write("<div id='articles'>\n");
         
             // articles
             for (TocCategory category : magazine.getToc()) {
@@ -72,6 +74,8 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     tocItem.getArticles().forEach(article -> writeArticle(w, article));
                 }
             }
+            w.write("</div>\n");
+            
             w.write(footer);
         }
     }

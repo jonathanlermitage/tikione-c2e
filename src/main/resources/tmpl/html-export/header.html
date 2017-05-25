@@ -15,10 +15,33 @@
             color: #333;
             background-color: #FEFEFE;
             margin: 0;
-            padding: 1em;
+            padding: 0;
         }
 
-        .toc {
+        #burger {
+            color: #2d34af;
+            font-size: 1.25em;
+            margin: 0;
+            padding: 0.25em;
+            position: fixed;
+            top: 0.1em;
+            right: 0.1em;
+            border: 1px solid #DDD;
+            border-radius: 0.25em;
+            background-color: white;
+        }
+
+        #burger > a, #burger > a:visited {
+            color: #2d34af;
+            text-decoration: none;
+        }
+
+        #burger > a:hover {
+            color: rgba(96, 108, 241, 0.85);
+            text-decoration: none;
+        }
+
+        #toc {
             margin: 0.25em;
             padding: 0;
         }
@@ -55,7 +78,8 @@
         }
 
         .toc-title {
-            margin: 0.5em 0;
+            margin: 0 0 0.5em;
+            padding: 0;
             font-size: 1.5em;
             font-weight: bold;
             border-bottom: 3px solid #FF0000;
@@ -96,9 +120,23 @@
             color: #777;
             text-decoration: none;
         }
+
+        #articles {
+            display: none;
+        }
+
     </style>
     <script type="application/javascript">
-
+        function showToc(visible) {
+            document.getElementById('toc').style.display = (visible ? 'block' : 'none');
+            document.getElementById('articles').style.display = (visible ? 'none' : 'block');
+        }
+        function burger() {
+            if (document.getElementById('toc').style.display === 'none') {
+                showToc(true);
+            }
+        }
     </script>
 </head>
 <body>
+<div id="burger" onclick="burger();"><a href="#toc">&#9776; Sommaire</a></div>
