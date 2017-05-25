@@ -1,0 +1,7 @@
+/build/
+/dist/
+/target/
+/.idea/
+*.iml
+tikione-c2e-master.zip
+/private/
