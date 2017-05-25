@@ -13,10 +13,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.Normalizer;
 import java.util.Date;
 
 import static fr.tikione.c2e.Main.VERSION;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.text.Normalizer.Form.NFD;
 
 public class HtmlWriterServiceImpl implements HtmlWriterService {
     
@@ -41,16 +43,36 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         // TODO escape HTML contents!!
         // TODO add a tiny PayPal donation link at end of document
         // TODO a JS/CSS selector to switch to night-mode
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            bw.write(header);
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
+            w.write(header);
+        
+            // toc
+            w.write("<div class='toc'>\n");
+            w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.getNumber() + "</h1>\n");
+            w.write("<div class='toc-columns-container'>\n");
             for (TocCategory category : magazine.getToc()) {
-                bw.write("<h2 class=\"category-title\">" + category.getTitle() + "</h2>\n\n");
+                w.write("<h2 class='toc-category-title'>" + category.getTitle() + "</h2>\n\n");
                 for (TocItem tocItem : category.getItems()) {
-                    bw.write("<h3 class=\"toc-item-title\">" + category.getTitle() + "</h3>\n\n");
-                    tocItem.getArticles().forEach(article -> writeArticle(bw, article));
+                    w.write("<h3 class='toc-item-title'><a href='#"
+                            + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD)
+                            + "'>" + tocItem.getTitle() + "</a></h3>\n\n");
                 }
             }
-            bw.write(footer);
+            w.write("</div>\n");
+            w.write("</div>\n");
+        
+            // articles
+            for (TocCategory category : magazine.getToc()) {
+                w.write("<h2 class=\"category-title\">" + category.getTitle() + "</h2>\n\n");
+                for (TocItem tocItem : category.getItems()) {
+                    w.write("<h3 id='"
+                            + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD)
+                            + "'class=\"toc-item-title\">"
+                            + tocItem.getTitle() + "</h3>\n\n");
+                    tocItem.getArticles().forEach(article -> writeArticle(w, article));
+                }
+            }
+            w.write(footer);
         }
     }
     
