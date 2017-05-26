@@ -33,11 +33,13 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         if (file.exists()) {
             throw new IOException("cannot write over file " + file.getAbsolutePath());
         }
+        String faviconBase64 = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/favicon-b64.txt"), UTF_8);
         String header = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/header.html"), UTF_8)
                 .replace("$$login$$", magazine.getLogin())
                 .replace("$$version$$", VERSION)
                 .replace("$$timestamp$$", new Date().toString())
-                .replace("$$mag_number$$", Integer.toString(magazine.getNumber()));
+                .replace("$$mag_number$$", Integer.toString(magazine.getNumber()))
+                .replace("$$favicon_base64$$", faviconBase64);
         String footer = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/footer.html"), UTF_8);
         
         // TODO escape HTML contents!!

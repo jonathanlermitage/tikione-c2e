@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8"/>
     <title>CPC n°$$mag_number$$</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;$$favicon_base64$$">
     <style media="all" type="text/css">
         body {
             font-family: sans-serif, serif;
@@ -125,6 +126,8 @@
             display: none;
         }
 
+        /* TODO jouer sur les zindex pour mettre le ToC tantôt sur et sous les articles plutôt que changer le display */
+
     </style>
     <script type="application/javascript">
         function showToc(visible) {
@@ -139,4 +142,4 @@
     </script>
 </head>
 <body>
-<div id="burger" onclick="burger();"><a href="#toc">&#9776; Sommaire</a></div>
+<div id="burger"><a onclick="burger();" href="#toc">&#9776; Sommaire</a></div>
