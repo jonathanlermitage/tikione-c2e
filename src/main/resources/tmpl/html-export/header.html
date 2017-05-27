@@ -17,6 +17,7 @@
             background-color: #FEFEFE;
             margin: 0;
             padding: 0;
+            z-index: 100;
         }
 
         #burger {
@@ -30,21 +31,21 @@
             border: 1px solid #DDD;
             border-radius: 0.25em;
             background-color: white;
+            z-index: 1000;
         }
 
-        #burger > a, #burger > a:visited {
-            color: #2d34af;
-            text-decoration: none;
-        }
-
-        #burger > a:hover {
+        #burger:hover {
             color: rgba(96, 108, 241, 0.85);
+            cursor: pointer;
             text-decoration: none;
         }
 
         #toc {
             margin: 0.25em;
             padding: 0;
+            position: fixed;
+            top: 0.1em;
+            width: 100%;
         }
 
         .toc-columns-container {
@@ -123,23 +124,19 @@
         }
 
         #articles {
-            display: none;
+            visibility: hidden;
         }
-
-        /* TODO jouer sur les zindex pour mettre le ToC tantôt sur et sous les articles plutôt que changer le display */
 
     </style>
     <script type="application/javascript">
         function showToc(visible) {
-            document.getElementById('toc').style.display = (visible ? 'block' : 'none');
-            document.getElementById('articles').style.display = (visible ? 'none' : 'block');
+            document.getElementById('toc').style.visibility = (visible ? 'visible' : 'hidden');
+            document.getElementById('articles').style.visibility = (visible ? 'hidden' : 'visible');
         }
         function burger() {
-            if (document.getElementById('toc').style.display === 'none') {
-                showToc(true);
-            }
+            showToc(document.getElementById('toc').style.visibility === 'hidden');
         }
     </script>
 </head>
 <body>
-<div id="burger"><a onclick="burger();" href="#toc">&#9776; Sommaire</a></div>
+<div id="burger" onclick="burger();">&#9776; Sommaire</div>
