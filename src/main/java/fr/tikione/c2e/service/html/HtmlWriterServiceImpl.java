@@ -26,6 +26,8 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     public HtmlWriterServiceImpl() {
     }
     
+    private static final String EXT_LNK = "⧉";
+    
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void write(Magazine magazine, File file, boolean incluePictures) throws IOException {
@@ -47,7 +49,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         // TODO a JS/CSS selector to switch to night-mode
         try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
             w.write(header);
-        
+    
             // toc
             w.write("<div id='toc'>\n");
             w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.getNumber() + "</h1>\n");
@@ -56,15 +58,17 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 w.write("<h2 class='toc-category-title'>" + category.getTitle() + "</h2>\n\n");
                 for (TocItem tocItem : category.getItems()) {
                     w.write("<h3 class='toc-item-title'><a href='#"
-                            + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD)
-                            + "' " +
-                            " onclick='showToc(false);'>" + tocItem.getTitle() + "</a></h3>\n\n");
+                            + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD) + "' "
+                            + " onclick='showToc(false);'>" + tocItem.getTitle() + "</a> "
+                            + "<a class='toc-ext-lnk' href='" + tocItem.getUrl() + "' target='_blank' title='Lien vers le site CanardPC - nouvelle page'>"
+                            + EXT_LNK
+                            + "</a></h3>\n\n");
                 }
             }
             w.write("</div>\n");
             w.write("</div>\n");
             w.write("<div id='articles'>\n");
-        
+    
             // articles
             for (TocCategory category : magazine.getToc()) {
                 w.write("<h2 class=\"category-title\">" + category.getTitle() + "</h2>\n\n");

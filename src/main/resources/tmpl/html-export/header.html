@@ -10,6 +10,7 @@
     <title>♡♡♡ CPC $$mag_number$$ ♡♡♡</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;$$favicon_base64$$">
     <style media="all" type="text/css">
+
         body {
             font-family: sans-serif, serif;
             font-size: 1em;
@@ -105,7 +106,7 @@
         }
 
         .toc-item-title:hover {
-            border-left: 5px dashed #429bdd;
+            border-left: 5px solid #429bdd;
         }
 
         .toc-item-title > a {
@@ -123,19 +124,33 @@
             text-decoration: none;
         }
 
+        a.toc-ext-lnk {
+            color: #2d34af;
+            margin-left: 0.7em;
+        }
+
+        a.toc-ext-lnk:hover {
+            color: rgba(96, 108, 241, 0.85);
+            text-decoration: none;
+        }
+
         #articles {
             visibility: hidden;
+            font-family: "Roboto Slab", serif, sans-serif;
         }
 
     </style>
     <script type="application/javascript">
+
         function showToc(visible) {
             document.getElementById('toc').style.visibility = (visible ? 'visible' : 'hidden');
             document.getElementById('articles').style.visibility = (visible ? 'hidden' : 'visible');
         }
+
         function burger() {
             showToc(document.getElementById('toc').style.visibility === 'hidden');
         }
+
     </script>
 </head>
 <body>
