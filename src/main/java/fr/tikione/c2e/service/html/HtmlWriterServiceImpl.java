@@ -26,7 +26,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     public HtmlWriterServiceImpl() {
     }
     
-    private static final String EXT_LNK = "⧉";
+    private static final String EXT_LNK = "www";
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
@@ -62,7 +62,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     w.write("<h3 class='toc-item-title'><a href='#"
                             + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD) + "' "
                             + " onclick='showToc(false);'>" + tocItem.getTitle() + "</a> "
-                            + "<a class='toc-ext-lnk' href='" + tocItem.getUrl() + "' target='_blank' title='Lien vers le site CanardPC - nouvelle page'>"
+                            + "<a class='toc-ext-lnk' href='" + tocItem.getUrl() + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + EXT_LNK
                             + "</a></h3>\n\n");
                 }
@@ -90,12 +90,10 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     @SneakyThrows
     private void writeArticle(Writer w, Article article) {
-        w.write("<h4 class=\"article-title\">" + article.getTitle() + "</h4>\n\n");
-        for (String content : article.getContents()) {
-            if (content != null && !content.trim().isEmpty()) {
-                w.write("<div class=\"article-content\">" + content + "</div>\n\n");
-            }
-        }
-        w.write("<hr>\n\n");
+        w.write("<div class='article'>\n");
+    
+        w.write("<div class=\"article-content\">" + article.getContents() + "</div>\n");
+    
+        w.write("</div>\n");
     }
 }

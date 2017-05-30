@@ -7,7 +7,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8"/>
-    <title>♡♡♡ CPC $$mag_number$$ ♡♡♡</title>
+    <title>CPC♡$$mag_number$$</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;$$favicon_base64$$">
     <style media="all" type="text/css">
 
@@ -54,6 +54,13 @@
             width: 100%;
             overflow-y: auto;
             height: 100%;
+        }
+
+        @media (max-width: 474px) {
+            #toc {
+                /* burger should not mask ToC title */
+                margin-top: 2.5em;
+            }
         }
 
         .toc-columns-container {
@@ -132,16 +139,47 @@
         }
 
         a.toc-ext-lnk {
-            color: #2d34af;
+            color: dodgerblue;
+            background-color: lightcyan;
+            font-size: 0.2em;
             margin-left: 0.7em;
-        }
-        a.toc-ext-lnk:hover {
-            color: rgba(96, 108, 241, 0.85);
-            text-decoration: none;
+            padding: 0.05em 0.3em;
         }
 
         #articles {
             visibility: hidden;
+        }
+
+        .article {
+
+        }
+
+        .article-author-creationdate {
+
+        }
+
+        .article-specs {
+
+        }
+
+        .article-content {
+
+        }
+
+        .article-advice {
+
+        }
+
+        .article-price {
+
+        }
+
+        .article-opinion {
+
+        }
+
+        .article-state {
+
         }
 
     </style>
