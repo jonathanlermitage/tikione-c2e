@@ -164,7 +164,7 @@
         }
 
         .article-title {
-            border-top: 2px dashed yellowgreen;
+            border-top: 4px dashed yellowgreen;
             color: #333;
             font-size: 1.9em;
             font-weight: normal;
@@ -252,6 +252,40 @@
 
         }
 
+        .article-pictures {
+            margin: 2em 0.5em;
+        }
+
+        .article-picture-box {
+            border: 1px dashed #BBB;
+            display: inline-block;
+            max-width: 200px;
+            margin: 1px;
+        }
+
+        .article-pictures-tip {
+            color: #555;
+            font-size: 0.8em;
+            font-style: italic;
+            margin: 1em;
+        }
+
+        .article-picture > img {
+            max-width: 200px;
+            max-height: 150px;
+            margin: 1px;
+            padding: 0;
+            cursor: pointer;
+            display: block;
+        }
+
+        .article-picture-legend {
+            color: #555;
+            font-size: 0.8em;
+            margin: 0;
+            padding: 0;
+        }
+
     </style>
     <script type="application/javascript">
 
@@ -262,6 +296,12 @@
 
         function burger() {
             showToc(document.getElementById('toc').style.visibility === 'hidden');
+        }
+
+        function showPicture(id, idBox) {
+            document.getElementById(id).style.maxWidth = (document.getElementById(id).style.maxWidth !== '100%' ? '100%' : '200px');
+            document.getElementById(idBox).style.maxWidth = (document.getElementById(idBox).style.maxWidth !== '100%' ? '100%' : '200px');
+            document.getElementById(id).style.maxHeight = (document.getElementById(id).style.maxHeight !== '100%' ? '100%' : '150px');
         }
 
     </script>

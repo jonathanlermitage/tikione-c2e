@@ -50,4 +50,8 @@ public abstract class AbstractReader {
     public String attr(Elements elt, String attr) {
         return elt == null ? null : elt.attr(attr);
     }
+    
+    public String attr(String baseUrl, Elements elt, String attr) {
+        return elt == null || elt.attr(attr) == null || elt.attr(attr).trim().isEmpty() ? null : baseUrl + elt.attr(attr);
+    }
 }

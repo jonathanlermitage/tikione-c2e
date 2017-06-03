@@ -38,7 +38,7 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
                     article.getContents().add(content);
                 }
                 if (elt.getElementsByClass("singleImage") != null) {
-                    article.getPictures().add(new Picture(attr(elt.getElementsByClass("singleImage"), "href"), null));
+                    article.getPictures().add(new Picture(attr(CPC_BASE_URL, elt.getElementsByClass("singleImage"), "href"), null));
                 }
                 articles.add(article);
             }
@@ -57,7 +57,7 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
         doc.getElementsByClass("article-images")
                 .forEach(images -> images.getElementsByClass("article-image")
                         .forEach(image -> article.getPictures().add(new Picture(
-                                attr(image.getElementsByTag("a"), "href"),
+                                attr(CPC_BASE_URL, image.getElementsByTag("a"), "href"),
                                 text(image.getElementsByClass("article-image-legende"))
                         ))));
         return Collections.singletonList(article);
@@ -102,7 +102,7 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
         doc.getElementsByClass("article-images")
                 .forEach(images -> images.getElementsByClass("article-image")
                         .forEach(image -> article.getPictures().add(new Picture(
-                                attr(image.getElementsByTag("a"), "href"),
+                                attr(CPC_BASE_URL, image.getElementsByTag("a"), "href"),
                                 text(image.getElementsByClass("article-image-legende"))
                         ))));
         if (doc.getElementsByClass("article-encadre-wrapper") != null) {
@@ -111,7 +111,7 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
                 wa.setGeneration(CPC348);
                 wa.setType(TESTS);
                 wa.setTitle(text(elt.getElementsByClass("title")));
-                wa.getPictures().add(new Picture(attr(elt.getElementsByTag("a"), "href"), null));
+                wa.getPictures().add(new Picture(attr(CPC_BASE_URL, elt.getElementsByTag("a"), "href"), null));
                 String content = text(elt.getElementsByClass("article-encadre"));
                 if (wa.getTitle() != null) {
                     content = content.substring(wa.getTitle().length()).trim();

@@ -3,6 +3,7 @@ package fr.tikione.c2e.service.html;
 import com.google.inject.Inject;
 import fr.tikione.c2e.model.web.Article;
 import fr.tikione.c2e.model.web.Magazine;
+import fr.tikione.c2e.model.web.Picture;
 import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
 import lombok.SneakyThrows;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Date;
@@ -100,6 +102,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         writeArticleAuthorCreationdate(w, article);
         writeArticleSpecs(w, article);
         writeArticleContents(w, article);
+        writeArticlePictures(w, article);
         writeArticleOpinion(w, article);
         w.write("</div>\n");
     }
@@ -149,24 +152,50 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     @SneakyThrows
+    private void writeArticlePictures(Writer w, Article article) {
+        if (!article.getPictures().isEmpty()) {
+            w.write("<div class='article-pictures'>\n");
+            w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n");
+            for (Picture picture : article.getPictures()) {
+                if (picture != null && picture.getUrl() != null && !picture.getUrl().isEmpty()) {
+                    String picB64 = Base64.encodeBase64String(IOUtils.toByteArray(new URL(picture.getUrl())));
+                    String pictureId = Base64.encodeBase64String(picture.getUrl().getBytes())
+                            .replaceAll("=", "")
+                            .replaceAll(",", "");
+                    String pictureBoxId = pictureId + "box";
+                    w.write("<div class='article-picture-box' id='" + pictureBoxId + "'>\n");
+                    w.write("<span class='article-picture'><img src='data:image/png;base64," + picB64 +
+                            "' id='" + pictureId + "' " +
+                            " onclick=\"showPicture('" + pictureId + "', '" + pictureBoxId + "');\" /></span>\n");
+                    if (picture.getLegend() != null && !picture.getLegend().isEmpty()) {
+                        w.write("<span class='article-picture-legend'>" + picture.getLegend() + "</span>");
+                    }
+                    w.write("</div>\n");
+                }
+            }
+            w.write("</div>\n");
+        }
+    }
+    
+    @SneakyThrows
     private void writeArticleOpinion(Writer w, Article article) {
         StringBuilder buff = new StringBuilder();
         buff.append("<div class='article-opinion'>\n");
         boolean contentFilled = false;
         if (filled(article.getGameOpinionTitle())) {
-            buff.append("<div class='article-opinion-title'>").append(article.getGameOpinionTitle()).append("</div>");
+            buff.append("<div class='article-opinion-title'>").append(article.getGameOpinionTitle()).append("</div>\n");
             contentFilled = true;
         }
         if (filled(article.getGameOpinion())) {
-            buff.append("<div class='article-opinion-content'>").append(article.getGameOpinion()).append("</div>");
+            buff.append("<div class='article-opinion-content'>").append(article.getGameOpinion()).append("</div>\n");
             contentFilled = true;
         }
         if (filled(article.getGameScoreText())) {
-            buff.append("<div class='article-opinion-score-text'>").append(article.getGameScoreText()).append("</span></div>");
+            buff.append("<div class='article-opinion-score-text'>").append(article.getGameScoreText()).append("</span></div>\n");
             contentFilled = true;
         }
         if (filled(article.getGameScore())) {
-            buff.append("<div class='article-opinion-score'>");
+            buff.append("<div class='article-opinion-score'>\n");
             if (filled(article.getGameScore())) {
                 String score = article.getGameScore();
                 if (score.startsWith("0.")) {
@@ -174,7 +203,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 }
                 buff.append("<span class='article-opinion-score-number'>").append(score).append("</span>");
             }
-            buff.append("</div>");
+            buff.append("</div>\n");
             contentFilled = true;
         }
         buff.append("</div>\n");
