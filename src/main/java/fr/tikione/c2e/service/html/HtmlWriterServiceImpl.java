@@ -77,10 +77,10 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             for (TocCategory category : magazine.getToc()) {
                 w.write("<h2 class=\"category-title\">" + category.getTitle() + "</h2>\n\n");
                 for (TocItem tocItem : category.getItems()) {
-                    w.write("<h3 id='"
+                    w.write("<div id='"
                             + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD)
-                            + "'class=\"toc-item-title\">"
-                            + tocItem.getTitle() + "</h3>\n\n");
+                            + "'class=\"article-title\">"
+                            + tocItem.getTitle() + "</div>\n\n");
                     tocItem.getArticles().forEach(article -> writeArticle(w, article));
                 }
             }
