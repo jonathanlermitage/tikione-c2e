@@ -62,7 +62,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 w.write("<h2 class='toc-category-title'>" + category.getTitle() + "</h2>\n\n");
                 for (TocItem tocItem : category.getItems()) {
                     w.write("<h3 class='toc-item-title'><a href='#"
-                            + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD) + "' "
+                            + normalizeAnchorUrl(category.getTitle() + tocItem.getTitle()) + "' "
                             + " onclick='showToc(false);'>" + tocItem.getTitle() + "</a> "
                             + "<a class='toc-ext-lnk' href='" + tocItem.getUrl() + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + EXT_LNK
@@ -78,7 +78,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 w.write("<h2 class=\"category-title\">" + category.getTitle() + "</h2>\n\n");
                 for (TocItem tocItem : category.getItems()) {
                     w.write("<div id='"
-                            + Normalizer.normalize(category.getTitle() + tocItem.getTitle(), NFD)
+                            + normalizeAnchorUrl(category.getTitle() + tocItem.getTitle())
                             + "'class=\"article-title\">"
                             + tocItem.getTitle() + "</div>\n\n");
                     tocItem.getArticles().forEach(article -> writeArticle(w, article));
@@ -161,7 +161,11 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             buff.append("<div class='article-opinion-content'>").append(article.getGameOpinion()).append("</div>");
             contentFilled = true;
         }
-        if (filled(article.getGameScore()) || filled(article.getGameScoreText())) {
+        if (filled(article.getGameScoreText())) {
+            buff.append("<div class='article-opinion-score-text'>").append(article.getGameScoreText()).append("</span></div>");
+            contentFilled = true;
+        }
+        if (filled(article.getGameScore())) {
             buff.append("<div class='article-opinion-score'>");
             if (filled(article.getGameScore())) {
                 String score = article.getGameScore();
@@ -169,9 +173,6 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     score = score.substring(2);
                 }
                 buff.append("<span class='article-opinion-score-number'>").append(score).append("</span>");
-            }
-            if (filled(article.getGameScoreText())) {
-                buff.append("<span class='article-opinion-score-text'>").append(article.getGameScoreText()).append("</span>");
             }
             buff.append("</div>");
             contentFilled = true;
@@ -188,5 +189,12 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     private boolean filled(String str) {
         return str != null && !str.isEmpty();
+    }
+    
+    private String normalizeAnchorUrl(String str) {
+        return Normalizer.normalize(str, NFD)
+                .replaceAll("\"", "")
+                .replaceAll("'", "")
+                .replaceAll("\\s", "");
     }
 }

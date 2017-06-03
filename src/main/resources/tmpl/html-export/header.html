@@ -150,15 +150,23 @@
             visibility: hidden;
         }
 
+        .category-title {
+            background-color: yellowgreen;
+            color: white;
+            font-size: 2em;
+            margin: 0;
+            padding: 0.5em;
+        }
+
         .article {
             margin: 1em;
-            padding-bottom: 2em;
+            padding-bottom: 3em;
         }
 
         .article-title {
             border-top: 2px dashed yellowgreen;
             color: #333;
-            font-size: 2em;
+            font-size: 1.9em;
             font-weight: normal;
             margin-left: 0.25em;
             margin-right: 0.25em;
@@ -168,7 +176,7 @@
 
         .article-author-creationdate {
             color: orangered;
-            font-size: 0.8em;
+            font-size: 0.9em;
             margin-bottom: 1em;
         }
 
@@ -216,10 +224,14 @@
             margin-left: 1em;
         }
 
-        .article-opinion-content {
+        .article-opinion-content, .article-opinion-score-text {
             font-size: 0.85em;
             font-weight: bold;
             margin: 1em;
+        }
+
+        .article-opinion-score-text {
+            font-weight: normal;
         }
 
         .article-opinion-score {
@@ -230,15 +242,10 @@
         .article-opinion-score-number {
             background-color: deeppink;
             color: white;
-            font-size: 1.5em;
+            font-size: 1.25em;
             font-weight: bold;
             padding: 0 0.5em;
             margin-right: 1em;
-        }
-
-        .article-opinion-score-text {
-            font-weight: bold;
-            padding: 1em;
         }
 
         .article-state {
