@@ -80,7 +80,7 @@ public class Article {
                 ", gameState='" + gameState + '\'' +
                 ", generation=" + generation +
                 ", type=" + type +
-                ", <<< rate=" + rate() + " >>>}";
+                ", rate=" + rate() + "}";
     }
     
     private String shorten(String str, int maxLen) {

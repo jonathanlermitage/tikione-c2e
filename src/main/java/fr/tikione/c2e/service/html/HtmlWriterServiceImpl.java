@@ -6,6 +6,7 @@ import fr.tikione.c2e.model.web.Magazine;
 import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
 import lombok.SneakyThrows;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedWriter;
@@ -14,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.Normalizer;
+import java.util.Arrays;
 import java.util.Date;
 
 import static fr.tikione.c2e.Main.VERSION;
@@ -35,8 +37,8 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         if (file.exists()) {
             throw new IOException("cannot write over file " + file.getAbsolutePath());
         }
-        String faviconBase64 = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/favicon-b64.txt"), UTF_8);
-        String fontRobotoBase64 = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/font/robotoslab-b64.txt"), UTF_8);
+        String faviconBase64 = resourceAsBase64("tmpl/html-export/ico/french_duck.png");
+        String fontRobotoBase64 = resourceAsBase64("tmpl/html-export/font/RobotoSlab-Light.ttf");
         String header = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/header.html"), UTF_8)
                 .replace("$$login$$", magazine.getLogin())
                 .replace("$$version$$", VERSION)
@@ -68,7 +70,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 }
             }
             w.write("</div>\n");
-            w.write("</div>\n");
+            w.write("<br/><br/><br/></div>\n");
             w.write("<div id='articles'>\n");
     
             // articles
@@ -88,12 +90,103 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         }
     }
     
+    private String resourceAsBase64(String path) throws IOException {
+        return Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(path)));
+    }
+    
     @SneakyThrows
     private void writeArticle(Writer w, Article article) {
         w.write("<div class='article'>\n");
-    
-        w.write("<div class=\"article-content\">" + article.getContents() + "</div>\n");
-    
+        writeArticleAuthorCreationdate(w, article);
+        writeArticleSpecs(w, article);
+        writeArticleContents(w, article);
+        writeArticleOpinion(w, article);
         w.write("</div>\n");
+    }
+    
+    @SneakyThrows
+    private void writeArticleAuthorCreationdate(Writer w, Article article) {
+        if (filled(article.getAuthorAndDate())) {
+            w.write("<div class='article-author-creationdate'>");
+            w.write(article.getAuthorAndDate());
+            w.write("</div>\n");
+        }
+    }
+    
+    @SneakyThrows
+    private void writeArticleSpecs(Writer w, Article article) {
+        StringBuilder buff = new StringBuilder();
+        buff.append("<div class='article-specs'>\n");
+        boolean contentFilled = false;
+        for (String spec : Arrays.asList(
+                article.getGameDev(),
+                article.getGameNature(),
+                article.getGameEditor(),
+                article.getGamePlatform(),
+                article.getGameTester(),
+                article.getGameConfig(),
+                article.getGameDDL(),
+                article.getGameLang(),
+                article.getGameDRM())) {
+            if (filled(spec)) {
+                buff.append("<span class='article-specs-item'>// ").append(boldSpecTitle(spec)).append("</span> \n");
+                contentFilled = true;
+            }
+        }
+        buff.append("</div>\n");
+        if (contentFilled) {
+            w.write(buff.toString());
+        }
+    }
+    
+    @SneakyThrows
+    private void writeArticleContents(Writer w, Article article) {
+        for (String content : article.getContents()) {
+            if (content != null && !content.isEmpty()) {
+                w.write("<p class=\"article-content\">" + content + "</p>\n");
+            }
+        }
+    }
+    
+    @SneakyThrows
+    private void writeArticleOpinion(Writer w, Article article) {
+        StringBuilder buff = new StringBuilder();
+        buff.append("<div class='article-opinion'>\n");
+        boolean contentFilled = false;
+        if (filled(article.getGameOpinionTitle())) {
+            buff.append("<div class='article-opinion-title'>").append(article.getGameOpinionTitle()).append("</div>");
+            contentFilled = true;
+        }
+        if (filled(article.getGameOpinion())) {
+            buff.append("<div class='article-opinion-content'>").append(article.getGameOpinion()).append("</div>");
+            contentFilled = true;
+        }
+        if (filled(article.getGameScore()) || filled(article.getGameScoreText())) {
+            buff.append("<div class='article-opinion-score'>");
+            if (filled(article.getGameScore())) {
+                String score = article.getGameScore();
+                if (score.startsWith("0.")) {
+                    score = score.substring(2);
+                }
+                buff.append("<span class='article-opinion-score-number'>").append(score).append("</span>");
+            }
+            if (filled(article.getGameScoreText())) {
+                buff.append("<span class='article-opinion-score-text'>").append(article.getGameScoreText()).append("</span>");
+            }
+            buff.append("</div>");
+            contentFilled = true;
+        }
+        buff.append("</div>\n");
+        if (contentFilled) {
+            w.write(buff.toString());
+        }
+    }
+    
+    private String boldSpecTitle(String str) {
+        return str.contains(":") ? "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) : str;
+    }
+    
+    private boolean filled(String str) {
+        return str != null && !str.isEmpty();
     }
 }
