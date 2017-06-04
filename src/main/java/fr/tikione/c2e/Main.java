@@ -19,7 +19,7 @@ import java.util.List;
 public class Main {
     
     public static boolean DEBUG = false;
-    public static String VERSION = "0.0.2";
+    public static String VERSION = "0.0.3";
     
     // params: username password [-debug] [-pdf] [-epub] [-html]
     public static void main(String... args) throws Exception {
