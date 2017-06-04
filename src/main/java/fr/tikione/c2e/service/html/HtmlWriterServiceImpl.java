@@ -25,6 +25,7 @@ import java.net.URL;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static fr.tikione.c2e.Main.VERSION;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -37,6 +38,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     private static final String EXT_LNK = "www";
+    private final List<String> imgExt = Arrays.asList(".jpeg", ".jpg", ".png", ".tiff", ".gif");
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
@@ -167,20 +169,33 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     byte[] picBytes = IOUtils.toByteArray(new URL(picture.getUrl()));
                     MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
                     String ext = magicmatch.getExtension();
-                    if (!"JPG".equalsIgnoreCase(ext) && !"JPEG".equalsIgnoreCase(ext)) { // use JPEG images only to reduce size of resulting HTML file
+                    boolean isConvertible = false;
+    
+                    // images with url that doesn't end with extension seems to use features unavailable in JPEG format: keep them
+                    for (String anImgExt : imgExt) {
+                        if (picture.getUrl().toLowerCase().endsWith(anImgExt)) {
+                            isConvertible = true;
+                            break;
+                        }
+                    }
+    
+                    // use JPEG images only to reduce size of resulting HTML file
+                    if (isConvertible && !"JPG".equalsIgnoreCase(ext) && !"JPEG".equalsIgnoreCase(ext)) {
                         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(picBytes));
                         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                             ImageIO.write(bufferedImage, "JPG", baos);
                             picBytes = baos.toByteArray();
                         }
+                        ext = "jpeg";
                     }
+    
                     String picB64 = Base64.encodeBase64String(picBytes);
                     String pictureId = Base64.encodeBase64String(picture.getUrl().getBytes())
                             .replaceAll("=", "")
                             .replaceAll(",", "");
                     String pictureBoxId = pictureId + "box";
                     w.write("<div class='article-picture-box' id='" + pictureBoxId + "'>\n");
-                    w.write("<span class='article-picture'><img src='data:image/jpeg;base64," + picB64 +
+                    w.write("<span class='article-picture'><img src='data:image/" + ext + ";base64," + picB64 +
                             "' id='" + pictureId + "' " +
                             " onclick=\"showPicture('" + pictureId + "', '" + pictureBoxId + "');\" /></span>\n");
                     if (picture.getLegend() != null && !picture.getLegend().isEmpty()) {
