@@ -20,7 +20,9 @@ public class Article {
     private String subtitle;
     private String authorAndDate;
     private String category;
+    private String headerContent;
     private List<String> contents = new ArrayList<>();
+    private List<String> encadreContents = new ArrayList<>();
     private List<Picture> pictures = new ArrayList<>();
     private List<Article> wrappedArticles = new ArrayList<>();
     private String gameScore;
@@ -55,7 +57,9 @@ public class Article {
                 ", subtitle='" + subtitle + '\'' +
                 ", authorAndDate='" + authorAndDate + '\'' +
                 ", category='" + category + '\'' +
+                ", headerContent='" + headerContent + '\'' +
                 ", contents=" + contents.stream().map(s -> shorten(s, maxLen)).collect(Collectors.toList()) + " contents.size=" + contents.size() +
+                ", encadreContents=" + encadreContents.stream().map(s -> shorten(s, maxLen)).collect(Collectors.toList()) + " contents.size=" + encadreContents.size() +
                 ", pictures=" + pictures +
                 ", wrappedArticles=" + wrappedArticles +
                 ", gameScore='" + gameScore + '\'' +

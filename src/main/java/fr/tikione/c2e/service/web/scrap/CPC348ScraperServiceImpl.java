@@ -71,13 +71,10 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
         article.setTitle(text(doc.getElementsByClass("article-title")));
         article.setSubtitle(text(doc.getElementsByClass("article-subtitle")));
         article.setAuthorAndDate(text(doc.getElementsByClass("article-author")));
-        article.getContents().add(text(doc.getElementsByClass("article-chapo")));
-    
-        // fixme there can be many body and intertitre
-        // fixme add encadre, see 'Jackbox Party Pack 3'
-        article.getContents().add(text(doc.getElementsByClass("article-body")));
-        article.getContents().add(text(doc.getElementsByClass("article-intertitre")));
-    
+        article.setHeaderContent(text(doc.getElementsByClass("article-chapo")));
+        doc.getElementsByClass("article-body").forEach(element -> article.getContents().add(text(element)));
+        doc.getElementsByAttributeValueMatching("class", "(article\\-intertitre$|article\\-encadre$)").forEach(element -> article.getContents().add(text(element)));
+        doc.getElementsByClass("article-encadre").forEach(element -> article.getEncadreContents().add(text(element)));
         article.setGameScore(attr(doc.getElementById("article-note"), "data-pourcentage"));
         article.setGameScoreText(text(doc.getElementsByClass("article-note-prix")));
         article.setGameNature(text(doc.getElementsByClass("game-genre")));

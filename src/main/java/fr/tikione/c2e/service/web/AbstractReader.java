@@ -34,6 +34,10 @@ public abstract class AbstractReader {
                 .get();
     }
     
+    public String text(Element elt) {
+        return elt == null ? null : clean((elt.text()));
+    }
+    
     public String text(Elements... elt) {
         if (elt == null || elt.length == 0) {
             return null;

@@ -107,8 +107,9 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     @SneakyThrows
     private void writeArticle(Writer w, Article article) {
         w.write("<div class='article'>\n");
-        writeArticleAuthorCreationdate(w, article);
         writeArticleSpecs(w, article);
+        writeArticleHeaderContent(w, article);
+        writeArticleAuthorCreationdate(w, article);
         writeArticleContents(w, article);
         writeArticlePictures(w, article);
         writeArticleOpinion(w, article);
@@ -151,10 +152,25 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     @SneakyThrows
+    private void writeArticleHeaderContent(Writer w, Article article) {
+        if (filled(article.getHeaderContent())) {
+            w.write("<div class='article-headercontent'>" + article.getHeaderContent() + "</div>\n");
+        }
+    }
+    
+    @SneakyThrows
     private void writeArticleContents(Writer w, Article article) {
         for (String content : article.getContents()) {
             if (content != null && !content.isEmpty()) {
-                w.write("<p class=\"article-content\">" + content + "</p>\n");
+                int portionSize = content.length() > 30 ? 30 : content.length();
+                String cssClass = "article-content";
+                for (String encadre : article.getEncadreContents()) {
+                    if (encadre.substring(0, 30).equals(content.substring(0, 30))) {
+                        cssClass = "article-encadre";
+                        break;
+                    }
+                }
+                w.write("<p class=\"" + cssClass + "\">" + content + "</p>\n");
             }
         }
     }
