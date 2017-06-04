@@ -165,7 +165,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 int portionSize = content.length() > 30 ? 30 : content.length();
                 String cssClass = "article-content";
                 for (String encadre : article.getEncadreContents()) {
-                    if (encadre.substring(0, 30).equals(content.substring(0, 30))) {
+                    if (encadre.substring(0, portionSize).equals(content.substring(0, portionSize))) {
                         cssClass = "article-encadre";
                         break;
                     }
