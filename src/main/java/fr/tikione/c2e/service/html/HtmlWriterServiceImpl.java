@@ -167,7 +167,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     byte[] picBytes = IOUtils.toByteArray(new URL(picture.getUrl()));
                     MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
                     String ext = magicmatch.getExtension();
-                    if ("PNG".equalsIgnoreCase(ext)) { // use JPEG images only to reduce size of resulting HTML file
+                    if (!"JPG".equalsIgnoreCase(ext) && !"JPEG".equalsIgnoreCase(ext)) { // use JPEG images only to reduce size of resulting HTML file
                         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(picBytes));
                         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                             ImageIO.write(bufferedImage, "JPG", baos);
