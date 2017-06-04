@@ -161,7 +161,14 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     @SneakyThrows
     private void writeArticlePictures(Writer w, Article article) {
-        if (!article.getPictures().isEmpty()) {
+        boolean hasPictures = false;
+        for (Picture picture : article.getPictures()) {
+            if (picture.getUrl() != null && !picture.getUrl().trim().isEmpty()) {
+                hasPictures = true;
+                break;
+            }
+        }
+        if (hasPictures) {
             w.write("<div class='article-pictures'>\n");
             w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n");
             for (Picture picture : article.getPictures()) {
