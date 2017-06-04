@@ -7,10 +7,16 @@ import fr.tikione.c2e.model.web.Picture;
 import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
 import lombok.SneakyThrows;
+import net.sf.jmimemagic.Magic;
+import net.sf.jmimemagic.MagicMatch;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -158,13 +164,23 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n");
             for (Picture picture : article.getPictures()) {
                 if (picture != null && picture.getUrl() != null && !picture.getUrl().isEmpty()) {
-                    String picB64 = Base64.encodeBase64String(IOUtils.toByteArray(new URL(picture.getUrl())));
+                    byte[] picBytes = IOUtils.toByteArray(new URL(picture.getUrl()));
+                    MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
+                    String ext = magicmatch.getExtension();
+                    if ("PNG".equalsIgnoreCase(ext)) { // use JPEG images only to reduce size of resulting HTML file
+                        BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(picBytes));
+                        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                            ImageIO.write(bufferedImage, "JPG", baos);
+                            picBytes = baos.toByteArray();
+                        }
+                    }
+                    String picB64 = Base64.encodeBase64String(picBytes);
                     String pictureId = Base64.encodeBase64String(picture.getUrl().getBytes())
                             .replaceAll("=", "")
                             .replaceAll(",", "");
                     String pictureBoxId = pictureId + "box";
                     w.write("<div class='article-picture-box' id='" + pictureBoxId + "'>\n");
-                    w.write("<span class='article-picture'><img src='data:image/png;base64," + picB64 +
+                    w.write("<span class='article-picture'><img src='data:image/jpeg;base64," + picB64 +
                             "' id='" + pictureId + "' " +
                             " onclick=\"showPicture('" + pictureId + "', '" + pictureBoxId + "');\" /></span>\n");
                     if (picture.getLegend() != null && !picture.getLegend().isEmpty()) {
