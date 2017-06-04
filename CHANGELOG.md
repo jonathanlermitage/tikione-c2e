@@ -1,10 +1,10 @@
 ## TikiOne C2E Change Log
 
-### 0.0.3 (WIP)
+### 0.0.3 (WIP, 2017/06/04)
+* conversion toutes les images PNG en JPEG pour réduire la taille finale de l'export (~40% de gain). Le taux de compression pourrait être configurable, mais ce sera développé après la v1.0.0.
 * articles en cours d'intégration. A terminer : 
   * avis et état (des jeux en cours de dev)
   * corriger la détection des contenus de type "encadré" et les contenus "inter-titre" présents plus d'une fois par article.
-* optimisation à faire : convertir toutes les images en JPEG. Certains PNG faisant plus de 1Mo, le poids total du mag dépassé les 100Mo (contre quelques Mo avec du JPEG).
 
 ### 0.0.2 (2017/06/03)
 * le sommaire est correctement affiché (flottant + style + liens vers articles + nombre de colonnes adapté à l'écran), reprennant la mise en forme du site.
