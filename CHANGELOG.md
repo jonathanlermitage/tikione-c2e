@@ -4,7 +4,7 @@
 * conversion des images PNG en JPEG pour réduire la taille finale de l'export (~40% de gain). *ImageMagick sera surement intégré après la v1.0.0 pour corriger la conversion de certains PNG et mieux gérer les couleurs RGB ou CMYK, le canal Alpha (transparence), etc. Cela concerne heureusement peu d'images.*
 * corrigé : détection des contenus de type "encadré" et des contenus "inter-titre" présents plus d'une fois par article.
 * articles en cours d'intégration. **A terminer** : 
-  * avis et état (des jeux en cours de dev)
+  * avis et état (des jeux en cours de dev), et sous-titre.
 
 ### 0.0.2 (2017/06/03)
 * le sommaire est correctement affiché (flottant + style + liens vers articles + nombre de colonnes adapté à l'écran), reprennant la mise en forme du site.
