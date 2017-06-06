@@ -33,10 +33,9 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
                 String content = text(elt.getElementsByClass("article-wrapper"));
                 if (content != null && article.getTitle() != null && content.length() > article.getTitle().length() && article.getTitle().length() > 0) {
                     // title and content are in the same div: fix content by removing title
-                    article.getContents().add(content.substring(article.getTitle().length()).trim());
-                } else {
-                    article.getContents().add(content);
+                    content = content.substring(content.indexOf(article.getTitle()) + article.getTitle().length()).trim();
                 }
+                article.getContents().add(content);
                 if (elt.getElementsByClass("singleImage") != null) {
                     article.getPictures().add(new Picture(attr(CPC_BASE_URL, elt.getElementsByClass("singleImage"), "href"), null));
                 }
