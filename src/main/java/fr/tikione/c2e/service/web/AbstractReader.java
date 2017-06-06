@@ -4,6 +4,7 @@ import fr.tikione.c2e.model.web.Auth;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public abstract class AbstractReader {
         while (str.contains(String.valueOf((char) 160))) {
             str = str.replace(String.valueOf((char) 160), " ");
         }
-        return str.trim();
+        return Jsoup.clean(str.trim(), Whitelist.none());
     }
     
     /** Get a remote document. */
