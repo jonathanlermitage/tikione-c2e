@@ -108,6 +108,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     private void writeArticle(Writer w, Article article) {
         w.write("<div class='article'>\n");
         writeArticleSpecs(w, article);
+        writeArticleSubtitle(w, article);
         writeArticleHeaderContent(w, article);
         writeArticleAuthorCreationdate(w, article);
         writeArticleContents(w, article);
@@ -116,6 +117,15 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         writeArticleState(w, article);
         writeArticleAdvice(w, article);
         w.write("</div>\n");
+    }
+    
+    @SneakyThrows
+    private void writeArticleSubtitle(Writer w, Article article) {
+        if (filled(article.getSubtitle())) {
+            w.write("<div class='article-subtitle'>");
+            w.write(article.getSubtitle());
+            w.write("</div>\n");
+        }
     }
     
     @SneakyThrows
