@@ -24,7 +24,11 @@ public abstract class AbstractReader {
         while (str.contains(String.valueOf((char) 160))) {
             str = str.replace(String.valueOf((char) 160), " ");
         }
-        return Jsoup.clean(str.trim(), Whitelist.none());
+        String res = Jsoup.clean(str.trim(), Whitelist.none());
+        if (res.toUpperCase().endsWith("TWITTER FACEBOOK EMAIL")) {
+            res = res.substring(0, res.toUpperCase().lastIndexOf("TWITTER FACEBOOK EMAIL")); // remove social buttons
+        }
+        return res.trim();
     }
     
     /** Get a remote document. */
