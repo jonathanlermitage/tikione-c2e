@@ -222,40 +222,46 @@
 
         }
 
-        .article-opinion {
+        .article-opinion, .article-state {
             border-bottom: 1px solid deeppink;
             border-left: 1px solid deeppink;
             max-width: 474px;
+            margin-bottom: 1em;
+        }
+
+        .article-state {
+            border-bottom-color: dodgerblue;
+            border-left-color: dodgerblue;
         }
 
         @media (max-width: 474px) {
-            .article-opinion {
+            .article-opinion, .article-state {
                 max-width: none;
             }
         }
 
-        .article-opinion-title {
+        .article-opinion-title, .article-state-title {
             font-size: 1.25em;
             font-weight: bold;
             margin-left: 1em;
         }
 
-        .article-opinion-content, .article-opinion-score-text {
+        .article-opinion-content, .article-opinion-score-text, .article-state-content {
             font-size: 0.85em;
             font-weight: bold;
             margin: 1em;
         }
 
-        .article-opinion-score-text {
+        .article-opinion-score-text, .article-state-score-text {
             font-weight: normal;
         }
 
-        .article-opinion-score {
+        .article-opinion-score, .article-state-score {
             margin-bottom: 0;
             margin-left: 0;
         }
 
-        .article-opinion-score-number {
+        .article-opinion-score-number, .article-state-score-value {
             background-color: deeppink;
             color: white;
             font-size: 1.25em;
@@ -264,8 +270,8 @@
             margin-right: 1em;
         }
 
-        .article-state {
-
+        .article-state-score-value {
+            background-color: dodgerblue;
         }
 
         .article-pictures {

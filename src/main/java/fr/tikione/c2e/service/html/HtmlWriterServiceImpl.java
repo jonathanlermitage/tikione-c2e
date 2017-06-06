@@ -113,6 +113,8 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         writeArticleContents(w, article);
         writeArticlePictures(w, article);
         writeArticleOpinion(w, article);
+        writeArticleState(w, article);
+        writeArticleAdvice(w, article);
         w.write("</div>\n");
     }
     
@@ -162,10 +164,9 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     private void writeArticleContents(Writer w, Article article) {
         for (String content : article.getContents()) {
             if (content != null && !content.isEmpty()) {
-                int portionSize = content.length() > 30 ? 30 : content.length();
                 String cssClass = "article-content";
                 for (String encadre : article.getEncadreContents()) {
-                    if (encadre.substring(0, portionSize).equals(content.substring(0, portionSize))) {
+                    if (fastEquals(content, encadre)) {
                         cssClass = "article-encadre";
                         break;
                     }
@@ -266,6 +267,34 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         }
     }
     
+    @SneakyThrows
+    private void writeArticleAdvice(Writer w, Article article) {
+    }
+    
+    @SneakyThrows
+    private void writeArticleState(Writer w, Article article) {
+        StringBuilder buff = new StringBuilder();
+        buff.append("<div class='article-state'>\n");
+        boolean contentFilled = false;
+        if (filled(article.getGameStateTitle())) {
+            buff.append("<div class='article-state-title'>").append(article.getGameStateTitle()).append("</div>\n");
+            contentFilled = true;
+        }
+        if (filled(article.getGameState())) {
+            buff.append("<div class='article-state-content'>").append(article.getGameState()).append("</div>\n");
+            contentFilled = true;
+        }
+        if (filled(article.getGameAdviceTitle()) && filled(article.getGameAdvice())) {
+            buff.append("<div class='article-state-score-value'>").append(article.getGameAdviceTitle()).append(" ")
+                    .append(article.getGameAdvice()).append("</span></div>\n");
+            contentFilled = true;
+        }
+        buff.append("</div>\n");
+        if (contentFilled) {
+            w.write(buff.toString());
+        }
+    }
+    
     private String boldSpecTitle(String str) {
         return str.contains(":") ? "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) : str;
     }
@@ -279,5 +308,15 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 .replaceAll("\"", "")
                 .replaceAll("'", "")
                 .replaceAll("\\s", "");
+    }
+    
+    private boolean fastEquals(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        } else if (s1.length() == 0) {
+            return true;
+        }
+        int portionSize = s1.length() > 30 ? 30 : s1.length();
+        return s1.substring(0, portionSize).equals(s2.substring(0, portionSize));
     }
 }

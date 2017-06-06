@@ -72,9 +72,12 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
         article.setSubtitle(text(doc.getElementsByClass("article-subtitle")));
         article.setAuthorAndDate(text(doc.getElementsByClass("article-author")));
         article.setHeaderContent(text(doc.getElementsByClass("article-chapo")));
-        doc.getElementsByClass("article-body").forEach(element -> article.getContents().add(text(element)));
-        doc.getElementsByAttributeValueMatching("class", "(article\\-intertitre$|article\\-encadre$)").forEach(element -> article.getContents().add(text(element)));
-        doc.getElementsByClass("article-encadre").forEach(element -> article.getEncadreContents().add(text(element)));
+        doc.getElementsByClass("article-body")
+                .forEach(element -> article.getContents().add(text(element)));
+        doc.getElementsByAttributeValueMatching("class", "(article\\-intertitre$|article\\-encadre$)")
+                .forEach(element -> article.getContents().add(text(element)));
+        doc.getElementsByClass("article-encadre")
+                .forEach(element -> article.getEncadreContents().add(text(element)));
         article.setGameScore(attr(doc.getElementById("article-note"), "data-pourcentage"));
         article.setGameScoreText(text(doc.getElementsByClass("article-note-prix")));
         article.setGameNature(text(doc.getElementsByClass("game-genre")));
