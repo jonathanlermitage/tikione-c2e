@@ -2,6 +2,7 @@ package fr.tikione.c2e.service.html;
 
 import com.google.inject.Inject;
 import fr.tikione.c2e.model.web.Article;
+import fr.tikione.c2e.model.web.ArticleType;
 import fr.tikione.c2e.model.web.Magazine;
 import fr.tikione.c2e.model.web.Picture;
 import fr.tikione.c2e.model.web.TocCategory;
@@ -106,17 +107,30 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     @SneakyThrows
     private void writeArticle(Writer w, Article article) {
-        w.write("<div class='article'>\n");
-        writeArticleSpecs(w, article);
-        writeArticleSubtitle(w, article);
-        writeArticleHeaderContent(w, article);
-        writeArticleAuthorCreationdate(w, article);
-        writeArticleContents(w, article);
-        writeArticlePictures(w, article);
-        writeArticleOpinion(w, article);
-        writeArticleState(w, article);
-        writeArticleAdvice(w, article);
-        w.write("</div>\n");
+        if (ArticleType.NEWS == article.getType()) {
+            w.write("<div class='news'>\n");
+            if (filled(article.getCategory())) {
+                w.write("<div class='news-category'>" + article.getCategory() + "</div>\n");
+            }
+            if (filled(article.getTitle())) {
+                w.write("<div class='news-title'>" + article.getTitle() + "</div>\n");
+            }
+            writeArticleAuthorCreationdate(w, article);
+            writeArticleContents(w, article);
+            w.write("</div>\n");
+        } else {
+            w.write("<div class='article'>\n");
+            writeArticleSpecs(w, article);
+            writeArticleSubtitle(w, article);
+            writeArticleHeaderContent(w, article);
+            writeArticleAuthorCreationdate(w, article);
+            writeArticleContents(w, article);
+            writeArticlePictures(w, article);
+            writeArticleOpinion(w, article);
+            writeArticleState(w, article);
+            writeArticleAdvice(w, article);
+            w.write("</div>\n");
+        }
     }
     
     @SneakyThrows
