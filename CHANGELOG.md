@@ -1,9 +1,14 @@
 ## TikiOne C2E Change Log
 
-### 0.0.3 (WIP, 2017/06/06)
+### 0.0.4 (WIP)
 
-Youpi, le n°348 est complètement intégré !  
-Intégration des numéros plus récents, ça devrait être rapide.
+L'export HTML est finalisé et a été testé sur les numéros 348 à 361. Reste à rendre le programme facile à utiliser. 
+
+* TODO: 
+  * développer une CLI.
+  * packager le programme avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+
+### 0.0.3 (2017/06/06)
 
 * conversion des images PNG en JPEG pour réduire la taille finale de l'export (~40% de gain). *ImageMagick sera surement intégré après la v1.0.0 pour corriger la conversion de certains PNG et mieux gérer les couleurs RGB ou CMYK, le canal Alpha (transparence), etc. Cela concerne heureusement peu d'images.*
 * corrigé : détection des contenus de type "encadré" et des contenus "inter-titre" présents plus d'une fois par article, boutons de partage Twitter/Facebook/Email retirés.
