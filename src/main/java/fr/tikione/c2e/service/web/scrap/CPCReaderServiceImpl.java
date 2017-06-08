@@ -24,7 +24,7 @@ import java.util.Map;
 public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderService {
     
     @Inject
-    private CPC348ScraperService cpc348ScraperService;
+    private CPCScraperService cpcScraperService;
     
     @Inject
     public CPCReaderServiceImpl() {
@@ -95,7 +95,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
         System.out.print("récupération de l'article " + url);
         Document doc = queryUrl(auth, url);
         Map<Integer, List<Article>> articles = new HashMap<>();
-        articles.putAll(cpc348ScraperService.extractArticles(doc));
+        articles.putAll(cpcScraperService.extractArticles(doc));
         
         List<Article> res = articles.get(articles.keySet().stream().mapToInt(i -> i).max().orElseThrow(Exception::new));
         if (Main.DEBUG) {

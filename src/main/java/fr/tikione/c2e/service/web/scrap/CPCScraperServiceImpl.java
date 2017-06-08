@@ -13,12 +13,11 @@ import java.util.List;
 import static fr.tikione.c2e.model.web.ArticleType.NEWS;
 import static fr.tikione.c2e.model.web.ArticleType.SINGLE_NEWS;
 import static fr.tikione.c2e.model.web.ArticleType.TESTS;
-import static fr.tikione.c2e.model.web.ScrapperGeneration.CPC348;
 
-public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348ScraperService {
+public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraperService {
     
     @Inject
-    public CPC348ScraperServiceImpl() {
+    public CPCScraperServiceImpl() {
     }
     
     public List<Article> extractNews(Document doc) {
@@ -26,7 +25,6 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
         if (doc.getElementsByClass("article-wrapper") != null) {
             for (Element elt : doc.getElementsByClass("article-wrapper")) {
                 Article article = new Article();
-                article.setGeneration(CPC348);
                 article.setType(NEWS);
                 article.setCategory(text(elt.getElementsByClass("categorie")));
                 article.setTitle(text(elt.getElementsByTag("h4")));
@@ -48,7 +46,6 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
     @Override
     public List<Article> extractSingleNews(Document doc) {
         Article article = new Article();
-        article.setGeneration(CPC348);
         article.setType(SINGLE_NEWS);
         article.setTitle(text(doc.getElementsByClass("article-title")));
         article.setAuthorAndDate(text(doc.getElementsByClass("article-author")));
@@ -65,7 +62,6 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
     @Override
     public List<Article> extractTests(Document doc) {
         Article article = new Article();
-        article.setGeneration(CPC348);
         article.setType(TESTS);
         article.setTitle(text(doc.getElementsByClass("article-title")));
         article.setSubtitle(text(doc.getElementsByClass("article-subtitle")));
@@ -107,7 +103,6 @@ public class CPC348ScraperServiceImpl extends AbstractScraper implements CPC348S
         if (doc.getElementsByClass("article-encadre-wrapper") != null) {
             for (Element elt : doc.getElementsByClass("article-encadre-wrapper")) {
                 Article wa = new Article();
-                wa.setGeneration(CPC348);
                 wa.setType(TESTS);
                 wa.setTitle(text(elt.getElementsByClass("title")));
                 wa.getPictures().add(new Picture(attr(CPC_BASE_URL, elt.getElementsByTag("a"), "href"), null));

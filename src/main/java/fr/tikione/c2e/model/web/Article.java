@@ -47,7 +47,6 @@ public class Article {
     private String gameState;
     
     /** Scrapper used to fill this object. For debug purpose. */
-    private ScrapperGeneration generation;
     private ArticleType type;
     
     @SuppressWarnings("SameParameterValue")
@@ -82,7 +81,6 @@ public class Article {
                 ", gamePrice='" + gamePrice + '\'' +
                 ", gameStateTitle='" + gameStateTitle + '\'' +
                 ", gameState='" + gameState + '\'' +
-                ", generation=" + generation +
                 ", type=" + type +
                 ", rate=" + rate() + "}";
     }

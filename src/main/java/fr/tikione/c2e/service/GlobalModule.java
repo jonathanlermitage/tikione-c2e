@@ -9,10 +9,10 @@ import fr.tikione.c2e.service.pdf.PdfWriterService;
 import fr.tikione.c2e.service.pdf.PdfWriterServiceImpl;
 import fr.tikione.c2e.service.web.CPCAuthService;
 import fr.tikione.c2e.service.web.CPCAuthServiceImpl;
-import fr.tikione.c2e.service.web.scrap.CPC348ScraperService;
-import fr.tikione.c2e.service.web.scrap.CPC348ScraperServiceImpl;
 import fr.tikione.c2e.service.web.scrap.CPCReaderService;
 import fr.tikione.c2e.service.web.scrap.CPCReaderServiceImpl;
+import fr.tikione.c2e.service.web.scrap.CPCScraperService;
+import fr.tikione.c2e.service.web.scrap.CPCScraperServiceImpl;
 
 public class GlobalModule extends AbstractModule {
     
@@ -20,7 +20,7 @@ public class GlobalModule extends AbstractModule {
     public void configure() {
         bind(CPCReaderService.class).to(CPCReaderServiceImpl.class);
         bind(CPCAuthService.class).to(CPCAuthServiceImpl.class);
-        bind(CPC348ScraperService.class).to(CPC348ScraperServiceImpl.class);
+        bind(CPCScraperService.class).to(CPCScraperServiceImpl.class);
         bind(EpubWriterService.class).to(EpubWriterServiceImpl.class);
         bind(PdfWriterService.class).to(PdfWriterServiceImpl.class);
         bind(HtmlWriterService.class).to(HtmlWriterServiceImpl.class);
