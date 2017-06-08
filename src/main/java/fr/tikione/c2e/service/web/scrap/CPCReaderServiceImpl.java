@@ -48,11 +48,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
     @Override
     @SneakyThrows
     public Magazine downloadMagazine(Auth auth, int number) {
-        if (Main.DEBUG) {
-            System.out.println("\n-------------------");
-            System.out.println("downloading mag " + number);
-            System.out.println("-------------------\n");
-        }
+        System.out.println("téléchargement du magazine CPC " + number + "...");
         Document doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", Integer.toString(number)));
         Magazine mag = new Magazine();
         mag.setNumber(number);
@@ -79,8 +75,6 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
         for (Element element : columns) {
             toc.add(buildTocItem(auth, element));
         }
-        //toc.add(buildTocItem(auth, columns.get(0)));
-        //toc.add(buildTocItem(auth, columns.get(2)));
         return toc;
     }
     
@@ -98,8 +92,8 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
     
     @SneakyThrows
     private List<Article> extractArticles(Auth auth, String url) {
+        System.out.print("récupération de l'article " + url);
         Document doc = queryUrl(auth, url);
-        // TODO use all scrapers and keep most relevant result only
         Map<Integer, List<Article>> articles = new HashMap<>();
         articles.putAll(cpc348ScraperService.extractArticles(doc));
         
@@ -107,6 +101,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
         if (Main.DEBUG) {
             res.forEach(article -> System.out.println("\n" + article.toString(50)));
         }
+        System.out.println(" ok");
         return res;
     }
 }

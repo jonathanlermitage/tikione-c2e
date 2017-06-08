@@ -46,7 +46,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     public void write(Magazine magazine, File file, boolean incluePictures) throws IOException {
         file.delete();
         if (file.exists()) {
-            throw new IOException("cannot write over file " + file.getAbsolutePath());
+            throw new IOException("impossible d'écraser le fichier : " + file.getAbsolutePath());
         }
         String faviconBase64 = resourceAsBase64("tmpl/html-export/ico/french_duck.png");
         String fontRobotoBase64 = resourceAsBase64("tmpl/html-export/font/RobotoSlab-Light.ttf");
@@ -92,13 +92,14 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                             + normalizeAnchorUrl(category.getTitle() + tocItem.getTitle())
                             + "'class=\"article-title\">"
                             + tocItem.getTitle() + "</div>\n\n");
-                    tocItem.getArticles().forEach(article -> writeArticle(w, article));
+                    tocItem.getArticles().forEach(article -> writeArticle(w, article, incluePictures));
                 }
             }
             w.write("</div>\n");
             
             w.write(footer);
         }
+        System.out.println("fichier HTML créé : " + file.getAbsolutePath());
     }
     
     private String resourceAsBase64(String path) throws IOException {
@@ -106,7 +107,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     @SneakyThrows
-    private void writeArticle(Writer w, Article article) {
+    private void writeArticle(Writer w, Article article, boolean incluePictures) {
         if (ArticleType.NEWS == article.getType()) {
             w.write("<div class='news'>\n");
             if (filled(article.getCategory())) {
@@ -125,10 +126,11 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             writeArticleHeaderContent(w, article);
             writeArticleAuthorCreationdate(w, article);
             writeArticleContents(w, article);
-            writeArticlePictures(w, article);
+            if (incluePictures) {
+                writeArticlePictures(w, article);
+            }
             writeArticleOpinion(w, article);
             writeArticleState(w, article);
-            writeArticleAdvice(w, article);
             w.write("</div>\n");
         }
     }
@@ -289,10 +291,6 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         if (contentFilled) {
             w.write(buff.toString());
         }
-    }
-    
-    @SneakyThrows
-    private void writeArticleAdvice(Writer w, Article article) {
     }
     
     @SneakyThrows
