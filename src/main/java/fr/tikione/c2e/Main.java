@@ -21,7 +21,7 @@ public class Main {
     public static boolean DEBUG = false;
     public static String VERSION = "0.0.4";
     
-    // params: username password [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic] [-dir=""] [-filename=""]
+    // params: username password [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic]
     public static void main(String... args) throws Exception {
         assert args != null;
         assert args.length > 2;
