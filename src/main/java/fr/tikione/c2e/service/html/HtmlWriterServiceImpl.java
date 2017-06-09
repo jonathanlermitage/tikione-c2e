@@ -48,19 +48,23 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         if (file.exists()) {
             throw new IOException("impossible d'écraser le fichier : " + file.getAbsolutePath());
         }
-        String faviconBase64 = resourceAsBase64("tmpl/html-export/ico/french_duck.png");
-        String fontRobotoBase64 = resourceAsBase64("tmpl/html-export/font/RobotoSlab-Light.ttf");
+        String faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png");
+        String fontRobotoBase64 = resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf");
+        String cssDay = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/style/day.css"), UTF_8)
+                .replace("$$robotoFont_base64$$", fontRobotoBase64);
+        String cssNight = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/style/night.css"), UTF_8);
+        String js = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/main.js"), UTF_8);
         String header = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/header.html"), UTF_8)
                 .replace("$$login$$", magazine.getLogin())
                 .replace("$$version$$", VERSION)
                 .replace("$$timestamp$$", new Date().toString())
                 .replace("$$mag_number$$", Integer.toString(magazine.getNumber()))
                 .replace("$$favicon_base64$$", faviconBase64)
-                .replace("$$robotoFont_base64$$", fontRobotoBase64);
+                .replace("$$css_day$$", cssDay)
+                .replace("$$css_night$$", cssNight)
+                .replace("$$js$$", js);
         String footer = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/footer.html"), UTF_8);
         
-        // TODO escape HTML contents!!
-        // TODO add a tiny PayPal donation link at end of document
         // TODO a JS/CSS selector to switch to night-mode
         try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
             w.write(header);
@@ -216,7 +220,9 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n");
             for (Picture picture : article.getPictures()) {
                 if (picture != null && picture.getUrl() != null && !picture.getUrl().isEmpty()) {
+                    System.out.print("récupération de l'image " + picture.getUrl());
                     byte[] picBytes = IOUtils.toByteArray(new URL(picture.getUrl()));
+                    System.out.println(" ok");
                     MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
                     String ext = magicmatch.getExtension();
                     boolean isConvertible = false;

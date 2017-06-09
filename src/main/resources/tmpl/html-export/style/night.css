@@ -1,0 +1,166 @@
+/* night css */
+
+body {
+    color: #EEE;
+    background-color: #3C3F41;
+}
+
+#burger {
+    color: lightgreen;
+    border-color: darkseagreen;
+    background-color: #3C3F41;
+}
+
+#burger:hover {
+    color: greenyellow;
+}
+
+#toc {
+}
+
+.toc-columns-container {
+}
+
+.toc-title {
+    border-bottom-color: indianred;
+}
+
+.toc-category-title {
+    border-bottom-color: deepskyblue;
+}
+
+.toc-item-title {
+    color: #DDD;
+    border-left-color: #00CDE6;
+}
+
+.toc-item-title:hover {
+    border-left-color: #429bdd;
+}
+
+.toc-item-title > a {
+    color: #DDD;
+}
+
+.toc-item-title > a:hover {
+    color: #FFF;
+}
+
+.toc-item-title > a:visited {
+    color: #EFE;
+}
+
+a.toc-ext-lnk {
+    color: #EEE;
+    background-color: rgba(76, 39, 125, 0.93);
+}
+
+#articles {
+}
+
+.category-title {
+    background-color: lightsalmon;
+    color: #333;
+}
+
+.article {
+}
+
+.news {
+    border-left-color: forestgreen;
+    border-top-color: forestgreen;
+}
+
+.news-category {
+    color: yellow;
+}
+
+.news-title {
+}
+
+.article-title {
+    border-top-color: lightsalmon;
+    color: lightsalmon;
+}
+
+.article-subtitle {
+    color: #EAC;
+}
+
+.article-author-creationdate {
+    color: #ECA;
+}
+
+.article-specs {
+}
+
+.article-specs-item {
+}
+
+.article-headercontent {
+    border-bottom-color: #333;
+}
+
+.article-content {
+    border-left-color: rgba(56, 201, 112, 0.3);
+    border-top-color: rgba(56, 201, 112, 0.3);
+}
+
+.news > .article-content {
+}
+
+.article-encadre {
+    background-color: #333;
+    border-bottom-color: gray;
+    border-top-color: gray;
+}
+
+.article-opinion, .article-state {
+    border-bottom-color: hotpink;
+    border-left-color: hotpink;
+}
+
+.article-state {
+    border-bottom-color: steelblue;
+    border-left-color: steelblue;
+}
+
+.article-opinion-title, .article-state-title {
+}
+
+.article-opinion-content, .article-opinion-score-text, .article-state-content {
+}
+
+.article-opinion-score-text, .article-state-score-text {
+}
+
+.article-opinion-score, .article-state-score {
+}
+
+.article-opinion-score-number, .article-state-score-value {
+    background-color: hotpink;
+    color: white;
+}
+
+.article-state-score-value {
+    background-color: steelblue;
+}
+
+.article-pictures {
+}
+
+.article-picture-box {
+    border: 1px dashed #BBB;
+}
+
+.article-pictures-tip {
+    color: lightgrey;
+}
+
+.article-picture > img {
+}
+
+.article-picture-legend {
+    color: lightgrey;
+}
+

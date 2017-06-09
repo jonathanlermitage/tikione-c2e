@@ -4,10 +4,11 @@
 
 L'export HTML est finalisé et a été testé sur les numéros 348 à 361. Reste à rendre le programme facile à utiliser. 
 
-* TODO: 
-  * développer une CLI.
+* un affichage optimisé pour la lecture en journée, et un autre pour la nuit. Un bouton permet de passer de l'un à l'autre facilement.
+* une CLI basique est disponible. Les paramètres sont : ``username password [-debug] [-list] [-cpc=348] [-pdf] [-epub] [-html] [-nopic]`` où ``-cpc`` spécifie le numéro à télécharger, ``-pdf`` ``-epub`` ``-html`` le format de sortie (seul ``-html`` est branché aujourd'hui), ``-nopic`` pour ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte), et ``-list`` pour savoir quels numéros sont accessibles au téléchargement. Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx.ext`` où ``xxx`` est le numéro et ``ext`` l'extension voulue, par exemple ``CPC348.html``.
+* en cours : 
   * packager le programme avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
-
+  
 ### 0.0.3 (2017/06/06)
 
 * conversion des images PNG en JPEG pour réduire la taille finale de l'export (~40% de gain). *ImageMagick sera surement intégré après la v1.0.0 pour corriger la conversion de certains PNG et mieux gérer les couleurs RGB ou CMYK, le canal Alpha (transparence), etc. Cela concerne heureusement peu d'images.*
