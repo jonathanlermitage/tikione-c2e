@@ -17,3 +17,19 @@ TikiOne C2E a pour objectif de contenter les canards laisés, en leur permettant
 ## Licence
 
 Licence MIT. En d'autres termes, ce logiciel est libre de droits et gratuit, vous pouvez en faire ce que vous voulez.
+
+## Outils
+
+Je développe TikiOne C2E grâce à ces logiciels :
+
+|Apache Maven|
+|:--|
+|[![Maven](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_maven.png)](https://maven.apache.org)|
+
+|Oracle JDK|
+|:--|
+|[![JDK](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_java.png)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)|
+
+|JetBrains IntelliJ IDEA|
+|:--|
+|[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_intellij.png)](https://www.jetbrains.com/idea/)|
