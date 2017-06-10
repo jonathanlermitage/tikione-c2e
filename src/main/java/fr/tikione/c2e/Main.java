@@ -12,6 +12,7 @@ import fr.tikione.c2e.service.web.CPCAuthService;
 import fr.tikione.c2e.service.web.scrap.CPCReaderService;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,17 +22,27 @@ public class Main {
     public static boolean DEBUG = false;
     public static String VERSION = "0.0.4";
     
-    // params: username password [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic]
+    // params: username password [-gui] [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic]
     public static void main(String... args) throws Exception {
         assert args != null;
-        assert args.length > 2;
-        List<String> argsList = Arrays.asList(args).subList(2, args.length);
+        List<String> argsList = Arrays.asList(args);
         DEBUG = argsList.contains("-debug");
-        boolean list = argsList.contains("-list");
-        boolean includePictures = !argsList.contains("-nopic");
-        boolean doPdf = argsList.contains("-pdf");
-        boolean doEpub = argsList.contains("-epub");
-        boolean doHtml = argsList.contains("-html");
+        if (argsList.contains("-gui")) {
+            startGUI();
+        } else {
+            startCLI(args);
+        }
+    }
+    
+    private static void startCLI(String... args)
+            throws IOException {
+        assert args.length > 2;
+        List<String> switchList = Arrays.asList(args).subList(2, args.length);
+        boolean list = switchList.contains("-list");
+        boolean includePictures = !switchList.contains("-nopic");
+        boolean doPdf = switchList.contains("-pdf");
+        boolean doEpub = switchList.contains("-epub");
+        boolean doHtml = switchList.contains("-html");
         int magNumber = -1;
         for (String arg : args) {
             if (arg.startsWith("-cpc=")) {
@@ -50,11 +61,11 @@ public class Main {
         
         Auth auth = cpcAuthService.authenticate(args[0], args[1]);
         List<Integer> headers = cpcReaderService.listDownloadableMagazines(auth);
-    
+        
         if (list) {
             System.out.println("les numéros disponibles sont : " + headers);
         }
-    
+        
         Magazine magazine = cpcReaderService.downloadMagazine(auth, magNumber);
         if (doPdf) {
             File file = new File("CPC" + magNumber + ".pdf");
@@ -72,5 +83,9 @@ public class Main {
             writerService.write(magazine, file, includePictures);
         }
         System.out.println("terminé !");
+    }
+    
+    private static void startGUI() {
+    
     }
 }
