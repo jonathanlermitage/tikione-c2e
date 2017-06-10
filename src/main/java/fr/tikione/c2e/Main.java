@@ -10,6 +10,8 @@ import fr.tikione.c2e.service.html.HtmlWriterService;
 import fr.tikione.c2e.service.pdf.PdfWriterService;
 import fr.tikione.c2e.service.web.CPCAuthService;
 import fr.tikione.c2e.service.web.scrap.CPCReaderService;
+import fr.tikione.gui.MainApp;
+import javafx.application.Application;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class Main {
         List<String> argsList = Arrays.asList(args);
         DEBUG = argsList.contains("-debug");
         if (argsList.contains("-gui")) {
-            startGUI();
+            startGUI(args);
         } else {
             startCLI(args);
         }
@@ -85,7 +87,8 @@ public class Main {
         System.out.println("terminé !");
     }
     
-    private static void startGUI() {
-    
+    private static void startGUI(String... args)
+            throws Exception {
+        Application.launch(MainApp.class, args);
     }
 }
