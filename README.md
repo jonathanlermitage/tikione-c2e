@@ -33,3 +33,7 @@ Je développe TikiOne C2E grâce à ces logiciels :
 |JetBrains IntelliJ IDEA|
 |:--|
 |[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_intellij.png)](https://www.jetbrains.com/idea/)|
+
+|Kotlin|
+|:--|
+|[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_kotlin.png)](https://kotlinlang.org/)|
