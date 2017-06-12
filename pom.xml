@@ -42,7 +42,7 @@
              https://dzone.com/articles/a-new-javafx-app-framework-for-kotlin-tornadofx
              https://edvin.gitbooks.io/tornadofx-guide/content/
              -->
-        <kotlin.version>1.1.2-2</kotlin.version>
+        <kotlin.version>1.1.2-5</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
 
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
+            <version>1.10.3</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
