@@ -43,7 +43,7 @@
              https://edvin.gitbooks.io/tornadofx-guide/content/
              -->
         <kotlin.version>1.1.2-2</kotlin.version>
-        <kotlin.compiler.incremental>false</kotlin.compiler.incremental>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     </properties>
 
     <prerequisites>
