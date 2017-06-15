@@ -22,7 +22,7 @@ import java.util.List;
 public class Main {
     
     public static boolean DEBUG = false;
-    public static String VERSION = "0.0.4";
+    public static String VERSION = "1.0.0";
     
     // params: username password [-gui] [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic]
     public static void main(String... args) throws Exception {
