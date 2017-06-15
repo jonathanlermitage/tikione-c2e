@@ -3,11 +3,35 @@
 Exporte vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) aux formats EPUB, PDF et HTML pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
 
+## Téléchargement et utilisation en ligne de commande
+
+Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. La version ``c2e-x.y.z.zip`` (où x.y.z correspond à un numéro de version, par exemple 1.0.0) est multiplateforme, tandis que la ``c2e-x.y.z-withWin64JRE.zip`` contient un JRE propre à Windows.
+
+### Windows
+
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-debug] [-list] [-cpcXXX] [-pdf] [-epub] [-html] [-nopic]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placé dans n'importe quel ordre)
+  * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires
+  * ``-cpcXXX`` spécifie le numéro XXX à télécharger, par exemple ``-cpc348``
+  * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML (seul ``-html`` est branché aujourd'hui)
+  * ``-nopic`` pour ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte)
+  * ``-list`` pour savoir quels numéros sont accessibles au téléchargement. 
+  * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
+  
+Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx.ext`` où ``xxx`` est le numéro et ``ext`` l'extension voulue, par exemple ``CPC348.html``.
+
+Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``), et sans JRE (``c2e-x.y.z.zip``).
+
+### MacOS, Linux, BSD
+
+Téléchargez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.bat`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e-x.y.z.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
+
+## Compilation
+
+Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvm package`` pour construire un applicatif dans le répertoire ``dist``.
+
 ## Avancement
 
-Développement en cours. Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master/CHANGELOG.md) pour l'avancée des travaux.
-
-La version 1.0.0 (première version stable, incluant l'export HTML) sera l'occasion de vous fournir un programme exécutable, ainsi que les instructions de compilation pour les plus curieux. Dans l'attente, vous ne trouverez que les fichiers source.
+Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master/CHANGELOG.md) pour l'avancée des travaux.
 
 ## Motivation
 
