@@ -26,6 +26,7 @@ public class Main {
     
     // params: username password [-gui] [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic]
     public static void main(String... args) throws Exception {
+        System.out.println("les paramètres de lancement sont : " + Arrays.toString(args));
         assert args != null;
         List<String> argsList = Arrays.asList(args);
         DEBUG = argsList.contains("-debug");
@@ -47,9 +48,9 @@ public class Main {
         boolean doHtml = switchList.contains("-html");
         int magNumber = -1;
         for (String arg : args) {
-            if (arg.startsWith("-cpc=")) {
+            if (arg.startsWith("-cpc")) {
                 try {
-                    magNumber = Integer.parseInt(arg.substring("-cpc=".length()));
+                    magNumber = Integer.parseInt(arg.substring("-cpc".length()));
                 } catch (NumberFormatException nfe) {
                     System.out.println("le numéro du magazine CPC est mal tapé");
                     return;

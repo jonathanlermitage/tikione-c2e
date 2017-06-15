@@ -1,14 +1,20 @@
 ## TikiOne C2E Change Log
 
-### 0.0.4 (WIP)
+L'export HTML est finalisé et a été testé sur les numéros 348 à 361. Reste à rendre le programme facile à utiliser et peaufiner l'export HTML. 
 
-L'export HTML est finalisé et a été testé sur les numéros 348 à 361. Reste à rendre le programme facile à utiliser. 
+* en cours () : 
+  * une GUI basée sur Kotlin, JavaFX et TornadoFX.
+  * assister le lancement du programme sous MacOS, Linux ou BSD.
+  * améliorations mineures sur l'export HTML.
+
+### 1.0.0 (2017/06/15)
+
+* programme est packagé pour Windows avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). Lancer ``c2e.bat`` suivi des paramètres décrits dans la version 0.0.4, par exemple ``c2e.bat username password -cpc348``. Attention, ``-gui`` n'est pas encore branché, ni ``-pdf`` et ``-epub``. Les utulisateurs de MacOS, Linux ou BSD devraient savoir se débrouiller pour installer un JRE (un script sera créé plus tard).
+
+### 0.0.4 (2017/06/14)
 
 * un affichage optimisé pour la lecture en journée, et un autre pour la nuit. Un bouton permet de passer de l'un à l'autre facilement.
-* une CLI basique est disponible. Les paramètres sont : ``username password [-gui] [-debug] [-list] [-cpc=348] [-pdf] [-epub] [-html] [-nopic]`` où ``-gui`` démarre une interface graphique au lieu de la ligne de commande, ``-cpc`` spécifie le numéro à télécharger, ``-pdf`` ``-epub`` ``-html`` le format de sortie (seul ``-html`` est branché aujourd'hui), ``-nopic`` pour ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte), et ``-list`` pour savoir quels numéros sont accessibles au téléchargement. Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx.ext`` où ``xxx`` est le numéro et ``ext`` l'extension voulue, par exemple ``CPC348.html``. Enfin, ``-debug`` affiche le détail du téléchargement dans un format proche de JSON.
-* en cours : 
-  * packager le programme avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
-  * une GUI basée sur Kotlin, JavaFX et TornadoFX.
+* une CLI basique est disponible. Les paramètres sont : ``username password [-gui] [-debug] [-list] [-cpc348] [-pdf] [-epub] [-html] [-nopic]`` où ``-gui`` démarre une interface graphique au lieu de la ligne de commande, ``-cpc`` spécifie le numéro à télécharger, ``-pdf`` ``-epub`` ``-html`` le format de sortie (seul ``-html`` est branché aujourd'hui), ``-nopic`` pour ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte), et ``-list`` pour savoir quels numéros sont accessibles au téléchargement. Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx.ext`` où ``xxx`` est le numéro et ``ext`` l'extension voulue, par exemple ``CPC348.html``. Enfin, ``-debug`` affiche le détail du téléchargement dans un format proche de JSON.
   
 ### 0.0.3 (2017/06/06)
 
