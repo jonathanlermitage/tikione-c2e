@@ -9,7 +9,7 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-debug] [-list] [-cpcXXX] [-pdf] [-epub] [-html] [-nopic]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placé dans n'importe quel ordre)
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-debug] [-list] [-cpcXXX] [-pdf] [-epub] [-html] [-nopic]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
   * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires
   * ``-cpcXXX`` spécifie le numéro XXX à télécharger, par exemple ``-cpc348``
   * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML (seul ``-html`` est branché aujourd'hui)
