@@ -69,22 +69,25 @@ public class Main {
             System.out.println("les numéros disponibles sont : " + headers);
         }
         
-        Magazine magazine = cpcReaderService.downloadMagazine(auth, magNumber);
-        if (doPdf) {
-            File file = new File("CPC" + magNumber + ".pdf");
-            PdfWriterService writerService = cpcInjector.getInstance(PdfWriterService.class);
-            writerService.write(magazine, file, includePictures);
+        if (magNumber != -1 && (doPdf || doEpub || doHtml)) {
+            Magazine magazine = cpcReaderService.downloadMagazine(auth, magNumber);
+            if (doPdf) {
+                File file = new File("CPC" + magNumber + ".pdf");
+                PdfWriterService writerService = cpcInjector.getInstance(PdfWriterService.class);
+                writerService.write(magazine, file, includePictures);
+            }
+            if (doEpub) {
+                File file = new File("CPC" + magNumber + ".epub");
+                EpubWriterService writerService = cpcInjector.getInstance(EpubWriterService.class);
+                writerService.write(magazine, file, includePictures);
+            }
+            if (doHtml) {
+                File file = new File("CPC" + magNumber + ".html");
+                HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
+                writerService.write(magazine, file, includePictures);
+            }
         }
-        if (doEpub) {
-            File file = new File("CPC" + magNumber + ".epub");
-            EpubWriterService writerService = cpcInjector.getInstance(EpubWriterService.class);
-            writerService.write(magazine, file, includePictures);
-        }
-        if (doHtml) {
-            File file = new File("CPC" + magNumber + ".html");
-            HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
-            writerService.write(magazine, file, includePictures);
-        }
+        
         System.out.println("terminé !");
     }
     
