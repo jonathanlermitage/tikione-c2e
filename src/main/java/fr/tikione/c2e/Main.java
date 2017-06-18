@@ -24,7 +24,7 @@ public class Main {
     public static boolean DEBUG = false;
     public static String VERSION = "1.1.0";
     
-    // params: username password [-gui] [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic]
+    // params: username password [-gui] [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
         System.out.println("les paramètres de lancement sont : " + Arrays.toString(args));
         assert args != null;
@@ -43,6 +43,7 @@ public class Main {
         List<String> switchList = Arrays.asList(args).subList(2, args.length);
         boolean list = switchList.contains("-list");
         boolean includePictures = !switchList.contains("-nopic");
+        boolean compressPictures = switchList.contains("-compresspic");
         boolean doPdf = switchList.contains("-pdf");
         boolean doEpub = switchList.contains("-epub");
         boolean doHtml = switchList.contains("-html");
@@ -84,7 +85,7 @@ public class Main {
             if (doHtml) {
                 File file = new File("CPC" + magNumber + ".html");
                 HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
-                writerService.write(magazine, file, includePictures);
+                writerService.write(magazine, file, includePictures, compressPictures);
             }
         }
         

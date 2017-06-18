@@ -12,6 +12,7 @@ public interface HtmlWriterService {
      * @param magazine magazine.
      * @param file HTML file.
      * @param incluePictures should include magazine pictures in HTML file?
+     * @param compressPictures compress pictures?
      */
-    void write(Magazine magazine, File file, boolean incluePictures) throws IOException;
+    void write(Magazine magazine, File file, boolean incluePictures, boolean compressPictures) throws IOException;
 }

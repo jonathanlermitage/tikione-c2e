@@ -1,11 +1,16 @@
 ## TikiOne C2E Change Log
 
-L'export HTML est finalisé et a été testé sur les numéros 348 à 361. Reste à rendre le programme facile à utiliser et peaufiner l'export HTML. 
+L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste à rendre le programme facile à utiliser et peaufiner l'export HTML. 
 
 * en cours : 
   * une GUI basée sur Kotlin, JavaFX et TornadoFX.
   * assister le lancement du programme sous MacOS, Linux ou BSD.
   * améliorations mineures sur l'export HTML.
+
+### 1.1.0 (2017/06/18 - WIP)
+
+* correction d'un crash (sans conséquences) à la fermeture du programme lorsque ``-list`` est utilisé sans demander d'export.
+* ajout du paramètre ``-compresspic`` pour compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final. Les images ne sont donc plus compressées par défaut car certaines images PNG posent problème (le canal Alpha semble mal géré et les images compressées ne sont pas satisfaisantes).
 
 ### 1.0.0 (2017/06/15)
 

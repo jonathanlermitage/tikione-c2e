@@ -43,7 +43,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public void write(Magazine magazine, File file, boolean incluePictures) throws IOException {
+    public void write(Magazine magazine, File file, boolean incluePictures, boolean compressPictures) throws IOException {
         file.delete();
         if (file.exists()) {
             throw new IOException("impossible d'écraser le fichier : " + file.getAbsolutePath());
@@ -96,7 +96,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                             + normalizeAnchorUrl(category.getTitle() + tocItem.getTitle())
                             + "'class=\"article-title\">"
                             + tocItem.getTitle() + "</div>\n\n");
-                    tocItem.getArticles().forEach(article -> writeArticle(w, article, incluePictures));
+                    tocItem.getArticles().forEach(article -> writeArticle(w, article, incluePictures, compressPictures));
                 }
             }
             w.write("</div>\n");
@@ -111,7 +111,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     @SneakyThrows
-    private void writeArticle(Writer w, Article article, boolean incluePictures) {
+    private void writeArticle(Writer w, Article article, boolean incluePictures, boolean compressPictures) {
         if (ArticleType.NEWS == article.getType()) {
             w.write("<div class='news'>\n");
             if (filled(article.getCategory())) {
@@ -131,7 +131,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             writeArticleAuthorCreationdate(w, article);
             writeArticleContents(w, article);
             if (incluePictures) {
-                writeArticlePictures(w, article);
+                writeArticlePictures(w, article, compressPictures);
             }
             writeArticleOpinion(w, article);
             writeArticleState(w, article);
@@ -207,7 +207,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     @SneakyThrows
-    private void writeArticlePictures(Writer w, Article article) {
+    private void writeArticlePictures(Writer w, Article article, boolean compressPictures) {
         boolean hasPictures = false;
         for (Picture picture : article.getPictures()) {
             if (picture.getUrl() != null && !picture.getUrl().trim().isEmpty()) {
@@ -227,16 +227,18 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     String ext = magicmatch.getExtension();
                     boolean isConvertible = false;
     
-                    // images with url that doesn't end with extension seems to use features unavailable in JPEG format: keep them
-                    for (String anImgExt : imgExt) {
-                        if (picture.getUrl().toLowerCase().endsWith(anImgExt)) {
-                            isConvertible = true;
-                            break;
+                    if (compressPictures) {
+                        // images with url that doesn't end with extension seems to use features unavailable in JPEG format: keep them
+                        for (String anImgExt : imgExt) {
+                            if (picture.getUrl().toLowerCase().endsWith(anImgExt)) {
+                                isConvertible = true;
+                                break;
+                            }
                         }
                     }
     
                     // use JPEG images only to reduce size of resulting HTML file
-                    if (isConvertible && !"JPG".equalsIgnoreCase(ext) && !"JPEG".equalsIgnoreCase(ext)) {
+                    if (compressPictures && isConvertible && !"JPG".equalsIgnoreCase(ext) && !"JPEG".equalsIgnoreCase(ext)) {
                         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(picBytes));
                         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                             ImageIO.write(bufferedImage, "JPG", baos);
