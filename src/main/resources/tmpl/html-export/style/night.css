@@ -164,3 +164,10 @@ a.toc-ext-lnk {
     color: lightgrey;
 }
 
+.article-gamelink-title {
+    color: dodgerblue;
+}
+
+.article-gamelink-title-lnk > a, .article-gamelink-title-lnk > a:hover, .article-gamelink-title-lnk > a:visited {
+    color: lightskyblue;
+}

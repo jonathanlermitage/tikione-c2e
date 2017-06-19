@@ -321,3 +321,14 @@ a.toc-ext-lnk {
     margin: 0;
     padding: 0;
 }
+.article-gamelink-title {
+    color: #555;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.article-gamelink-title-lnk > a, .article-gamelink-title-lnk > a:hover, .article-gamelink-title-lnk > a:visited {
+    color: #555;
+    font-size: 0.9em;
+    margin-left: 1em;
+}

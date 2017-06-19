@@ -14,7 +14,7 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
   * ``-cpcXXX`` le numéro XXX à télécharger, par exemple ``-cpc348``
   * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML (seul ``-html`` est branché aujourd'hui)
   * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte)
-  * ``-compresspic`` compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final
+  * ``-compresspic`` compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final *(depuis la v1.1.0)*
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   

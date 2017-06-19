@@ -68,7 +68,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         // TODO a JS/CSS selector to switch to night-mode
         try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
             w.write(header);
-    
+            
             // toc
             w.write("<div id='toc'>\n");
             w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.getNumber() + "</h1>\n");
@@ -87,7 +87,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             w.write("</div>\n");
             w.write("<br/><br/><br/></div>\n");
             w.write("<div id='articles'>\n");
-    
+            
             // articles
             for (TocCategory category : magazine.getToc()) {
                 w.write("<h2 class=\"category-title\">" + category.getTitle() + "</h2>\n\n");
@@ -112,6 +112,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     @SneakyThrows
     private void writeArticle(Writer w, Article article, boolean incluePictures, boolean compressPictures) {
+        w.write("\n<!--article.getType()=" + article.getType() + "-->\n\n");
         if (ArticleType.NEWS == article.getType()) {
             w.write("<div class='news'>\n");
             if (filled(article.getCategory())) {
@@ -122,7 +123,6 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             }
             writeArticleAuthorCreationdate(w, article);
             writeArticleContents(w, article);
-            w.write("</div>\n");
         } else {
             w.write("<div class='article'>\n");
             writeArticleSpecs(w, article);
@@ -135,8 +135,9 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             }
             writeArticleOpinion(w, article);
             writeArticleState(w, article);
-            w.write("</div>\n");
         }
+        writeArticleLinks(w, article);
+        w.write("</div>\n");
     }
     
     @SneakyThrows
@@ -207,6 +208,21 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     @SneakyThrows
+    private void writeArticleLinks(Writer w, Article article) {
+        if (!article.getGameLinks().isEmpty()) {
+            String lnksTitle = filled(article.getGameLinkTitle()) ? article.getGameLinkTitle() : "Liens externes";
+            w.write("<div class='article-gamelink-title'>" + lnksTitle + "</div>\n");
+            for (String lnk : article.getGameLinks()) {
+                String lnkText = lnk.replaceAll("http://", "").replaceAll("https://", "");
+                if (lnkText.length() > 50) {
+                    lnkText = lnkText.substring(0, 47) + "...";
+                }
+                w.write("<div class='article-gamelink-title-lnk'><a class='article-gamelink-title-lnk' target='_blank' href='" + lnk + "'>" + lnkText + "</a></div>\n");
+            }
+        }
+    }
+    
+    @SneakyThrows
     private void writeArticlePictures(Writer w, Article article, boolean compressPictures) {
         boolean hasPictures = false;
         for (Picture picture : article.getPictures()) {
@@ -226,7 +242,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
                     String ext = magicmatch.getExtension();
                     boolean isConvertible = false;
-    
+                    
                     if (compressPictures) {
                         // images with url that doesn't end with extension seems to use features unavailable in JPEG format: keep them
                         for (String anImgExt : imgExt) {
@@ -236,7 +252,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                             }
                         }
                     }
-    
+                    
                     // use JPEG images only to reduce size of resulting HTML file
                     if (compressPictures && isConvertible && !"JPG".equalsIgnoreCase(ext) && !"JPEG".equalsIgnoreCase(ext)) {
                         BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(picBytes));
@@ -246,7 +262,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                         }
                         ext = "jpeg";
                     }
-    
+                    
                     String picB64 = Base64.encodeBase64String(picBytes);
                     String pictureId = Base64.encodeBase64String(picture.getUrl().getBytes())
                             .replaceAll("=", "")

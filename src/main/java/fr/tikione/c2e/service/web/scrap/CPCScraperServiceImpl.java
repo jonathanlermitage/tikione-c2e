@@ -37,6 +37,7 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
                 if (elt.getElementsByClass("singleImage") != null) {
                     article.getPictures().add(new Picture(attr(CPC_BASE_URL, elt.getElementsByClass("singleImage"), "href"), null));
                 }
+                extractLinks(article, elt);
                 articles.add(article);
             }
         }
@@ -56,6 +57,7 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
                                 attr(CPC_BASE_URL, image.getElementsByTag("a"), "href"),
                                 text(image.getElementsByClass("article-image-legende"))
                         ))));
+        extractLinks(article, doc);
         return Collections.singletonList(article);
     }
     
@@ -92,8 +94,7 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
         article.setGameStateTitle(text(doc.getElementsByClass("article-note-etat-titre")));
         article.setGameState(text(doc.getElementsByClass("article-note-etat")));
         article.setGameOpinion(text(doc.getElementsByClass("article-note-avis")));
-        article.setGameLinkTitle(text(doc.getElementsByClass("article-lien-description")));
-        article.setGameLink(text(doc.getElementsByClass("article-lien-lien")));
+        extractLinks(article, doc);
         doc.getElementsByClass("article-images")
                 .forEach(images -> images.getElementsByClass("article-image")
                         .forEach(image -> article.getPictures().add(new Picture(
@@ -115,5 +116,13 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
             }
         }
         return Collections.singletonList(article);
+    }
+    
+    private void extractLinks(Article article, Element elt) {
+        article.setGameLinkTitle(text(elt.getElementsByAttributeValueMatching("class",
+                "(article\\-lien\\-description$|article\\-liens\\-description$|article\\-liens\\-titre$)")));
+        elt.getElementsByClass("article-lien-lien")
+                .forEach(lnkDiv -> lnkDiv.getElementsByTag("a")
+                        .forEach(a -> article.getGameLinks().add(a.attr("href"))));
     }
 }

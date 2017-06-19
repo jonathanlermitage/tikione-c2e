@@ -39,7 +39,7 @@ public class Article {
     private String gameOpinionTitle;
     private String gameOpinion;
     private String gameLinkTitle;
-    private String gameLink;
+    private List<String> gameLinks = new ArrayList<>();
     private String gameAdviceTitle;
     private String gameAdvice;
     private String gamePrice;
@@ -75,7 +75,7 @@ public class Article {
                 ", gameOpinionTitle='" + gameOpinionTitle + '\'' +
                 ", gameOpinion='" + gameOpinion + '\'' +
                 ", gameLinkTitle='" + gameLinkTitle + '\'' +
-                ", gameLink='" + gameLink + '\'' +
+                ", gameLinks='" + gameLinks + '\'' +
                 ", gameAdviceTitle='" + gameAdviceTitle + '\'' +
                 ", gameAdvice='" + gameAdvice + '\'' +
                 ", gamePrice='" + gamePrice + '\'' +
