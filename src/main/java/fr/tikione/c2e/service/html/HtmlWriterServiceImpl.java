@@ -65,7 +65,6 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 .replace("/*$$js$$*/", js);
         String footer = resourceAsStr("tmpl/html-export/footer.html");
         
-        // TODO a JS/CSS selector to switch to night-mode
         try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
             w.write(header);
             
