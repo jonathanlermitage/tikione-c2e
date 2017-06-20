@@ -50,11 +50,11 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         }
         String faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png");
         String fontRobotoBase64 = resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf");
-        String cssDay = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/style/day.css"), UTF_8)
+        String cssDay = resourceAsStr("tmpl/html-export/style/day.css")
                 .replace("$$robotoFont_base64$$", fontRobotoBase64);
-        String cssNight = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/style/night.css"), UTF_8);
-        String js = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/main.js"), UTF_8);
-        String header = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/header.html"), UTF_8)
+        String cssNight = resourceAsStr("tmpl/html-export/style/night.css");
+        String js = resourceAsStr("tmpl/html-export/main.js");
+        String header = resourceAsStr("tmpl/html-export/header.html")
                 .replace("$$login$$", magazine.getLogin())
                 .replace("$$version$$", VERSION)
                 .replace("$$timestamp$$", new Date().toString())
@@ -63,7 +63,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 .replace("/*$$css_day$$*/", cssDay)
                 .replace("/*$$css_night$$*/", cssNight)
                 .replace("/*$$js$$*/", js);
-        String footer = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/footer.html"), UTF_8);
+        String footer = resourceAsStr("tmpl/html-export/footer.html");
         
         // TODO a JS/CSS selector to switch to night-mode
         try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
@@ -104,10 +104,6 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             w.write(footer);
         }
         System.out.println("fichier HTML créé : " + file.getAbsolutePath());
-    }
-    
-    private String resourceAsBase64(String path) throws IOException {
-        return Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(path)));
     }
     
     @SneakyThrows
@@ -364,5 +360,14 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
         }
         int portionSize = s1.length() > 30 ? 30 : s1.length();
         return s1.substring(0, portionSize).equals(s2.substring(0, portionSize));
+    }
+    
+    private String resourceAsBase64(String path) throws IOException {
+        return Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(path)));
+    }
+    
+    private String resourceAsStr(String path)
+            throws IOException {
+        return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(path), UTF_8);
     }
 }
