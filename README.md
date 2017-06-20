@@ -14,7 +14,7 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
   * ``-cpcXXX`` le numéro XXX à télécharger, par exemple ``-cpc348``
   * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML (seul ``-html`` est branché aujourd'hui)
   * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte)
-  * ``-compresspic`` compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final *(depuis la v1.1.0)*
+  * ``-compresspic`` *(depuis la v1.1.0)* compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   
@@ -28,7 +28,7 @@ Téléchargez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais rempla
 
 ## Compilation
 
-Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvm package`` pour construire un applicatif dans le répertoire ``dist``.
+Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvn package`` pour construire un applicatif dans le répertoire ``dist``.
 
 ## Avancement
 
