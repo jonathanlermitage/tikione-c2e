@@ -60,9 +60,9 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 .replace("$$timestamp$$", new Date().toString())
                 .replace("$$mag_number$$", Integer.toString(magazine.getNumber()))
                 .replace("$$favicon_base64$$", faviconBase64)
-                .replace("$$css_day$$", cssDay)
-                .replace("$$css_night$$", cssNight)
-                .replace("$$js$$", js);
+                .replace("/*$$css_day$$*/", cssDay)
+                .replace("/*$$css_night$$*/", cssNight)
+                .replace("/*$$js$$*/", js);
         String footer = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("tmpl/html-export/footer.html"), UTF_8);
         
         // TODO a JS/CSS selector to switch to night-mode
