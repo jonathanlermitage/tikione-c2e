@@ -1,4 +1,4 @@
-# TikiOne C2E (CanardPC To EPUB)
+# TikiOne C2E
 
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
@@ -12,7 +12,7 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
 * placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-debug] [-list] [-cpcXXX] [-pdf] [-epub] [-html] [-nopic]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
   * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires
   * ``-cpcXXX`` le numéro XXX à télécharger, par exemple ``-cpc348``
-  * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML (seul ``-html`` est branché aujourd'hui)
+  * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML **(seul ``-html`` est branché aujourd'hui)**
   * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte)
   * ``-compresspic`` *(depuis la v1.1.0)* compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
