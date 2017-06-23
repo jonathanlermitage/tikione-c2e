@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <version>1.1.0</version>
-    <name>CanardPC to EPUB</name>
+    <name>TikiOne C2E</name>
     <description>Download your CanardPC magazines and export them to EPUB, PDF and HTML</description>
     <developers>
         <developer>
