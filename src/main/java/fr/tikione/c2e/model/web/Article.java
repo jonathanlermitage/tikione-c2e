@@ -21,7 +21,7 @@ public class Article {
     private String authorAndDate;
     private String category;
     private String headerContent;
-    private List<String> contents = new ArrayList<>();
+    private List<Paragraph> contents = new ArrayList<>();
     private List<String> encadreContents = new ArrayList<>();
     private List<Picture> pictures = new ArrayList<>();
     private List<Article> wrappedArticles = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Article {
                 ", authorAndDate='" + authorAndDate + '\'' +
                 ", category='" + category + '\'' +
                 ", headerContent='" + headerContent + '\'' +
-                ", contents=" + contents.stream().map(s -> shorten(s, maxLen)).collect(Collectors.toList()) + " contents.size=" + contents.size() +
+                ", contents=" + contents.stream().map(s -> shorten(s.toString(), maxLen)).collect(Collectors.toList()) + " contents.size=" + contents.size() +
                 ", encadreContents=" + encadreContents.stream().map(s -> shorten(s, maxLen)).collect(Collectors.toList()) + " contents.size=" + encadreContents.size() +
                 ", pictures=" + pictures +
                 ", wrappedArticles=" + wrappedArticles +

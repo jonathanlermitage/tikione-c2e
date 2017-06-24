@@ -2,6 +2,7 @@ package fr.tikione.c2e.service.web.scrap;
 
 import com.google.inject.Inject;
 import fr.tikione.c2e.model.web.Article;
+import fr.tikione.c2e.model.web.Paragraph;
 import fr.tikione.c2e.model.web.Picture;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,7 +34,7 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
                     // title and content are in the same div: fix content by removing title
                     content = content.substring(content.indexOf(article.getTitle()) + article.getTitle().length()).trim();
                 }
-                article.getContents().add(content);
+                article.getContents().add(new Paragraph(content));
                 if (elt.getElementsByClass("singleImage") != null) {
                     article.getPictures().add(new Picture(attr(CPC_BASE_URL, elt.getElementsByClass("singleImage"), "href"), null));
                 }
@@ -50,7 +51,7 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
         article.setType(SINGLE_NEWS);
         article.setTitle(text(doc.getElementsByClass("article-title")));
         article.setAuthorAndDate(text(doc.getElementsByClass("article-author")));
-        article.getContents().add(text(doc.getElementsByClass("article-body")));
+        article.getContents().add(new Paragraph(text(doc.getElementsByClass("article-body"))));
         doc.getElementsByClass("article-images")
                 .forEach(images -> images.getElementsByClass("article-image")
                         .forEach(image -> article.getPictures().add(new Picture(
@@ -70,9 +71,9 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
         article.setAuthorAndDate(text(doc.getElementsByClass("article-author")));
         article.setHeaderContent(text(doc.getElementsByClass("article-chapo")));
         doc.getElementsByClass("article-body")
-                .forEach(element -> article.getContents().add(text(element)));
+                .forEach(element -> article.getContents().add(new Paragraph(text(element))));
         doc.getElementsByAttributeValueMatching("class", "(article\\-intertitre$|article\\-encadre$)")
-                .forEach(element -> article.getContents().add(text(element)));
+                .forEach(element -> article.getContents().add(new Paragraph(text(element))));
         doc.getElementsByClass("article-encadre")
                 .forEach(element -> article.getEncadreContents().add(text(element)));
         article.setGameScore(attr(doc.getElementById("article-note"), "data-pourcentage"));
@@ -111,7 +112,7 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
                 if (wa.getTitle() != null) {
                     content = content.substring(wa.getTitle().length()).trim();
                 }
-                wa.getContents().add(content);
+                wa.getContents().add(new Paragraph(content));
                 article.getWrappedArticles().add(wa);
             }
         }

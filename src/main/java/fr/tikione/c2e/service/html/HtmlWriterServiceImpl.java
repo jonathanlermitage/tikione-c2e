@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import fr.tikione.c2e.model.web.Article;
 import fr.tikione.c2e.model.web.ArticleType;
 import fr.tikione.c2e.model.web.Magazine;
+import fr.tikione.c2e.model.web.Paragraph;
 import fr.tikione.c2e.model.web.Picture;
 import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
@@ -11,6 +12,7 @@ import lombok.SneakyThrows;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicMatch;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
@@ -29,8 +31,11 @@ import java.util.Date;
 import java.util.List;
 
 import static fr.tikione.c2e.Main.VERSION;
+import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.text.Normalizer.Form.NFD;
+import static org.apache.commons.io.FileUtils.ONE_KB;
+import static org.apache.commons.io.FileUtils.ONE_MB;
 
 public class HtmlWriterServiceImpl implements HtmlWriterService {
     
@@ -105,7 +110,12 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
             
             w.write(footer);
         }
-        System.out.println("fichier HTML créé : " + file.getAbsolutePath());
+        long fileSize = FileUtils.sizeOf(file);
+        boolean sizeInMb = fileSize > ONE_MB;
+        System.out.println(format("fichier HTML créé : %s (environ %s%s)",
+                file.getAbsolutePath(),
+                sizeInMb ? fileSize / ONE_MB : fileSize / ONE_KB,
+                sizeInMb ? "MB" : "KB"));
     }
     
     @SneakyThrows
@@ -191,16 +201,16 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     @SneakyThrows
     private void writeArticleContents(Writer w, Article article) {
-        for (String content : article.getContents()) {
-            if (content != null && !content.isEmpty()) {
+        for (Paragraph content : article.getContents()) {
+            if (content != null && !content.getText().isEmpty()) {
                 String cssClass = "article-content";
                 for (String encadre : article.getEncadreContents()) {
-                    if (fastEquals(content, encadre)) {
+                    if (fastEquals(content.getText(), encadre)) {
                         cssClass = "article-encadre";
                         break;
                     }
                 }
-                w.write("<p class=\"" + cssClass + "\">" + content + "</p>\n");
+                w.write("<p class=\"" + cssClass + "\">" + content.getText() + "</p>\n");
             }
         }
     }
