@@ -7,9 +7,10 @@ L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste
   * assister le lancement du programme sous MacOS, Linux ou BSD.
   * améliorations mineures sur l'export HTML.
 
-### 1.1.0 (2017/06/19 - WIP)
+### 1.1.0 (2017/06/24 - WIP)
 
 * intégré : liens externes figurants à la fin des articles.
+* les liens vers les articles online sont maintenant positionnés à la fois dans le sommaire et au niveau de chaque article.
 * correction d'un crash (sans conséquences) à la fermeture du programme lorsque ``-list`` est utilisé sans demander d'export.
 * ajout du paramètre ``-compresspic`` pour compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final. Les images ne sont donc plus compressées par défaut car certaines images PNG posent problème (le canal Alpha semble mal géré et les images compressées ne sont pas satisfaisantes).
 
