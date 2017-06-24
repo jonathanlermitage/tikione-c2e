@@ -22,9 +22,6 @@ Le fichier est généré (ou écrasé) dans le répertoire courant et porte le n
 
 Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``), et sans JRE (``c2e-x.y.z.zip``).
 
-Exemple de sortie console sous Windows :  
-![exemple de sortie console sous Windows](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/console_end.png)
-
 ### MacOS, Linux, BSD
 
 Téléchargez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.bat`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e-x.y.z.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
