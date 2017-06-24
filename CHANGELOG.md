@@ -17,7 +17,7 @@ L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste
 
 ### 1.0.0 (2017/06/15)
 
-* le programme est packagé pour Windows avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). Lancer ``c2e.cmd`` suivi des paramètres décrits dans la version 0.0.4, par exemple ``c2e.bat username password -cpc348``. Attention, ``-gui`` n'est pas encore branché, ni ``-pdf`` et ``-epub``. Les utulisateurs de MacOS, Linux ou BSD devraient savoir se débrouiller pour installer un JRE (un script sera créé plus tard).
+* le programme est packagé pour Windows avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). Lancer ``c2e.cmd`` suivi des paramètres décrits dans la version 0.0.4, par exemple ``c2e.bat username password -cpc348``. Attention, ``-gui`` n'est pas encore branché, ni ``-pdf`` et ``-epub``. Les utilisateurs de MacOS, Linux ou BSD devraient savoir se débrouiller pour installer un JRE (un script sera créé plus tard).
 
 ### 0.0.4 (2017/06/14)
 
