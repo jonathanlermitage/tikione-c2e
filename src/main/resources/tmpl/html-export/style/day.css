@@ -184,6 +184,11 @@ a.toc-ext-lnk {
     padding-top: 0.5em;
 }
 
+a.article-ext-lnk {
+    font-size: 0.5em;
+    text-decoration: none;
+}
+
 .article-subtitle {
     color: #333;
     font-size: 1.6em;

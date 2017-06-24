@@ -94,7 +94,10 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                     w.write("<div id='"
                             + normalizeAnchorUrl(category.getTitle() + tocItem.getTitle())
                             + "'class=\"article-title\">"
-                            + tocItem.getTitle() + "</div>\n\n");
+                            + tocItem.getTitle()
+                            + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.getUrl() + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
+                            + EXT_LNK
+                            + "</a></div>\n\n");
                     tocItem.getArticles().forEach(article -> writeArticle(w, article, incluePictures, compressPictures));
                 }
             }
