@@ -20,6 +20,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderService {
     
@@ -48,7 +49,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
     @Override
     @SneakyThrows
     public Magazine downloadMagazine(Auth auth, int number) {
-        System.out.println("téléchargement du magazine CPC " + number + "...");
+        System.out.println("téléchargement du numéro " + number + "...");
         Document doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", Integer.toString(number)));
         Magazine mag = new Magazine();
         mag.setNumber(number);
@@ -93,6 +94,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
     @SneakyThrows
     private List<Article> extractArticles(Auth auth, String url) {
         System.out.print("récupération de l'article " + url);
+        TimeUnit.MILLISECONDS.sleep(500); // be nice with CanardPC website
         Document doc = queryUrl(auth, url);
         Map<Integer, List<Article>> articles = new HashMap<>();
         articles.putAll(cpcScraperService.extractArticles(doc));

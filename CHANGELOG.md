@@ -7,11 +7,16 @@ L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste
   * assister le lancement du programme sous MacOS, Linux ou BSD.
   * améliorations mineures sur l'export HTML.
 
-### 1.1.0 (2017/06/24 - WIP)
+### 1.1.0 (2017/06/25 - WIP)
 
 * intégré : liens externes figurants à la fin des articles.
 * les liens vers les articles online sont maintenant positionnés à la fois dans le sommaire et au niveau de chaque article.
 * la taille du fichier d'export HTML est affichée en fin de process.
+* de courtes pauses son marquées durant le téléchargement pour ne pas surcharger le serveur CanardPC : 30s entre chaque numéro, 500ms entre chaque article et 250ms entre chaque image. Cela permet aussi de réduire drastiquement les erreurs de téléchargement (articles vides).
+* il est désormais possible de télécharger un, plusieurs ou tous les numéros :
+  * ``-cpc348`` télécharge uniquement le numéro 348.
+  * ``-cpc348 -cpc349 -cpc350...`` le paramètre ``-cpc`` peut être répété, ici pour télécharger les numéros 348, 349 et 350.
+  * ``-cpcall`` télécharge tous les numéros à votre disposition.
 * correction d'un crash (sans conséquences) à la fermeture du programme lorsque ``-list`` est utilisé sans demander d'export.
 * ajout du paramètre ``-compresspic`` pour compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final. Les images ne sont donc plus compressées par défaut car certaines images PNG posent problème (le canal Alpha semble mal géré et les images compressées ne sont pas satisfaisantes).
 

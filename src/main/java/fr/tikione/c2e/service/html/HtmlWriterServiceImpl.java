@@ -29,6 +29,7 @@ import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static fr.tikione.c2e.Main.VERSION;
 import static java.lang.String.format;
@@ -246,6 +247,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 if (picture != null && picture.getUrl() != null && !picture.getUrl().isEmpty()) {
                     System.out.print("récupération de l'image " + picture.getUrl());
                     byte[] picBytes = IOUtils.toByteArray(new URL(picture.getUrl()));
+                    TimeUnit.MILLISECONDS.sleep(250); // be nice with CanardPC website
                     System.out.println(" ok");
                     MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
                     String ext = magicmatch.getExtension();

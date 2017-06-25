@@ -15,8 +15,10 @@ import javafx.application.Application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Main {
@@ -24,7 +26,7 @@ public class Main {
     public static boolean DEBUG = false;
     public static String VERSION = "1.1.0";
     
-    // params: username password [-gui] [-debug] [-list] [-cpc=360] [-pdf] [-epub] [-html] [-nopic] [-compresspic]
+    // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-pdf] [-epub] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
         System.out.println("les paramètres de lancement sont : " + Arrays.toString(args));
         assert args != null;
@@ -38,7 +40,7 @@ public class Main {
     }
     
     private static void startCLI(String... args)
-            throws IOException {
+            throws IOException, InterruptedException {
         assert args.length > 2;
         List<String> switchList = Arrays.asList(args).subList(2, args.length);
         boolean list = switchList.contains("-list");
@@ -47,17 +49,7 @@ public class Main {
         boolean doPdf = switchList.contains("-pdf");
         boolean doEpub = switchList.contains("-epub");
         boolean doHtml = switchList.contains("-html");
-        int magNumber = -1;
-        for (String arg : args) {
-            if (arg.startsWith("-cpc")) {
-                try {
-                    magNumber = Integer.parseInt(arg.substring("-cpc".length()));
-                } catch (NumberFormatException nfe) {
-                    System.out.println("le numéro du magazine CPC est mal tapé");
-                    return;
-                }
-            }
-        }
+        boolean allMags = switchList.contains("-cpcall");
         
         Injector cpcInjector = Guice.createInjector(new GlobalModule());
         CPCAuthService cpcAuthService = cpcInjector.getInstance(CPCAuthService.class);
@@ -65,27 +57,54 @@ public class Main {
         
         Auth auth = cpcAuthService.authenticate(args[0], args[1]);
         List<Integer> headers = cpcReaderService.listDownloadableMagazines(auth);
-        
+        List<Integer> magNumbers = new ArrayList<>();
+        if (allMags) {
+            magNumbers.addAll(headers);
+        } else {
+            for (String arg : args) {
+                if (arg.startsWith("-cpc")) {
+                    try {
+                        magNumbers.add(Integer.parseInt(arg.substring("-cpc".length())));
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("un numéro du magazine CPC est mal tapé, il sera ignoré");
+                    }
+                }
+            }
+        }
         if (list) {
             System.out.println("les numéros disponibles sont : " + headers);
         }
         
-        if (magNumber != -1 && (doPdf || doEpub || doHtml)) {
-            Magazine magazine = cpcReaderService.downloadMagazine(auth, magNumber);
-            if (doPdf) {
-                File file = new File("CPC" + magNumber + ".pdf");
-                PdfWriterService writerService = cpcInjector.getInstance(PdfWriterService.class);
-                writerService.write(magazine, file, includePictures);
+        if (doPdf || doEpub || doHtml) {
+            if (magNumbers.size() > 1) {
+                System.out.println("téléchargement des numéros : " + magNumbers);
             }
-            if (doEpub) {
-                File file = new File("CPC" + magNumber + ".epub");
-                EpubWriterService writerService = cpcInjector.getInstance(EpubWriterService.class);
-                writerService.write(magazine, file, includePictures);
-            }
-            if (doHtml) {
-                File file = new File("CPC" + magNumber + ".html");
-                HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
-                writerService.write(magazine, file, includePictures, compressPictures);
+            for (int i = 0; i < magNumbers.size(); i++) {
+                int magNumber = magNumbers.get(i);
+                Magazine magazine = cpcReaderService.downloadMagazine(auth, magNumber);
+                if (doPdf) {
+                    File file = new File("CPC" + magNumber + ".pdf");
+                    PdfWriterService writerService = cpcInjector.getInstance(PdfWriterService.class);
+                    writerService.write(magazine, file, includePictures);
+                }
+                if (doEpub) {
+                    File file = new File("CPC" + magNumber + ".epub");
+                    EpubWriterService writerService = cpcInjector.getInstance(EpubWriterService.class);
+                    writerService.write(magazine, file, includePictures);
+                }
+                if (doHtml) {
+                    File file = new File("CPC" + magNumber + ".html");
+                    HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
+                    writerService.write(magazine, file, includePictures, compressPictures);
+                }
+                if (i != magNumbers.size() - 1) {
+                    System.out.print("pause de 30s avant de télécharger le prochain numéro");
+                    for (int j = 0; j < 30; j++) {
+                        System.out.print(".");
+                        TimeUnit.SECONDS.sleep(1);
+                    }
+                    System.out.println(" ok\n");
+                }
             }
         }
         
