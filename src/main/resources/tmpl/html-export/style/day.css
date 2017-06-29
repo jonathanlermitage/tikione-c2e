@@ -216,6 +216,7 @@ a.article-ext-lnk {
     border-bottom: 1px solid #333;
     margin-bottom: 0.75em;
     padding-bottom: 0.75em;
+    line-height: 1.5em;
 }
 
 .article-content {
@@ -224,6 +225,7 @@ a.article-ext-lnk {
     padding-left: 0.5em;
     padding-top: 0.5em;
     margin-bottom: 1em;
+    line-height: 1.5em;
 }
 
 .news > .article-content {
