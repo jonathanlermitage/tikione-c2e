@@ -32,6 +32,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static fr.tikione.c2e.Main.VERSION;
+import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_START;
+import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_END;
+import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_STRONG_END;
+import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_STRONG_START;
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.text.Normalizer.Form.NFD;
@@ -196,7 +200,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     @SneakyThrows
     private void writeArticleHeaderContent(Writer w, Article article) {
         if (filled(article.getHeaderContent())) {
-            w.write("<div class='article-headercontent'>" + article.getHeaderContent() + "</div>\n");
+            w.write("<div class='article-headercontent'>" + richToHtml(article.getHeaderContent()) + "</div>\n");
         }
     }
     
@@ -211,7 +215,7 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                         break;
                     }
                 }
-                w.write("<p class=\"" + cssClass + "\">" + content.getText() + "</p>\n");
+                w.write("<p class=\"" + cssClass + "\">" + richToHtml(content.getText()) + "</p>\n");
             }
         }
     }
@@ -383,5 +387,12 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     private String resourceAsStr(String path)
             throws IOException {
         return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(path), UTF_8);
+    }
+    
+    private String richToHtml(String rich) {
+        return rich.replaceAll(CUSTOMTAG_EM_START, "<em>")
+                .replaceAll(CUSTOMTAG_EM_END, "</em>")
+                .replaceAll(CUSTOMTAG_STRONG_START, "<strong>")
+                .replaceAll(CUSTOMTAG_STRONG_END, "</strong>");
     }
 }

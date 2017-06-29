@@ -71,11 +71,11 @@ public class CPCScraperServiceImpl extends AbstractScraper implements CPCScraper
         article.setAuthorAndDate(text(doc.getElementsByClass("article-author")));
         article.setHeaderContent(text(doc.getElementsByClass("article-chapo")));
         doc.getElementsByClass("article-body")
-                .forEach(element -> article.getContents().add(new Paragraph(text(element))));
+                .forEach(element -> article.getContents().add(new Paragraph(richText(element))));
         doc.getElementsByAttributeValueMatching("class", "(article\\-intertitre$|article\\-encadre$)")
-                .forEach(element -> article.getContents().add(new Paragraph(text(element))));
+                .forEach(element -> article.getContents().add(new Paragraph(richText(element))));
         doc.getElementsByClass("article-encadre")
-                .forEach(element -> article.getEncadreContents().add(text(element)));
+                .forEach(element -> article.getEncadreContents().add(richText(element)));
         article.setGameScore(attr(doc.getElementById("article-note"), "data-pourcentage"));
         article.setGameScoreText(text(doc.getElementsByClass("article-note-prix")));
         article.setGameNature(text(doc.getElementsByClass("game-genre")));

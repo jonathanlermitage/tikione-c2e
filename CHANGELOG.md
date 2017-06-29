@@ -7,9 +7,10 @@ L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste
   * assister le lancement du programme sous MacOS, Linux ou BSD.
   * améliorations mineures sur l'export HTML.
 
-### 1.1.0 (2017/06/25 - WIP)
+### 1.1.0 (2017/06/29 - WIP)
 
 * intégré : liens externes figurants à la fin des articles.
+* intégré : les textes en gras ou italique dans les articles.
 * les liens vers les articles online sont maintenant positionnés à la fois dans le sommaire et au niveau de chaque article.
 * la taille du fichier d'export HTML est affichée en fin de process.
 * de courtes pauses son marquées durant le téléchargement pour ne pas surcharger le serveur CanardPC : 30s entre chaque numéro, 500ms entre chaque article et 250ms entre chaque image. Cela permet aussi de réduire drastiquement les erreurs de téléchargement (articles vides).
