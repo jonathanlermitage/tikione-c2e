@@ -8,7 +8,7 @@ L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste
   * améliorations mineures sur l'export HTML.
   * export adapté aux malvoyants.
 
-### 1.1.0 (2017/06/30 - release asap)
+### 1.1.0 (2017/06/30)
 
 * intégré : liens externes figurants à la fin des articles.
 * intégré : les textes en gras ou italique dans les articles.
