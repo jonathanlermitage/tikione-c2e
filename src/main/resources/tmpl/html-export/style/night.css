@@ -171,3 +171,11 @@ a.toc-ext-lnk {
 .article-gamelink-title-lnk > a, .article-gamelink-title-lnk > a:hover, .article-gamelink-title-lnk > a:visited {
     color: lightskyblue;
 }
+
+.toc-footer-elt {
+    background-color: #444;
+    color: #CCB;
+}
+.toc-footer-elt a, .toc-footer-elt a:hover, .toc-footer-elt a:visited {
+    color: palegreen;
+}

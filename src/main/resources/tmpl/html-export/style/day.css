@@ -328,6 +328,7 @@ a.article-ext-lnk {
     margin: 0;
     padding: 0;
 }
+
 .article-gamelink-title {
     color: #555;
     font-size: 0.9em;
@@ -338,4 +339,34 @@ a.article-ext-lnk {
     color: #555;
     font-size: 0.9em;
     margin-left: 1em;
+}
+
+.toc-footer {
+    margin: 2em 1em 1em;
+    font-size: 0.8em;
+    vertical-align: top;
+}
+
+.toc-footer-elt {
+    display: inline-block;
+    background-color: #FFE;
+    color: #333;
+    margin: 0.3em;
+    padding: 0.3em;
+    max-width: 300px;
+}
+
+.toc-fun-pic {
+    float: left;
+    margin: 0.1em;
+    padding: 0.1em;
+}
+
+#fun-pic-night {
+    display: none;
+}
+
+.toc-footer-elt a, .toc-footer-elt a:hover, .toc-footer-elt a:visited {
+    color: red;
+    text-decoration: none;
 }

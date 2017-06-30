@@ -14,7 +14,10 @@ function showPicture(id, idBox) {
 }
 
 function switchTheme() {
-    document.getElementById('cssNight').disabled = !document.getElementById('cssNight').disabled;
+    var dayTheme = !document.getElementById('cssNight').disabled;
+    document.getElementById('fun-pic-day').style.display = (dayTheme ? 'block' : 'none');
+    document.getElementById('fun-pic-night').style.display = (dayTheme ? 'none' : 'block');
+    document.getElementById('cssNight').disabled = dayTheme;
 }
 
 document.getElementById('cssNight').disabled = true;

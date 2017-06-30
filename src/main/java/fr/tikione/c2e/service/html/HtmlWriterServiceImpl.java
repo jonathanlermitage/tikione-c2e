@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static fr.tikione.c2e.Main.VERSION;
-import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_START;
 import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_END;
+import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_START;
 import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_STRONG_END;
 import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_STRONG_START;
 import static java.lang.String.format;
@@ -94,6 +94,11 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
                 }
             }
             w.write("</div>\n");
+            String funpicDay = resourceAsBase64("tmpl/html-export/img/canard_ouais-day.png");
+            String funpicNight = resourceAsBase64("tmpl/html-export/img/canard_ouais-night.png");
+            w.write(resourceAsStr("tmpl/html-export/toc-footer.html")
+                    .replace("$$funpicDay_base64$$", funpicDay)
+                    .replace("$$funpicNight_base64$$", funpicNight));
             w.write("<br/><br/><br/></div>\n");
             w.write("<div id='articles'>\n");
             
@@ -390,9 +395,9 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     }
     
     private String richToHtml(String rich) {
-        return rich.replaceAll(CUSTOMTAG_EM_START, "<em>")
-                .replaceAll(CUSTOMTAG_EM_END, "</em>")
-                .replaceAll(CUSTOMTAG_STRONG_START, "<strong>")
-                .replaceAll(CUSTOMTAG_STRONG_END, "</strong>");
+        return rich.replaceAll(CUSTOMTAG_EM_START, " <em> ")
+                .replaceAll(CUSTOMTAG_EM_END, " </em> ")
+                .replaceAll(CUSTOMTAG_STRONG_START, " <strong> ")
+                .replaceAll(CUSTOMTAG_STRONG_END, " </strong> ");
     }
 }
