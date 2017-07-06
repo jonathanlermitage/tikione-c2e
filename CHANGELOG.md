@@ -1,12 +1,9 @@
 ## TikiOne C2E Change Log
 
-L'export HTML est finalisé et a été testé sur les numéros 348 à 362. Reste à rendre le programme facile à utiliser et peaufiner l'export HTML. 
+### 1.2.0 (2017/07/06)
 
-* en cours : 
-  * une GUI basée sur Kotlin, JavaFX et TornadoFX.
-  * assister le lancement du programme sous MacOS, Linux ou BSD.
-  * améliorations mineures sur l'export HTML.
-  * export adapté aux malvoyants.
+* le fichier de sortie porte maintenant le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` reprends le nom de certains paramètres (``-nopic``, ``-compresspic``), par exemple ``CPC348-nopic.html``.
+* optimisations et nettoyage du code.
 
 ### 1.1.0 (2017/06/30)
 

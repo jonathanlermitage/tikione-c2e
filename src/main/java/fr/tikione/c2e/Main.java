@@ -5,9 +5,7 @@ import com.google.inject.Injector;
 import fr.tikione.c2e.model.web.Auth;
 import fr.tikione.c2e.model.web.Magazine;
 import fr.tikione.c2e.service.GlobalModule;
-import fr.tikione.c2e.service.epub.EpubWriterService;
 import fr.tikione.c2e.service.html.HtmlWriterService;
-import fr.tikione.c2e.service.pdf.PdfWriterService;
 import fr.tikione.c2e.service.web.CPCAuthService;
 import fr.tikione.c2e.service.web.scrap.CPCReaderService;
 import fr.tikione.gui.MainApp;
@@ -26,7 +24,7 @@ public class Main {
     public static boolean DEBUG = false;
     public static String VERSION = "1.2.0";
     
-    // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-pdf] [-epub] [-html] [-nopic] [-compresspic]
+    // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
         System.out.println("les paramètres de lancement sont : " + Arrays.toString(args));
         assert args != null;
@@ -46,8 +44,6 @@ public class Main {
         boolean list = switchList.contains("-list");
         boolean includePictures = !switchList.contains("-nopic");
         boolean compressPictures = switchList.contains("-compresspic");
-        boolean doPdf = switchList.contains("-pdf");
-        boolean doEpub = switchList.contains("-epub");
         boolean doHtml = switchList.contains("-html");
         boolean allMags = switchList.contains("-cpcall");
         
@@ -75,28 +71,19 @@ public class Main {
             System.out.println("les numéros disponibles sont : " + headers);
         }
         
-        if (doPdf || doEpub || doHtml) {
+        if (doHtml) {
             if (magNumbers.size() > 1) {
                 System.out.println("téléchargement des numéros : " + magNumbers);
             }
             for (int i = 0; i < magNumbers.size(); i++) {
                 int magNumber = magNumbers.get(i);
                 Magazine magazine = cpcReaderService.downloadMagazine(auth, magNumber);
-                if (doPdf) {
-                    File file = new File("CPC" + magNumber + ".pdf");
-                    PdfWriterService writerService = cpcInjector.getInstance(PdfWriterService.class);
-                    writerService.write(magazine, file, includePictures);
-                }
-                if (doEpub) {
-                    File file = new File("CPC" + magNumber + ".epub");
-                    EpubWriterService writerService = cpcInjector.getInstance(EpubWriterService.class);
-                    writerService.write(magazine, file, includePictures);
-                }
-                if (doHtml) {
-                    File file = new File("CPC" + magNumber + ".html");
-                    HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
-                    writerService.write(magazine, file, includePictures, compressPictures);
-                }
+                File file = new File("CPC" + magNumber
+                        + (includePictures ? "" : "-nopic")
+                        + (compressPictures ? "-compresspic" : "")
+                        + ".html");
+                HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
+                writerService.write(magazine, file, includePictures, compressPictures);
                 if (i != magNumbers.size() - 1) {
                     System.out.print("pause de 30s avant de télécharger le prochain numéro");
                     for (int j = 0; j < 30; j++) {

@@ -5,20 +5,20 @@ Fonctionne sous Windows, MacOS, Linux, BSD.
 
 ## Téléchargement et utilisation en ligne de commande
 
-Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. La version ``c2e-x.y.z.zip`` (où x.y.z correspond à un numéro de version, par exemple 1.0.0) est multiplateforme, tandis que la ``c2e-x.y.z-withWin64JRE.zip`` contient un JRE propre à Windows.
+Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. La version ``c2e-x.y.z.zip`` (où x.y.z correspond à un numéro de version, par exemple 1.0.0) est multiplateforme, tandis que la ``c2e-x.y.z-withWin64JRE.zip`` contient un JRE (Java 8) propre à Windows. C2E est un programme nécessitant Java 8 ou supérieur.
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-debug] [-list] [-cpcXXX -cpcYYY -cpcZZZ...|-cpcall] [-pdf] [-epub] [-html] [-nopic]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-cpcXXX -cpcYYY -cpcZZZ...|-cpcall] [-html] [-nopic] [-compresspic] [-list] [-debug]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
   * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires
   * ``-cpcXXX`` télécharger le numéro XXX, par exemple ``-cpc348``.  *(depuis la v1.1.0)* Télécharger plusieurs numéros, par exemple ``-cpc348 -cpc349 -cpc350 -cpc351``. Vous pouvez aussi utiliser ``-cpcall`` pour télécharger l'intégralité des numéros à votre disposition
-  * ``-pdf`` ``-epub`` ``-html`` le format de sortie PDF, EPUB ou HTML **(seul ``-html`` est branché aujourd'hui)**
-  * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte)
+  * ``-html``format de sortie HTML riche
+  * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte)
   * ``-compresspic`` *(depuis la v1.1.0)* compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   
-Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx.ext`` où ``xxx`` est le numéro et ``ext`` l'extension voulue, par exemple ``CPC348.html``.
+Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``, ``-compresspic``, ``-blind``), par exemple ``CPC348-nopic.html``.
 
 Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``), et sans JRE (``c2e-x.y.z.zip``).
 
@@ -28,7 +28,7 @@ Téléchargez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais rempla
 
 ## Compilation
 
-Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvn package`` pour construire un applicatif dans le répertoire ``dist``.
+Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvn clean package`` pour construire un applicatif dans le répertoire ``dist``.
 
 ## Avancement
 
@@ -43,6 +43,7 @@ TikiOne C2E a pour objectif de contenter les canards laisés, en leur permettant
 
 * L'export d'un numéro peut mal fonctionner et certains articles être vides : recommencez simplement l'export, cela devrait fonctionner.
 * Le programme se connecte avec votre compte CanardPC. Le site détecte cette connexion et vous force à vous authentifier à nouveau lorsque vous revennez via votre navigateur web. C'est le comportement normal du site (sans doute pour éviter le partage de compte), ne soyez donc pas surpris.
+* les exports PDF et EPUB sont annulés car leur niveau d'intégration est loin d'égaler celui d'un HTML dit "responsive" (adapté au PC, tablettes et smartphones). Ce sont aussi des formats favorisant le piratage du magazine, phénomène que je souhaite minimiser autant que possible.
 
 ## Licence
 

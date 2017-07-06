@@ -18,5 +18,4 @@ set "PATH=%PATH%;C:\Program Files\Java\jre10\bin\"
 set "PATH=%PATH%;C:\Program Files\Java\jre\bin\"
 set "PATH=%PATH%;%OPATH%"
 
-rem TODO for post-1.0.0, deal with the '-gui' parma to start java.exe or javaw.exe + a splashscreen
-java.exe -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e-1.0.0.jar" %1 %2 %3 %4 %5 %6 %7 %8 %9
+java.exe -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar" %1 %2 %3 %4 %5 %6 %7 %8 %9

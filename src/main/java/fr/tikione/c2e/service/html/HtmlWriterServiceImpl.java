@@ -8,6 +8,7 @@ import fr.tikione.c2e.model.web.Paragraph;
 import fr.tikione.c2e.model.web.Picture;
 import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
+import fr.tikione.c2e.service.AbstractWriter;
 import lombok.SneakyThrows;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicMatch;
@@ -25,30 +26,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
-import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static fr.tikione.c2e.Main.VERSION;
-import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_END;
-import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_EM_START;
-import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_STRONG_END;
-import static fr.tikione.c2e.service.web.AbstractReader.CUSTOMTAG_STRONG_START;
 import static java.lang.String.format;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.text.Normalizer.Form.NFD;
 import static org.apache.commons.io.FileUtils.ONE_KB;
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
-public class HtmlWriterServiceImpl implements HtmlWriterService {
+public class HtmlWriterServiceImpl extends AbstractWriter implements HtmlWriterService {
     
     @Inject
     public HtmlWriterServiceImpl() {
     }
     
-    private static final String EXT_LNK = "www";
     private final List<String> imgExt = Arrays.asList(".jpeg", ".jpg", ".png", ".tiff", ".gif");
     
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -362,42 +355,5 @@ public class HtmlWriterServiceImpl implements HtmlWriterService {
     
     private String boldSpecTitle(String str) {
         return str.contains(":") ? "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) : str;
-    }
-    
-    private boolean filled(String str) {
-        return str != null && !str.isEmpty();
-    }
-    
-    private String normalizeAnchorUrl(String str) {
-        return Normalizer.normalize(str, NFD)
-                .replaceAll("\"", "")
-                .replaceAll("'", "")
-                .replaceAll("\\s", "");
-    }
-    
-    private boolean fastEquals(String s1, String s2) {
-        if (s1.length() != s2.length()) {
-            return false;
-        } else if (s1.length() == 0) {
-            return true;
-        }
-        int portionSize = s1.length() > 30 ? 30 : s1.length();
-        return s1.substring(0, portionSize).equals(s2.substring(0, portionSize));
-    }
-    
-    private String resourceAsBase64(String path) throws IOException {
-        return Base64.encodeBase64String(IOUtils.toByteArray(getClass().getClassLoader().getResourceAsStream(path)));
-    }
-    
-    private String resourceAsStr(String path)
-            throws IOException {
-        return IOUtils.toString(getClass().getClassLoader().getResourceAsStream(path), UTF_8);
-    }
-    
-    private String richToHtml(String rich) {
-        return rich.replaceAll(CUSTOMTAG_EM_START, " <em> ")
-                .replaceAll(CUSTOMTAG_EM_END, " </em> ")
-                .replaceAll(CUSTOMTAG_STRONG_START, " <strong> ")
-                .replaceAll(CUSTOMTAG_STRONG_END, " </strong> ");
     }
 }
