@@ -40,7 +40,12 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
                 .get();
         Elements archives = doc.getElementsByClass("archive");
         List<Integer> magNumers = new ArrayList<>();
-        archives.forEach(element -> magNumers.add(Integer.parseInt(element.getElementsByTag("a").attr("href").substring("/numero/".length()))));
+        archives.forEach(element -> {
+            int n = Integer.parseInt(element.getElementsByTag("a").attr("href").substring("/numero/".length()));
+            if (n >= 348) { // 348 is the first digitalized magazine
+                magNumers.add(n);
+            }
+        });
         magNumers.add(magNumers.get(0) + 1);
         magNumers.sort(Comparator.reverseOrder());
         return magNumers;
