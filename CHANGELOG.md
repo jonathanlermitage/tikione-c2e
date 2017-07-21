@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.2.1 (en cours)
+
+* correction de la récupération des numéros (suite aux récentes modifications du site).
+
 ### 1.2.0 (2017/07/06)
 
 * le fichier de sortie porte maintenant le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` reprends le nom de certains paramètres (``-nopic``, ``-compresspic``), par exemple ``CPC348-nopic.html``.
