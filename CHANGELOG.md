@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.2.1 (en cours)
+### 1.2.1 (2017/07/21)
 
 * correction de la récupération des numéros (suite aux récentes modifications du site).
 
