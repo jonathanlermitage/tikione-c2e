@@ -28,7 +28,8 @@ Téléchargez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais rempla
 
 ## Compilation
 
-Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvn clean package`` pour construire un applicatif dans le répertoire ``dist``.
+Il sagit d'un projet Java 8 construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvn clean package`` pour construire un applicatif dans le répertoire ``dist``.  
+Si vous disposez d'une ancienne version de Maven, vous pouvez utiliser celle embarquée dans le projet : pour cela, ne lancez pas ``mvn`` mais ``mvnw``, par exemple ``mvnw clean package``.
 
 ## Avancement
 
