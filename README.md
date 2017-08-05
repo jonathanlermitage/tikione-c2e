@@ -18,13 +18,13 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   
-Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``, ``-compresspic``, ``-blind``), par exemple ``CPC348-nopic.html``.
+Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``, ``-compresspic``), par exemple ``CPC348-nopic.html``.
 
 Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``), et sans JRE (``c2e-x.y.z.zip``).
 
 ### MacOS, Linux, BSD
 
-Téléchargez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.bat`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e-x.y.z.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
+Téléchargez et décompressez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.bat`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
 
 ## Compilation
 

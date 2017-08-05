@@ -10,6 +10,7 @@ import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
 import fr.tikione.c2e.service.AbstractWriter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicMatch;
 import org.apache.commons.codec.binary.Base64;
@@ -32,10 +33,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static fr.tikione.c2e.Main.VERSION;
-import static java.lang.String.format;
 import static org.apache.commons.io.FileUtils.ONE_KB;
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
+@Slf4j
 public class HtmlWriterServiceImpl extends AbstractWriter implements HtmlWriterService {
     
     @Inject
@@ -115,10 +116,10 @@ public class HtmlWriterServiceImpl extends AbstractWriter implements HtmlWriterS
         }
         long fileSize = FileUtils.sizeOf(file);
         boolean sizeInMb = fileSize > ONE_MB;
-        System.out.println(format("fichier HTML créé : %s (environ %s%s)",
+        log.info("fichier HTML créé : {} (environ {}{})",
                 file.getAbsolutePath(),
                 sizeInMb ? fileSize / ONE_MB : fileSize / ONE_KB,
-                sizeInMb ? "MB" : "KB"));
+                sizeInMb ? "MB" : "KB");
     }
     
     @SneakyThrows
@@ -247,10 +248,9 @@ public class HtmlWriterServiceImpl extends AbstractWriter implements HtmlWriterS
             w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n");
             for (Picture picture : article.getPictures()) {
                 if (picture != null && picture.getUrl() != null && !picture.getUrl().isEmpty()) {
-                    System.out.print("récupération de l'image " + picture.getUrl());
+                    log.info("récupération de l'image {}", picture.getUrl());
                     byte[] picBytes = IOUtils.toByteArray(new URL(picture.getUrl()));
                     TimeUnit.MILLISECONDS.sleep(250); // be nice with CanardPC website
-                    System.out.println(" ok");
                     MagicMatch magicmatch = Magic.getMagicMatch(picBytes);
                     String ext = magicmatch.getExtension();
                     boolean isConvertible = false;

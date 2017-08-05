@@ -10,6 +10,7 @@ import fr.tikione.c2e.service.web.CPCAuthService;
 import fr.tikione.c2e.service.web.scrap.CPCReaderService;
 import fr.tikione.gui.MainApp;
 import javafx.application.Application;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
+@Slf4j
 public class Main {
     
     public static boolean DEBUG = false;
@@ -26,7 +28,8 @@ public class Main {
     
     // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
-        System.out.println("les paramètres de lancement sont : " + Arrays.toString(args));
+        log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"));
+        log.info("les paramètres de lancement sont : {}", Arrays.toString(args));
         assert args != null;
         List<String> argsList = Arrays.asList(args);
         DEBUG = argsList.contains("-debug");
@@ -62,18 +65,18 @@ public class Main {
                     try {
                         magNumbers.add(Integer.parseInt(arg.substring("-cpc".length())));
                     } catch (NumberFormatException nfe) {
-                        System.out.println("un numéro du magazine CPC est mal tapé, il sera ignoré");
+                        log.debug("un numéro du magazine CPC est mal tapé, il sera ignoré");
                     }
                 }
             }
         }
         if (list) {
-            System.out.println("les numéros disponibles sont : " + headers);
+            log.info("les numéros disponibles sont : {}", headers);
         }
         
         if (doHtml) {
             if (magNumbers.size() > 1) {
-                System.out.println("téléchargement des numéros : " + magNumbers);
+                log.info("téléchargement des numéros : {}", magNumbers);
             }
             for (int i = 0; i < magNumbers.size(); i++) {
                 int magNumber = magNumbers.get(i);
@@ -85,17 +88,16 @@ public class Main {
                 HtmlWriterService writerService = cpcInjector.getInstance(HtmlWriterService.class);
                 writerService.write(magazine, file, includePictures, compressPictures);
                 if (i != magNumbers.size() - 1) {
-                    System.out.print("pause de 30s avant de télécharger le prochain numéro");
+                    log.info("pause de 30s avant de télécharger le prochain numéro");
                     for (int j = 0; j < 30; j++) {
-                        System.out.print(".");
                         TimeUnit.SECONDS.sleep(1);
                     }
-                    System.out.println(" ok\n");
+                    log.info(" ok\n");
                 }
             }
         }
         
-        System.out.println("terminé !");
+        log.info("terminé !");
     }
     
     private static void startGUI(String... args)

@@ -10,6 +10,7 @@ import fr.tikione.c2e.model.web.TocCategory;
 import fr.tikione.c2e.model.web.TocItem;
 import fr.tikione.c2e.service.web.AbstractReader;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderService {
     
     @Inject
@@ -46,7 +48,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
             try {
                 n = Integer.parseInt(sn);
             } catch (NumberFormatException nfe) {
-                System.out.println("un magazine a un numéro invalide, il sera ignoré : " + sn);
+                log.warn("un magazine a un numéro invalide, il sera ignoré : {}", sn);
             }
             if (n >= 348) { // 348 is the first digitalized magazine
                 magNumers.add(n);
@@ -60,7 +62,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
     @Override
     @SneakyThrows
     public Magazine downloadMagazine(Auth auth, int number) {
-        System.out.println("téléchargement du numéro " + number + "...");
+        log.info("téléchargement du numéro {}...", number);
         Document doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", Integer.toString(number)));
         Magazine mag = new Magazine();
         mag.setNumber(number);
@@ -104,17 +106,15 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
     
     @SneakyThrows
     private List<Article> extractArticles(Auth auth, String url) {
-        System.out.print("récupération de l'article " + url);
+        log.info("récupération de l'article {}", url);
         TimeUnit.MILLISECONDS.sleep(500); // be nice with CanardPC website
         Document doc = queryUrl(auth, url);
         Map<Integer, List<Article>> articles = new HashMap<>();
         articles.putAll(cpcScraperService.extractArticles(doc));
-        
         List<Article> res = articles.get(articles.keySet().stream().mapToInt(i -> i).max().orElseThrow(Exception::new));
         if (Main.DEBUG) {
-            res.forEach(article -> System.out.println("\n" + article.toString(50)));
+            res.forEach(article -> log.debug(article.toString(50)));
         }
-        System.out.println(" ok");
         return res;
     }
 }
