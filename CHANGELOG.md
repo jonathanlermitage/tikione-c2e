@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.2.2 (dev en cours)
+### 1.2.2 (2017/08/05)
 
 * tous les messages sont archivés dans des logs. Voir le sous-dossier ``logs``.
 * le numéro de version de l'application est affiché au démarrage.
