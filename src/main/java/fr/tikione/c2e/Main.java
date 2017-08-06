@@ -12,6 +12,7 @@ import fr.tikione.c2e.service.web.scrap.CPCReaderService;
 import fr.tikione.gui.MainApp;
 import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,11 +27,22 @@ public class Main {
     
     public static boolean DEBUG = false;
     public static String VERSION = "1.2.3";
+    private static final String VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt";
     
     // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
         log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"));
         assert args != null;
+        
+        try {
+            String latestVersion = Jsoup.connect(VERSION_URL).get().text();
+            if (!VERSION.equals(latestVersion)) {
+                log.warn("<< une nouvelle version de TikiOne C2E est disponible (" + latestVersion + "), " +
+                        "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases >>");
+            }
+        } catch (Exception e) {
+            log.warn("impossible de vérifier la présence d'une nouvelle version de TikiOne C2E", e);
+        }
         
         String[] argsToShow = args.clone();
         if (argsToShow.length > 0) {
