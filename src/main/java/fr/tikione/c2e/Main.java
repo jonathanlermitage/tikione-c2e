@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     
     public static boolean DEBUG = false;
-    public static String VERSION = "1.2.2";
+    public static String VERSION = "1.2.3";
     
     // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
