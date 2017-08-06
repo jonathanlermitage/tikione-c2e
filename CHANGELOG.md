@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.2.3 (dev en cours)
+
+* le programme vérifie la présence de mise à jour de l'application au démarrage.
+
 ### 1.2.2 (2017/08/05)
 
 * tous les messages sont archivés dans des logs. Voir le sous-dossier ``logs``.
