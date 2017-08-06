@@ -1,5 +1,6 @@
 package fr.tikione.c2e;
 
+import com.google.common.base.Strings;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import fr.tikione.c2e.model.web.Auth;
@@ -29,8 +30,14 @@ public class Main {
     // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-html] [-nopic] [-compresspic]
     public static void main(String... args) throws Exception {
         log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"));
-        log.info("les paramètres de lancement sont : {}", Arrays.toString(args));
         assert args != null;
+        
+        String[] argsToShow = args.clone();
+        if (argsToShow.length > 0) {
+            argsToShow[1] = Strings.repeat("*", argsToShow[1].length());
+        }
+        log.info("les paramètres de lancement sont : {}", Arrays.toString(argsToShow));
+        
         List<String> argsList = Arrays.asList(args);
         DEBUG = argsList.contains("-debug");
         if (argsList.contains("-gui")) {

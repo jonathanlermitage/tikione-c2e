@@ -48,7 +48,7 @@ public class CPCReaderServiceImpl extends AbstractReader implements CPCReaderSer
             try {
                 n = Integer.parseInt(sn);
             } catch (NumberFormatException nfe) {
-                log.warn("un magazine a un numéro invalide, il sera ignoré : {}", sn);
+                log.debug("un magazine a un numéro invalide, il sera ignoré : {}", sn);
             }
             if (n >= 348) { // 348 is the first digitalized magazine
                 magNumers.add(n);
