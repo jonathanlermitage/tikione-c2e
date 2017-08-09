@@ -3,6 +3,7 @@
 ### 1.2.3 (dev en cours)
 
 * le programme vérifie la présence de mise à jour de l'application au démarrage.
+* le code est migré de Java 8 vers Kotlin, pour faciliter sa possible future intégration dans une appli Android.
 
 ### 1.2.2 (2017/08/05)
 
