@@ -12,8 +12,7 @@ interface HtmlWriterService {
      * @param magazine magazine.
      * @param file HTML file.
      * @param incluePictures should include magazine pictures in HTML file?
-     * @param compressPictures compress pictures?
      */
     @Throws(IOException::class)
-    fun write(magazine: Magazine, file: File, incluePictures: Boolean, compressPictures: Boolean)
+    fun write(magazine: Magazine, file: File, incluePictures: Boolean)
 }

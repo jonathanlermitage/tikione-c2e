@@ -20,7 +20,7 @@ object Main {
     var log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     var DEBUG = false
-    var VERSION = "1.2.3"
+    var VERSION = "1.3.0"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
 
     // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-html] [-nopic] [-compresspic]
@@ -28,7 +28,7 @@ object Main {
     @JvmStatic fun main(args: Array<String>) {
         log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"))
         try {
-            val latestVersion = Jsoup.connect(VERSION_URL).get().text()
+            val latestVersion = Jsoup.connect(VERSION_URL).get().text().trim()
             if (VERSION != latestVersion) {
                 log.warn("<< une nouvelle version de TikiOne C2E est disponible (" + latestVersion + "), " +
                         "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases >>")
@@ -52,7 +52,6 @@ object Main {
         val switchList = Arrays.asList(*args).subList(2, args.size)
         val list = switchList.contains("-list")
         val includePictures = !switchList.contains("-nopic")
-        val compressPictures = switchList.contains("-compresspic")
         val doHtml = switchList.contains("-html")
         val allMags = switchList.contains("-cpcall")
 
@@ -86,10 +85,9 @@ object Main {
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
                 val file = File("CPC" + magNumber
                         + (if (includePictures) "" else "-nopic")
-                        + (if (compressPictures) "-compresspic" else "")
                         + ".html")
                 val writerService: HtmlWriterService = HtmlWriterServiceImpl()
-                writerService.write(magazine, file, includePictures, compressPictures)
+                writerService.write(magazine, file, includePictures)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de 30s avant de télécharger le prochain numéro")
                     for (j in 0..29) {

@@ -9,12 +9,11 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-cpcXXX -cpcYYY -cpcZZZ...|-cpcall] [-html] [-nopic] [-compresspic] [-list] [-debug]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-cpcXXX -cpcYYY -cpcZZZ...|-cpcall] [-html] [-nopic] [-list] [-debug]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
   * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires
   * ``-cpcXXX`` télécharger le numéro XXX, par exemple ``-cpc348``.  *(depuis la v1.1.0)* Télécharger plusieurs numéros, par exemple ``-cpc348 -cpc349 -cpc350 -cpc351``. Vous pouvez aussi utiliser ``-cpcall`` pour télécharger l'intégralité des numéros à votre disposition
   * ``-html``format de sortie HTML riche
   * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte)
-  * ``-compresspic`` *(depuis la v1.1.0)* compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   

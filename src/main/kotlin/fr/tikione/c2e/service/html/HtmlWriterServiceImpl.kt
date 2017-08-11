@@ -17,16 +17,13 @@ import java.io.*
 import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
-import javax.imageio.ImageIO
 
 class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
     var log: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    private val imgExt = Arrays.asList(".jpeg", ".jpg", ".png", ".tiff", ".gif")
-
     @Throws(IOException::class)
-    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, compressPictures: Boolean) {
+    override fun write(magazine: Magazine, file: File, incluePictures: Boolean) {
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'écraser le fichier : " + file.absolutePath)
@@ -86,7 +83,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
                             + "</a></div>\n\n")
-                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, compressPictures) }
+                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures) }
                 }
             }
             w.write("</div>\n")
@@ -101,7 +98,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                 if (sizeInMb) "MB" else "KB")
     }
 
-    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, compressPictures: Boolean) {
+    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean) {
         w.write("\n<!--article.getType()=" + article.type + "-->\n\n")
         if (ArticleType.NEWS === article.type) {
             w.write("<div class='news'>\n")
@@ -121,7 +118,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             writeArticleAuthorCreationdate(w, article)
             writeArticleContents(w, article)
             if (incluePictures) {
-                writeArticlePictures(w, article, compressPictures)
+                writeArticlePictures(w, article)
             }
             writeArticleOpinion(w, article)
             writeArticleState(w, article)
@@ -206,7 +203,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         }
     }
 
-    private fun writeArticlePictures(w: Writer, article: Article, compressPictures: Boolean) {
+    private fun writeArticlePictures(w: Writer, article: Article) {
         var hasPictures = false
         for (picture in article.pictures) {
             if (picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty()) {
@@ -219,32 +216,11 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n")
             for (picture in article.pictures) {
                 if (picture.url != null && !picture.url!!.isEmpty()) {
-                    log.info("récupération de l'image {}", picture.url)
+                    log.info("récupération de l'image {}", picture.url as String)
                     var picBytes = IOUtils.toByteArray(URL(picture.url!!))
                     TimeUnit.MILLISECONDS.sleep(250) // be nice with CanardPC website
                     val magicmatch = Magic.getMagicMatch(picBytes)
                     var ext = magicmatch.extension
-                    var isConvertible = false
-
-                    if (compressPictures) {
-                        // images with url that doesn't end with extension seems to use features unavailable in JPEG format: keep them
-                        for (anImgExt in imgExt) {
-                            if (picture.url!!.toLowerCase().endsWith(anImgExt)) {
-                                isConvertible = true
-                                break
-                            }
-                        }
-                    }
-
-                    // use JPEG images only to reduce size of resulting HTML file
-                    if (compressPictures && isConvertible && !"JPG".equals(ext, ignoreCase = true) && !"JPEG".equals(ext, ignoreCase = true)) {
-                        val bufferedImage = ImageIO.read(ByteArrayInputStream(picBytes))
-                        ByteArrayOutputStream().use { baos ->
-                            ImageIO.write(bufferedImage, "JPG", baos)
-                            picBytes = baos.toByteArray()
-                        }
-                        ext = "jpeg"
-                    }
 
                     val picB64 = Base64.encodeBase64String(picBytes)
                     val pictureId = Base64.encodeBase64String(picture.url!!.toByteArray())
