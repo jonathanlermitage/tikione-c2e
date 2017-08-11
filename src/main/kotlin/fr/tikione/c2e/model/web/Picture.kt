@@ -15,4 +15,8 @@ class Picture {
         this.url = url
         this.legend = legend
     }
+
+    override fun toString(): String {
+        return "Picture(url=$url, legend=$legend)"
+    }
 }

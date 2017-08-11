@@ -14,4 +14,8 @@ class Paragraph {
     constructor(text: String?) {
         this.text = text
     }
+
+    override fun toString(): String {
+        return "Paragraph(text=$text)"
+    }
 }

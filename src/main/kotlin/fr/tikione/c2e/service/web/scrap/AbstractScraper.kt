@@ -3,88 +3,130 @@ package fr.tikione.c2e.service.web.scrap
 import fr.tikione.c2e.model.web.Article
 import fr.tikione.c2e.service.web.AbstractReader
 import org.jsoup.nodes.Document
-import java.util.*
 
 abstract class AbstractScraper : AbstractReader(), CPCScraperService {
 
     fun rate(articles: List<Article>?): Int {
-        return articles?.stream()?.mapToInt({ it.rate() })?.sum() ?: -1
+        if (articles == null) {
+            return -1
+        }
+        return articles.sumBy { it.rate() }
     }
 
-    override fun extractArticles(doc: Document): Map<Int, List<Article>> {
-        val score = HashMap<Int, List<Article>>()
+    override fun extractBestArticles(doc: Document): List<Article> {
+        var score = 0
+        var best: List<Article> = emptyList()
 
         try {
-            val news = extractNews(doc)
-            score.put(rate(news), news)
+            val extract = extractNews(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val singleNews = extractSingleNews(doc)
-            score.put(rate(singleNews), singleNews)
+            val extract = extractSingleNews(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val tests = extractTests(doc)
-            score.put(rate(tests), tests)
+            val extract = extractTests(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val shortTests = extractShortTests(doc)
-            score.put(rate(shortTests), shortTests)
+            val extract = extractShortTests(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val plumePudding = extractPlumePudding(doc)
-            score.put(rate(plumePudding), plumePudding)
+            val extract = extractPlumePudding(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val coming = extractComing(doc)
-            score.put(rate(coming), coming)
+            val extract = extractComing(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val underConstruction = extractUnderConstruction(doc)
-            score.put(rate(underConstruction), underConstruction)
+            val extract = extractUnderConstruction(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val techno = extractTechno(doc)
-            score.put(rate(techno), techno)
+            val extract = extractTechno(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val study = extractStudy(doc)
-            score.put(rate(study), study)
+            val extract = extractStudy(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+                score = rate
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         try {
-            val everythingElse = extractEverythingElse(doc)
-            score.put(rate(everythingElse), everythingElse)
+            val extract = extractEverythingElse(doc)
+            val rate = rate(extract)
+            if (rate > score) {
+                best = extract
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        return score
+        return best
     }
 
     override fun extractSingleNews(doc: Document): List<Article> {

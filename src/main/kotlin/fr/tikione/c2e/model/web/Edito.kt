@@ -17,4 +17,8 @@ class Edito {
         this.authorAndDate = authorAndDate
         this.content = content
     }
+
+    override fun toString(): String {
+        return "Edito(title=$title, authorAndDate=$authorAndDate, content=$content)"
+    }
 }

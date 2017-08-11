@@ -17,4 +17,8 @@ class TocCategory {
         this.title = title
         this.items = items
     }
+
+    override fun toString(): String {
+        return "TocCategory(title=$title, items=$items)"
+    }
 }

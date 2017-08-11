@@ -48,4 +48,8 @@ class Article {
     fun rate(): Int {
         return toString().length
     }
+
+    override fun toString(): String {
+        return "Article(title=$title, subtitle=$subtitle, authorAndDate=$authorAndDate, category=$category, headerContent=$headerContent, contents=$contents, encadreContents=$encadreContents, pictures=$pictures, wrappedArticles=$wrappedArticles, gameScore=$gameScore, gameScoreText=$gameScoreText, gameNature=$gameNature, gameDev=$gameDev, gameEditor=$gameEditor, gamePlatform=$gamePlatform, gameTester=$gameTester, gameConfig=$gameConfig, gameDDL=$gameDDL, gameLang=$gameLang, gameDRM=$gameDRM, gameOpinionTitle=$gameOpinionTitle, gameOpinion=$gameOpinion, gameLinkTitle=$gameLinkTitle, gameLinks=$gameLinks, gameAdviceTitle=$gameAdviceTitle, gameAdvice=$gameAdvice, gamePrice=$gamePrice, gameStateTitle=$gameStateTitle, gameState=$gameState, type=$type)"
+    }
 }

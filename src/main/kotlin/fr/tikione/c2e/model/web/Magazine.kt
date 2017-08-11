@@ -21,4 +21,8 @@ class Magazine {
         this.edito = edito
         this.toc = toc
     }
+
+    override fun toString(): String {
+        return "Magazine(number=$number, title=$title, login=$login, edito=$edito, toc=$toc)"
+    }
 }

@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document
 interface CPCScraperService {
 
     /** Extract web page articles and associate this operation to a general relevance score.  */
-    fun extractArticles(doc: Document): Map<Int, List<Article>>
+    fun extractBestArticles(doc: Document): List<Article>
 
     fun extractSingleNews(doc: Document): List<Article>
 

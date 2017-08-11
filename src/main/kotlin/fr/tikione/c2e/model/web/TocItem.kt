@@ -17,4 +17,8 @@ class TocItem {
         this.url = url
         this.articles = articles
     }
+
+    override fun toString(): String {
+        return "TocItem(title=$title, url=$url, articles=$articles)"
+    }
 }

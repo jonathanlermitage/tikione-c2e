@@ -87,12 +87,10 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         log.info("récupération de l'article {}", url)
         TimeUnit.MILLISECONDS.sleep(500) // be nice with CanardPC website
         val doc = queryUrl(auth, url)
-        val articles = HashMap<Int, List<Article>>()
-        articles.putAll(cpcScraperService.extractArticles(doc))
-        val res = articles[articles.keys.stream().mapToInt { i -> i }.max().orElseThrow<Exception>({ Exception() })]
+        val articles = cpcScraperService.extractBestArticles(doc)
         if (Main.DEBUG) {
-            res?.forEach { article -> log.debug(article.toString()) }
+            articles.forEach { article -> log.debug(article.toString()) }
         }
-        return res
+        return articles
     }
 }

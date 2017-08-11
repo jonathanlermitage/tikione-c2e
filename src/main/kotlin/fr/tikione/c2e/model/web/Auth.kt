@@ -17,4 +17,8 @@ class Auth {
         this.login = login
         this.password = password
     }
+
+    override fun toString(): String {
+        return "Auth(cookies=$cookies, login=$login, password=$password)"
+    }
 }
