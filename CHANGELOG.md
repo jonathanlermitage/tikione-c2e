@@ -3,8 +3,10 @@
 ### 1.3.0 (dev en cours)
 
 * le programme vérifie la présence de mise à jour de l'application au démarrage.
-* le code est migré de Java 8 vers Kotlin, pour faciliter sa possible future intégration dans une appli Android.
 * suppression du paramètre `-compresspic`, la compression des images étant trop peu efficace et peu fiable.
+* interne : le code est migré de Java 8 vers Kotlin, pour faciliter sa possible future intégration dans une appli Android.
+* interne : les dépendances (Maven) vers les librairies tierces instables sont supprimées.
+* interne : le package de release embarque des infos de base du projet Git (git-infos).
 
 ### 1.2.2 (2017/08/05)
 
