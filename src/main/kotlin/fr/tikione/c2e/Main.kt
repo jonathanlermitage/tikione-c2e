@@ -1,6 +1,5 @@
 package fr.tikione.c2e
 
-import com.google.common.base.Strings
 import fr.tikione.c2e.service.html.HtmlWriterService
 import fr.tikione.c2e.service.html.HtmlWriterServiceImpl
 import fr.tikione.c2e.service.web.CPCAuthService
@@ -38,7 +37,7 @@ object Main {
         }
         val argsToShow = args.clone()
         if (argsToShow.isNotEmpty()) {
-            argsToShow[1] = Strings.repeat("*", argsToShow[1].length)
+            argsToShow[1] = "*".repeat(argsToShow[1].length)
         }
         log.info("les paramètres de lancement sont : {}", Arrays.toString(argsToShow))
         val argsList = Arrays.asList(*args)
