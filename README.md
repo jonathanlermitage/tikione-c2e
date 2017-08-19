@@ -14,7 +14,7 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
   * ``-cpcXXX`` télécharger le numéro XXX, par exemple ``-cpc348``.  *(depuis la v1.1.0)* Télécharger plusieurs numéros, par exemple ``-cpc348 -cpc349 -cpc350 -cpc351``. Vous pouvez aussi utiliser ``-cpcall`` pour télécharger l'intégralité des numéros à votre disposition
   * ``-html`` format de sortie HTML riche
   * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte)
-  * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
+  * ``-list`` savoir quels numéros sont accessibles au téléchargement 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   
 Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``), par exemple ``CPC348-nopic.html``.
@@ -23,7 +23,7 @@ Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-with
 
 ### MacOS, Linux, BSD
 
-Téléchargez et décompressez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.bat`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
+Téléchargez et décompressez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.cmd`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
 
 ## Compilation
 
