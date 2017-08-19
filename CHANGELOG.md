@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.3.0 (dev en cours)
+### 1.3.0 (2017/08/19)
 
 * le programme vérifie la présence de mise à jour de l'application au démarrage.
 * suppression du paramètre `-compresspic`, la compression des images étant trop peu efficace et peu fiable.
