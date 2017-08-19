@@ -17,7 +17,7 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
   * ``-list`` savoir quels numéros sont accessibles au téléchargement. 
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
   
-Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``, ``-compresspic``), par exemple ``CPC348-nopic.html``.
+Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``), par exemple ``CPC348-nopic.html``.
 
 Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``), et sans JRE (``c2e-x.y.z.zip``).
 
