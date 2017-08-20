@@ -89,9 +89,7 @@ object Main {
                 writerService.write(magazine, file, includePictures)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de 30s avant de télécharger le prochain numéro")
-                    for (j in 0..29) {
-                        TimeUnit.SECONDS.sleep(1)
-                    }
+                    TimeUnit.SECONDS.sleep(30)
                     log.info(" ok\n")
                 }
             }
