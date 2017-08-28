@@ -1,10 +1,8 @@
 package fr.tikione.c2e.service
 
+import compat.Tools
 import fr.tikione.c2e.service.web.AbstractReader
-import org.apache.commons.codec.binary.Base64
-import org.apache.commons.io.IOUtils
 import java.io.IOException
-import java.nio.charset.StandardCharsets.UTF_8
 import java.text.Normalizer
 import java.text.Normalizer.Form.NFD
 
@@ -33,12 +31,12 @@ abstract class AbstractWriter {
 
     @Throws(IOException::class)
     fun resourceAsBase64(path: String): String {
-        return Base64.encodeBase64String(IOUtils.toByteArray(javaClass.classLoader.getResourceAsStream(path)))
+        return Tools.resourceAsBase64(path)
     }
 
     @Throws(IOException::class)
     fun resourceAsStr(path: String): String {
-        return IOUtils.toString(javaClass.classLoader.getResourceAsStream(path), UTF_8)
+        return Tools.resourceAsStr(path)
     }
 
     fun richToHtml(rich: String): String {

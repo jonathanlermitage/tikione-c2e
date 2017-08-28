@@ -7,7 +7,6 @@ import org.jsoup.nodes.Element
 import org.jsoup.safety.Whitelist
 import org.jsoup.select.Elements
 import java.io.IOException
-import java.util.*
 
 abstract class AbstractReader {
 
@@ -71,7 +70,7 @@ abstract class AbstractReader {
             return null
         }
         val buff = StringBuilder()
-        Arrays.stream(elt).forEach { elements -> buff.append(if (elements == null) "" else clean(elements.text())) }
+        elt.iterator().forEach { elements -> buff.append(clean(elements.text())) }
         return buff.toString()
     }
 
@@ -84,7 +83,7 @@ abstract class AbstractReader {
     }
 
     fun attr(baseUrl: String, elt: Elements?, attr: String): String? {
-        return if (elt == null || elt.attr(attr) == null || elt.attr(attr).trim { it <= ' ' }.isEmpty()) null else baseUrl + elt.attr(attr)
+        return if (elt?.attr(attr) == null || elt.attr(attr).trim { it <= ' ' }.isEmpty()) null else baseUrl + elt.attr(attr)
     }
 
     companion object {
