@@ -19,7 +19,7 @@ object Main {
     var log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     var DEBUG = false
-    var VERSION = "1.3.0"
+    var VERSION = "1.3.1"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
 
     // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-nopic]
