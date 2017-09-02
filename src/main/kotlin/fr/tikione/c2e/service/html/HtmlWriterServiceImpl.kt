@@ -1,5 +1,6 @@
 package fr.tikione.c2e.service.html
 
+import compat.Tools
 import fr.tikione.c2e.Main
 import fr.tikione.c2e.model.web.Article
 import fr.tikione.c2e.model.web.ArticleType
@@ -23,7 +24,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @Throws(IOException::class)
-    override fun write(magazine: Magazine, file: File, incluePictures: Boolean) {
+    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?) {
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'écraser le fichier : " + file.absolutePath)
@@ -83,7 +84,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
                             + "</a></div>\n\n")
-                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures) }
+                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize) }
                 }
             }
             w.write("</div>\n")
@@ -98,7 +99,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                 if (sizeInMb) "MB" else "KB")
     }
 
-    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean) {
+    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?) {
         w.write("\n<!--article.getType()=" + article.type + "-->\n\n")
         if (ArticleType.NEWS === article.type) {
             w.write("<div class='news'>\n")
@@ -118,7 +119,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             writeArticleAuthorCreationdate(w, article)
             writeArticleContents(w, article)
             if (incluePictures) {
-                writeArticlePictures(w, article)
+                writeArticlePictures(w, article, resize)
             }
             writeArticleOpinion(w, article)
             writeArticleState(w, article)
@@ -203,7 +204,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         }
     }
 
-    private fun writeArticlePictures(w: Writer, article: Article) {
+    private fun writeArticlePictures(w: Writer, article: Article, resize: String?) {
         var hasPictures = false
         for (picture in article.pictures) {
             if (picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty()) {
@@ -217,10 +218,26 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             for (picture in article.pictures) {
                 if (picture.url != null && !picture.url!!.isEmpty()) {
                     log.info("récupération de l'image {}", picture.url as String)
-                    val picBytes = IOUtils.toByteArray(URL(picture.url!!))
+                    var picBytes = IOUtils.toByteArray(URL(picture.url!!))
                     TimeUnit.MILLISECONDS.sleep(250) // be nice with CanardPC website
                     val magicmatch = Magic.getMagicMatch(picBytes)
-                    val ext = magicmatch.extension
+                    var ext = magicmatch.extension
+
+                    if (resize != null && !resize.isBlank()) {
+                        val rand = System.currentTimeMillis()
+                        val tmpSrc = """src$rand$ext"""
+                        val tmpDest = "dest$rand.jpg"
+                        FileUtils.writeByteArrayToFile(File(tmpSrc), picBytes)
+                        Tools.resizePicture(tmpSrc, tmpDest, resize.toString())
+                        val tmpSrcFile = File(tmpSrc)
+                        val tmpDestFile = File(tmpDest)
+                        tmpSrcFile.deleteOnExit()
+                        tmpDestFile.deleteOnExit()
+                        if (tmpDestFile.exists()) {
+                            ext = "jpeg"
+                            picBytes = FileUtils.readFileToByteArray(tmpDestFile)
+                        }
+                    }
 
                     val picB64 = Base64.encodeBase64String(picBytes)
                     val pictureId = Base64.encodeBase64String(picture.url!!.toByteArray())

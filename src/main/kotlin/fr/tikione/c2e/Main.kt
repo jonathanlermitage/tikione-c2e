@@ -22,9 +22,10 @@ object Main {
     var VERSION = "1.3.1"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
 
-    // params: username password [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-nopic]
+    // params: username password [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-nopic] [-resize50]
     @Throws(Exception::class)
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"))
         try {
             val latestVersion = Jsoup.connect(VERSION_URL).get().text().trim()
@@ -53,7 +54,7 @@ object Main {
         val includePictures = !switchList.contains("-nopic")
         val doHtml = switchList.contains("-html")
         val allMags = switchList.contains("-cpcall")
-
+        val resize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
         val cpcAuthService: CPCAuthService = CPCAuthServiceImpl()
         val cpcReaderService: CPCReaderService = CPCReaderServiceImpl()
 
@@ -84,9 +85,10 @@ object Main {
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
                 val file = File("CPC" + magNumber
                         + (if (includePictures) "" else "-nopic")
+                        + (if (resize == null) "" else "-resize$resize")
                         + ".html")
                 val writerService: HtmlWriterService = HtmlWriterServiceImpl()
-                writerService.write(magazine, file, includePictures)
+                writerService.write(magazine, file, includePictures, resize)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de 30s avant de télécharger le prochain numéro")
                     TimeUnit.SECONDS.sleep(30)

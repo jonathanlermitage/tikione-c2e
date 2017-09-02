@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.3.1 (2017/09/02)
+
+* introduction du paramètre `-resizeXX` pour redimensionner les images selon le ratio `XX`, par exemple `-resize50` pour 50%. Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli.
+
 ### 1.3.0 (2017/08/19)
 
 * le programme vérifie la présence de mise à jour de l'application au démarrage.
