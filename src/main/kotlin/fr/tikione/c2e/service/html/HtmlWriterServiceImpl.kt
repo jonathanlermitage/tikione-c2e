@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit
 
 class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
-    var log: Logger = LoggerFactory.getLogger(this.javaClass)
+    private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @Throws(IOException::class)
     override fun write(magazine: Magazine, file: File, incluePictures: Boolean) {
@@ -217,10 +217,10 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             for (picture in article.pictures) {
                 if (picture.url != null && !picture.url!!.isEmpty()) {
                     log.info("récupération de l'image {}", picture.url as String)
-                    var picBytes = IOUtils.toByteArray(URL(picture.url!!))
+                    val picBytes = IOUtils.toByteArray(URL(picture.url!!))
                     TimeUnit.MILLISECONDS.sleep(250) // be nice with CanardPC website
                     val magicmatch = Magic.getMagicMatch(picBytes)
-                    var ext = magicmatch.extension
+                    val ext = magicmatch.extension
 
                     val picB64 = Base64.encodeBase64String(picBytes)
                     val pictureId = Base64.encodeBase64String(picture.url!!.toByteArray())

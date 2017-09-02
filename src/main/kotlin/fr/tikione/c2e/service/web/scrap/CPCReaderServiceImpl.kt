@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
 
-    var log: Logger = LoggerFactory.getLogger(this.javaClass)
+    private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     private val cpcScraperService = CPCScraperServiceImpl()
 
@@ -66,8 +66,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     private fun extractToc(auth: Auth, doc: Document): ArrayList<TocCategory> {
         val container = doc.getElementById("block-numerosommaire")
         val columns = container.getElementsByClass("columns")
-        val toc = columns.mapTo(ArrayList<TocCategory>()) { buildTocItem(auth, it) }
-        return toc
+        return columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
     }
 
     private fun buildTocItem(auth: Auth, elt: Element): TocCategory {

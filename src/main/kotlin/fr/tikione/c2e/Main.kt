@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 object Main {
 
-    var log: Logger = LoggerFactory.getLogger(this.javaClass)
+    private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     var DEBUG = false
     var VERSION = "1.3.1"

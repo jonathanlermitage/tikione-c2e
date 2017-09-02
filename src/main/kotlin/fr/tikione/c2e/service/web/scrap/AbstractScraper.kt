@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document
 
 abstract class AbstractScraper : AbstractReader(), CPCScraperService {
 
-    fun rate(articles: List<Article>?): Int {
+    private fun rate(articles: List<Article>?): Int {
         if (articles == null) {
             return -1
         }
