@@ -1,5 +1,10 @@
 ## TikiOne C2E Change Log
 
+### 1.3.2 (dev en cours)
+
+* réduction de l'usage des fichiers temporaires.
+* réduction de la verbosité des logs.
+
 ### 1.3.1 (2017/09/02)
 
 * introduction du paramètre `-resizeXX` pour redimensionner les images selon le ratio `XX`, par exemple `-resize50` pour 50%. Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli.
