@@ -22,7 +22,7 @@ object Main {
     var VERSION = "1.3.1"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
 
-    // params: username password [-gui] [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-nopic]
+    // params: username password [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-nopic]
     @Throws(Exception::class)
     @JvmStatic fun main(args: Array<String>) {
         log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"))
