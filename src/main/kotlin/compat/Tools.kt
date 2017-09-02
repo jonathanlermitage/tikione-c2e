@@ -16,7 +16,7 @@ class Tools {
 
     companion object {
 
-        private val log: Logger = LoggerFactory.getLogger(this::class.java.javaClass)
+        private val log: Logger = LoggerFactory.getLogger(Tools::class.java.javaClass)
 
         @Throws(IOException::class)
         @JvmStatic
@@ -44,7 +44,9 @@ class Tools {
             val p = Runtime.getRuntime().exec(cmd)
             p.waitFor(30, TimeUnit.SECONDS)
             val ev = p.exitValue()
-            log.info("la commande ImageMagick [$cmd] s'est teminée ave le code [$ev]")
+            if (ev != 0) {
+                log.warn("la commande ImageMagick [$cmd] s'est teminée ave le code [$ev]")
+            }
             return ev
         }
     }
