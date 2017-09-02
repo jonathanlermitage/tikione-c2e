@@ -224,19 +224,20 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                     var ext = magicmatch.extension
 
                     if (resize != null && !resize.isBlank()) {
-                        val rand = System.currentTimeMillis()
-                        val tmpSrc = """src$rand$ext"""
-                        val tmpDest = "dest$rand.jpg"
-                        FileUtils.writeByteArrayToFile(File(tmpSrc), picBytes)
-                        Tools.resizePicture(tmpSrc, tmpDest, resize.toString())
+                        val tmpSrc = "c2e.src.tmp.$ext"
+                        val tmpDest = "c2e.dest.tmp.jpg"
                         val tmpSrcFile = File(tmpSrc)
                         val tmpDestFile = File(tmpDest)
-                        tmpSrcFile.deleteOnExit()
-                        tmpDestFile.deleteOnExit()
+                        tmpSrcFile.delete()
+                        tmpDestFile.delete()
+                        FileUtils.writeByteArrayToFile(File(tmpSrc), picBytes)
+                        Tools.resizePicture(tmpSrc, tmpDest, resize.toString())
                         if (tmpDestFile.exists()) {
                             ext = "jpeg"
                             picBytes = FileUtils.readFileToByteArray(tmpDestFile)
                         }
+                        tmpSrcFile.delete()
+                        tmpDestFile.delete()
                     }
 
                     val picB64 = Base64.encodeBase64String(picBytes)
