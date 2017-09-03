@@ -4,6 +4,8 @@
 
 * réduction de l'usage des fichiers temporaires.
 * réduction de la verbosité des logs.
+* interne : amélioration du process de build (nom de l'archive et copie des ressources utiles).
+* interne : correction du niveau de bytecode ciblé (préférer la stdlib jre6 au lieu de jre8). 
 
 ### 1.3.1 (2017/09/02)
 
