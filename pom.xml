@@ -40,7 +40,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jre8</artifactId>
+            <artifactId>kotlin-stdlib</artifactId>
             <version>1.1.4-3</version>
         </dependency>
 
@@ -151,6 +151,7 @@
                         </manifest>
                     </archive>
                     <outputDirectory>dist</outputDirectory>
+                    <finalName>c2e</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -239,17 +240,37 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8 -Xms32m -Xmx512m</argLine>
                     <workingDirectory>${project.build.directory}</workingDirectory>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resource-one</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/dist</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>/launcher</directory>
+                                    <includes>
+                                        <include>c2e.cmd</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
