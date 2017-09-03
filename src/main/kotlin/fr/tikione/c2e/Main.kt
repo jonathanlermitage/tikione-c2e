@@ -1,5 +1,6 @@
 package fr.tikione.c2e
 
+import android.content.res.AssetManager
 import fr.tikione.c2e.service.html.HtmlWriterService
 import fr.tikione.c2e.service.html.HtmlWriterServiceImpl
 import fr.tikione.c2e.service.web.CPCAuthService
@@ -87,7 +88,7 @@ object Main {
                         + (if (includePictures) "" else "-nopic")
                         + (if (resize == null) "" else "-resize$resize")
                         + ".html")
-                val writerService: HtmlWriterService = HtmlWriterServiceImpl()
+                val writerService: HtmlWriterService = HtmlWriterServiceImpl(AssetManager())
                 writerService.write(magazine, file, includePictures, resize)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de 30s avant de télécharger le prochain numéro")

@@ -1,12 +1,13 @@
 package fr.tikione.c2e.service
 
+import android.content.res.AssetManager
 import compat.Tools
 import fr.tikione.c2e.service.web.AbstractReader
 import java.io.IOException
 import java.text.Normalizer
 import java.text.Normalizer.Form.NFD
 
-abstract class AbstractWriter {
+abstract class AbstractWriter(private var asset: AssetManager) {
 
     fun filled(str: String?): Boolean {
         return str != null && !str.isEmpty()
@@ -31,12 +32,12 @@ abstract class AbstractWriter {
 
     @Throws(IOException::class)
     fun resourceAsBase64(path: String): String {
-        return Tools.resourceAsBase64(path)
+        return Tools.resourceAsBase64(path, asset)
     }
 
     @Throws(IOException::class)
     fun resourceAsStr(path: String): String {
-        return Tools.resourceAsStr(path)
+        return Tools.resourceAsStr(path, asset)
     }
 
     fun richToHtml(rich: String): String {

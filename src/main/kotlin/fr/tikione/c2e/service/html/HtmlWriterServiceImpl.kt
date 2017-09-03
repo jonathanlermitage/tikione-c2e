@@ -1,5 +1,6 @@
 package fr.tikione.c2e.service.html
 
+import android.content.res.AssetManager
 import compat.Tools
 import fr.tikione.c2e.Main
 import fr.tikione.c2e.model.web.Article
@@ -19,7 +20,7 @@ import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
+class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWriterService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 

@@ -1,5 +1,6 @@
 package compat
 
+import android.content.res.AssetManager
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
@@ -18,15 +19,17 @@ class Tools {
 
         private val log: Logger = LoggerFactory.getLogger(Tools::class.java.javaClass)
 
+        @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsBase64(path: String): String {
+        fun resourceAsBase64(path: String, asset: AssetManager): String {
             return Base64.encodeBase64String(IOUtils.toByteArray(Tools::class.java.classLoader.getResourceAsStream(path)))
         }
 
+        @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsStr(path: String): String {
+        fun resourceAsStr(path: String, asset: AssetManager): String {
             return IOUtils.toString(Tools::class.java.classLoader.getResourceAsStream(path), StandardCharsets.UTF_8)
         }
 
