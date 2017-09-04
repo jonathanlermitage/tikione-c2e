@@ -3,6 +3,11 @@
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
 
+Deux branches sont développées :
+
+* [master](https://github.com/jonathanlermitage/tikione-c2e) : le programme pour PC, stable.
+* [android](https://github.com/jonathanlermitage/tikione-c2e/tree/android) : l'application pour Android 5 et supérieur, en cours de dev.
+
 ## Téléchargement et utilisation en ligne de commande
 
 Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. La version ``c2e-x.y.z.zip`` (où x.y.z correspond à un numéro de version, par exemple 1.0.0) est multiplateforme, tandis que la ``c2e-x.y.z-withWin64JRE.zip`` contient un JRE (Java 8) propre à Windows. C2E est un programme nécessitant Java 8 ou supérieur.
@@ -69,4 +74,8 @@ Je développe TikiOne C2E grâce à ces logiciels :
 |Oracle JDK|
 |:--|
 |[![JDK](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_java.png)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)|
+
+|meow ?|
+|:--|
+|![cats](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/cats.gif)|
 
