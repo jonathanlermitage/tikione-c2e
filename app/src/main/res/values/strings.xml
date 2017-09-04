@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CPC hors-ligne</string>
+    <string name="title_activity_welcome">CanardPC hors-ligne</string>
+    <string name="title">CanardPC hors-ligne</string>
+
+    <string name="images_off">Ne pas inclure les images</string>
+    <string name="images_on">Inclure les images</string>
+    <string name="button_dl">Télécharger le numéro</string>
+
+    <string name="password_hint">mot de passe</string>
+    <string name="magnumber_hint">numéo du magazine (ex: 348)</string>
+    <string name="login_hint">  pseudo CanardPC</string>
+
+    <string name="notice">Le téléchargement du magazine se fera dans votre dossier de téléchargements.
+        \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.
+        \nSi vous choisissez de ne pas inclure les images, le nom du fichier sera dy type cpcXXX-nopic.html
+        (pour information, le total des images représente généralement entre 50Mo et 250Mo, le reste du magazine 1Mo).</string>
+</resources>

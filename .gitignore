@@ -1,7 +1,9 @@
-/build/
-/dist/
-/target/
-/.idea/
 *.iml
-tikione-c2e-master.zip
-/private/
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
