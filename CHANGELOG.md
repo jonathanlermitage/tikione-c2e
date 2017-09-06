@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.3.2 (dev en cours)
+### 1.3.2 (2017/09/06)
 
 * réduction de l'usage des fichiers temporaires.
 * réduction de la verbosité des logs.
