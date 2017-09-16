@@ -14,18 +14,30 @@ Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikion
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password [-cpcXXX -cpcYYY -cpcZZZ...|-cpcall] [-html] [-nopic] [-list] [-debug] [-resizeXX]`` (les paramètres entre ``[]`` sont optionnels et peuvent être placés dans n'importe quel ordre)
-  * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires
-  * ``-cpcXXX`` télécharger le numéro XXX, par exemple ``-cpc348``.  *(depuis la v1.1.0)* Télécharger plusieurs numéros, par exemple ``-cpc348 -cpc349 -cpc350 -cpc351``. Vous pouvez aussi utiliser ``-cpcall`` pour télécharger l'intégralité des numéros à votre disposition
-  * ``-html`` format de sortie HTML riche
-  * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte)
-  * ``-list`` savoir quels numéros sont accessibles au téléchargement 
-  * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password -cpcXXX -nopic -list -debug -resizeXX`` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
+  * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires.
+  * ``-cpcXXX`` télécharger le numéro XXX, par exemple ``-cpc348``.  *(depuis la version 1.1.0)* Télécharger plusieurs numéros, par exemple ``-cpc348 -cpc349 -cpc350 -cpc351``. Vous pouvez aussi utiliser ``-cpcall`` pour télécharger l'intégralité des numéros à votre disposition.
+  * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
+  * ``-list`` savoir quels numéros sont accessibles au téléchargement.
+  * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON.
   * ``-resizeXX`` redimensionne les images selon le ratio `XX` (ex: `-resize50` pour un ratio de 50%). Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows uniquement, mais doit fonctionner partout où ImageMagick est disponible.
+  
+*Attention, le paramètre `-html` est supprimé depuis la version 1.3.3. Pour les versions précédentes, n'oubliez pas de préciser `-html` pour générer le fichier.* 
     
-Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``), par exemple ``CPC348-nopic.html``.
+Exemples :
+      
+* Pour télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
+* Pour télécharger le numéro 348 avec les images, tapez `c2e.cmd username password -cpc348`.  
+* Pour télécharger le numéro 348 avec les images et réduire celles-ci de 50%, tapez `c2e.cmd username password -cpc348 -resize50`.  
+* Pour télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
+* Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
+    
+Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``), par exemple ``CPC348-nopic.html``.
 
-Deux versions packagées existent : avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``), et sans JRE (``c2e-x.y.z.zip``).
+Trois versions packagées existent : 
+* avec un JRE Windows 64bits et ImageMagick (``c2e-x.y.z-withWin64JRE-withImageMagick.zip``), **recommandé**.
+* avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``).
+* et sans JRE (``c2e-x.y.z.zip``).
 
 ### MacOS, Linux, BSD
 

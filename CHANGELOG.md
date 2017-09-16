@@ -1,5 +1,10 @@
 ## TikiOne C2E Change Log
 
+### 1.3.3 (2017/09/16, dev en cours)
+* suppression du paramètre `-html`, devient implicite lorsque `-cpcXXX` est utilisé.
+* clarifications sur l'usage de la ligne de commande (voir `README.md`).
+* clarification des messages d'avertissement.
+
 ### 1.3.2 (2017/09/06)
 
 * réduction de l'usage des fichiers temporaires.
