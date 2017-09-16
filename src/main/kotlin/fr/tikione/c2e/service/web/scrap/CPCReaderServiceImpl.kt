@@ -30,7 +30,9 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
             try {
                 n = Integer.parseInt(sn)
             } catch (nfe: NumberFormatException) {
-                log.debug("un magazine a un numéro invalide, il sera ignoré : {}", sn)
+                if (!sn.startsWith("hs")) {
+                    log.debug("un magazine a un numéro invalide, il sera ignoré : {}", sn)
+                }
             }
 
             if (n >= 348) { // 348 is the first digitalized magazine

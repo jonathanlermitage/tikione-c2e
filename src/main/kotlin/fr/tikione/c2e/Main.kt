@@ -23,7 +23,6 @@ object Main {
     var VERSION = "1.3.3"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
 
-    // params: username password [-debug] [-list] [-cpc360 -cpc361...|-cpcall] [-nopic] [-resize50]
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {
@@ -53,7 +52,7 @@ object Main {
         val switchList = Arrays.asList(*args).subList(2, args.size)
         val list = switchList.contains("-list")
         val includePictures = !switchList.contains("-nopic")
-        val doHtml = switchList.contains("-html")
+        var doHtml = false
         val allMags = switchList.contains("-cpcall")
         val resize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
         val cpcAuthService: CPCAuthService = CPCAuthServiceImpl()
@@ -68,8 +67,9 @@ object Main {
             args.filter { it.startsWith("-cpc") }.forEach {
                 try {
                     magNumbers.add(Integer.parseInt(it.substring("-cpc".length)))
+                    doHtml = true
                 } catch (nfe: NumberFormatException) {
-                    log.debug("un numéro du magazine CPC est mal tapé, il sera ignoré")
+                    log.debug("un numéro du magazine CPC est mal tapé, il sera ignoré : {}", it)
                 }
             }
         }
