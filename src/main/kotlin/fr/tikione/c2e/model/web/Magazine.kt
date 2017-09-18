@@ -5,7 +5,7 @@ package fr.tikione.c2e.model.web
  */
 class Magazine {
 
-    var number: Int = 0
+    var number: String = ""
     var title: String? = null
     var login: String? = null
     var edito: Edito? = null
@@ -14,7 +14,7 @@ class Magazine {
     constructor() {
     }
 
-    constructor(number: Int, title: String?, login: String?, edito: Edito?, toc: ArrayList<TocCategory>) {
+    constructor(number: String, title: String?, login: String?, edito: Edito?, toc: ArrayList<TocCategory>) {
         this.number = number
         this.title = title
         this.login = login

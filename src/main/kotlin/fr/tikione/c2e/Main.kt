@@ -60,17 +60,13 @@ object Main {
 
         val auth = cpcAuthService.authenticate(args[0], args[1])
         val headers = cpcReaderService.listDownloadableMagazines(auth)
-        val magNumbers = ArrayList<Int>()
+        val magNumbers = ArrayList<String>()
         if (allMags) {
             magNumbers.addAll(headers)
         } else {
             args.filter { it.startsWith("-cpc") }.forEach {
-                try {
-                    magNumbers.add(Integer.parseInt(it.substring("-cpc".length)))
-                    doHtml = true
-                } catch (nfe: NumberFormatException) {
-                    log.debug("un numéro du magazine CPC est mal tapé, il sera ignoré : {}", it)
-                }
+                magNumbers.add(it.substring("-cpc".length))
+                doHtml = true
             }
         }
         if (list) {

@@ -1,7 +1,9 @@
 ## TikiOne C2E Change Log
 
-### 1.3.3 (2017/09/16, dev en cours)
+### 1.3.3 (2017/09/18, dev en cours)
 * suppression du paramètre `-html`, devient implicite lorsque `-cpcXXX` est utilisé.
+* le paramètre `-cpcXXX` est maintenant plus souple et permet la sélection du magazine hors-série 22 (`hs22`, tapez donc `-cpchs22`).
+* le paramètre `-list` est lui aussi plus souple et intègre désormais les magazines hors-série dans la liste des numéros disponibles. 
 * clarifications sur l'usage de la ligne de commande (voir `README.md`).
 * clarification des messages d'avertissement.
 

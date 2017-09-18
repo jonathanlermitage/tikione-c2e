@@ -40,7 +40,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 .replace("$\$login$$", magazine.login!!)
                 .replace("$\$version$$", Main.VERSION)
                 .replace("$\$timestamp$$", Date().toString())
-                .replace("$\$mag_number$$", Integer.toString(magazine.number))
+                .replace("$\$mag_number$$", magazine.number)
                 .replace("$\$favicon_base64$$", faviconBase64)
                 .replace("/*$\$css_day$$*/", cssDay)
                 .replace("/*$\$css_night$$*/", cssNight)

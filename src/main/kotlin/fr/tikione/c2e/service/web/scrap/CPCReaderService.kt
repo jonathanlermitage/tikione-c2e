@@ -13,7 +13,7 @@ interface CPCReaderService {
      * @param auth authentication data.
      * @return web number and title.
      */
-    fun listDownloadableMagazines(auth: Auth): List<Int>
+    fun listDownloadableMagazines(auth: Auth): List<String>
 
     /**
      * Download a web.
@@ -21,5 +21,5 @@ interface CPCReaderService {
      * @param number web number.
      * @return web.
      */
-    fun downloadMagazine(auth: Auth, number: Int): Magazine
+    fun downloadMagazine(auth: Auth, number: String): Magazine
 }

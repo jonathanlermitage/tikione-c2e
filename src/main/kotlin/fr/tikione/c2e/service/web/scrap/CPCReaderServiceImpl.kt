@@ -17,36 +17,24 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
 
     private val cpcScraperService = CPCScraperServiceImpl()
 
-    override fun listDownloadableMagazines(auth: Auth): List<Int> {
+    override fun listDownloadableMagazines(auth: Auth): List<String> {
         val doc = Jsoup.connect(CPC_BASE_URL)
                 .cookies(auth.cookies)
                 .userAgent(AbstractReader.UA)
                 .get()
         val archives = doc.getElementsByClass("archive")
-        val magNumers = ArrayList<Int>()
+        val magNumers = ArrayList<String>()
         archives.forEach { element ->
-            var n = -1
-            val sn = element.getElementsByTag("a").attr("href").substring("/numero/".length)
-            try {
-                n = Integer.parseInt(sn)
-            } catch (nfe: NumberFormatException) {
-                if (!sn.startsWith("hs")) {
-                    log.debug("un magazine a un numéro invalide, il sera ignoré : {}", sn)
-                }
-            }
-
-            if (n >= 348) { // 348 is the first digitalized magazine
-                magNumers.add(n)
-            }
+            magNumers.add(element.getElementsByTag("a").attr("href").substring("/numero/".length))
         }
         magNumers.add(magNumers[0] + 1)
         magNumers.sortDescending()
         return magNumers
     }
 
-    override fun downloadMagazine(auth: Auth, number: Int): Magazine {
+    override fun downloadMagazine(auth: Auth, number: String): Magazine {
         log.info("téléchargement du numéro {}...", number)
-        val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", Integer.toString(number)))
+        val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
         val mag = Magazine()
         mag.number = number
         mag.title = doc.getElementById("numero-titre").text()
