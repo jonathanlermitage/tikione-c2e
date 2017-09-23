@@ -1,7 +1,8 @@
 ## TikiOne C2E Change Log
 
 ### 1.4.0 (dev en cours)
-* ajout du paramètre `-index` : (re)génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
+* ajout du paramètre `-index` : génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
+* correction du listing des numéros disponibles.
 * interne : introduction de l'injecteur de dépendance [Kodein](https://github.com/SalomonBrys/Kodein).
 
 ### 1.3.3 (2017/09/21)

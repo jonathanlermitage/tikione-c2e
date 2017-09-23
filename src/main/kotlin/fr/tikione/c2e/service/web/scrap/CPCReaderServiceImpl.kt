@@ -29,7 +29,11 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         archives.forEach { element ->
             magNumers.add(element.getElementsByTag("a").attr("href").substring("/numero/".length))
         }
-        magNumers.add(magNumers[0] + 1)
+        try {
+            magNumers.add(Integer.toString(Integer.parseInt(magNumers[0]) + 1))
+        } catch (e: Exception) {
+            log.debug("erreur lors du listing des numéros disponibles ('{}' n'est pas un nombre entier)", magNumers[0])
+        }
         magNumers.sortDescending()
         return magNumers
     }

@@ -93,7 +93,7 @@ object Main {
         }
 
         if (doIndex) {
-            log.info("création du sommaire de tous les numéros téléchargés")
+            log.info("création du sommaire de tous les numéros disponibles ($headers)")
             // TODO
         }
 
