@@ -1,8 +1,7 @@
 ## TikiOne C2E Change Log
 
 ### 1.4.0 (dev en cours)
-* l'export HTML s'accompagne d'un fichier JSON, lequel décrit le contenu de l'export et permettra de générer un sommaire de tous les exports (voir `-index` ci-dessous).
-* ajout du paramètre `-index` : (re)génère un sommaire de tous les numéros exportés en lisant les JSON. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc.
+* ajout du paramètre `-index` : (re)génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
 
 ### 1.3.3 (2017/09/21)
 * suppression du paramètre `-html`, devient implicite lorsque `-cpcXXX` est utilisé.
