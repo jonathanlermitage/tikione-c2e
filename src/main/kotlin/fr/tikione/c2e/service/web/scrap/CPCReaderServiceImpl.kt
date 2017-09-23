@@ -1,6 +1,8 @@
 package fr.tikione.c2e.service.web.scrap
 
+import com.github.salomonbrys.kodein.instance
 import fr.tikione.c2e.Main
+import fr.tikione.c2e.kodein
 import fr.tikione.c2e.model.web.*
 import fr.tikione.c2e.service.web.AbstractReader
 import org.jsoup.Jsoup
@@ -15,7 +17,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    private val cpcScraperService = CPCScraperServiceImpl()
+    private val cpcScraperService: CPCScraperService = kodein.instance()
 
     override fun listDownloadableMagazines(auth: Auth): List<String> {
         val doc = Jsoup.connect(CPC_BASE_URL)

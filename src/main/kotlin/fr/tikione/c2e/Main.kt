@@ -1,12 +1,9 @@
 package fr.tikione.c2e
 
-import android.content.res.AssetManager
+import com.github.salomonbrys.kodein.instance
 import fr.tikione.c2e.service.html.HtmlWriterService
-import fr.tikione.c2e.service.html.HtmlWriterServiceImpl
 import fr.tikione.c2e.service.web.CPCAuthService
-import fr.tikione.c2e.service.web.CPCAuthServiceImpl
 import fr.tikione.c2e.service.web.scrap.CPCReaderService
-import fr.tikione.c2e.service.web.scrap.CPCReaderServiceImpl
 import org.jsoup.Jsoup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -50,18 +47,19 @@ object Main {
     private fun startCLI(vararg args: String) {
         assert(args.size > 2)
         val switchList = Arrays.asList(*args).subList(2, args.size)
-        val list = switchList.contains("-list")
-        val includePictures = !switchList.contains("-nopic")
+        val doList = switchList.contains("-list")
+        val doIncludePictures = !switchList.contains("-nopic")
+        val doIndex = switchList.contains("-index")
         var doHtml = false
-        val allMags = switchList.contains("-cpcall")
-        val resize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
-        val cpcAuthService: CPCAuthService = CPCAuthServiceImpl()
-        val cpcReaderService: CPCReaderService = CPCReaderServiceImpl()
+        val doAllMags = switchList.contains("-cpcall")
+        val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
+        val cpcAuthService: CPCAuthService = kodein.instance()
+        val cpcReaderService: CPCReaderService = kodein.instance()
 
         val auth = cpcAuthService.authenticate(args[0], args[1])
         val headers = cpcReaderService.listDownloadableMagazines(auth)
         val magNumbers = ArrayList<String>()
-        if (allMags) {
+        if (doAllMags) {
             magNumbers.addAll(headers)
         } else {
             args.filter { it.startsWith("-cpc") }.forEach {
@@ -69,7 +67,7 @@ object Main {
                 doHtml = true
             }
         }
-        if (list) {
+        if (doList) {
             log.info("les numéros disponibles sont : {}", headers)
         }
 
@@ -81,17 +79,22 @@ object Main {
                 val magNumber = magNumbers[i]
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
                 val file = File("CPC" + magNumber
-                        + (if (includePictures) "" else "-nopic")
-                        + (if (resize == null) "" else "-resize$resize")
+                        + (if (doIncludePictures) "" else "-nopic")
+                        + (if (doResize == null) "" else "-resize$doResize")
                         + ".html")
-                val writerService: HtmlWriterService = HtmlWriterServiceImpl(AssetManager())
-                writerService.write(magazine, file, includePictures, resize)
+                val writerService: HtmlWriterService = kodein.instance()
+                writerService.write(magazine, file, doIncludePictures, doResize)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de 30s avant de télécharger le prochain numéro")
                     TimeUnit.SECONDS.sleep(30)
                     log.info(" ok\n")
                 }
             }
+        }
+
+        if (doIndex) {
+            log.info("création du sommaire de tous les numéros téléchargés")
+            // TODO
         }
 
         log.info("terminé !")
