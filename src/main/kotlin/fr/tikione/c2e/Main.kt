@@ -17,8 +17,9 @@ object Main {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     var DEBUG = false
-    var VERSION = "1.4.0"
+    val VERSION = "1.4.0"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
+    private val PAUSE_BETWEEN_MAG_DL = 30L
 
     @Throws(Exception::class)
     @JvmStatic
@@ -85,15 +86,15 @@ object Main {
                 val writerService: HtmlWriterService = kodein.instance()
                 writerService.write(magazine, file, doIncludePictures, doResize)
                 if (i != magNumbers.size - 1) {
-                    log.info("pause de 30s avant de télécharger le prochain numéro")
-                    TimeUnit.SECONDS.sleep(30)
+                    log.info("pause de ${PAUSE_BETWEEN_MAG_DL}s avant de télécharger le prochain numéro")
+                    TimeUnit.SECONDS.sleep(PAUSE_BETWEEN_MAG_DL)
                     log.info(" ok\n")
                 }
             }
         }
 
         if (doIndex) {
-            log.info("création du sommaire de tous les numéros disponibles ($headers)")
+            log.info("création du sommaire de tous les numéros disponibles : {}", headers)
             // TODO
         }
 
