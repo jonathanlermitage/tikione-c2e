@@ -1,0 +1,52 @@
+group 'tikione'
+version '1.4.0'
+
+buildscript {
+    ext.kotlin_version = '1.1.50'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'kotlin'
+
+configurations {
+    jar.archiveName = 'c2e.jar'
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/libs/lib"
+    from configurations.runtime
+}
+
+jar {
+    dependsOn copyToLib
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile group: 'net.sf.jmimemagic', name: 'jmimemagic', version: '0.1.5'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.7'
+    compile group: 'com.github.salomonbrys.kodein', name: 'kodein', version: '4.1.0'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.6"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.6"
+}
