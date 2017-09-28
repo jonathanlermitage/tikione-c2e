@@ -32,13 +32,13 @@ object Main {
                         "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases >>")
             }
         } catch (e: Exception) {
-            log.warn("impossible de vérifier la présence d'une nouvelle version de TikiOne C2E", e)
+            log.warn("impossible de verifier la presence d'une nouvelle version de TikiOne C2E", e)
         }
         val argsToShow = args.clone()
         if (argsToShow.isNotEmpty()) {
             argsToShow[1] = "*".repeat(argsToShow[1].length)
         }
-        log.info("les paramètres de lancement sont : {}", Arrays.toString(argsToShow))
+        log.info("les parametres de lancement sont : {}", Arrays.toString(argsToShow))
         val argsList = Arrays.asList(*args)
         DEBUG = argsList.contains("-debug")
         startCLI(*args)
@@ -69,12 +69,12 @@ object Main {
             }
         }
         if (doList) {
-            log.info("les numéros disponibles sont : {}", headers)
+            log.info("les numeros disponibles sont : {}", headers)
         }
 
         if (doHtml) {
             if (magNumbers.size > 1) {
-                log.info("téléchargement des numéros : {}", magNumbers)
+                log.info("telechargement des numeros : {}", magNumbers)
             }
             for (i in magNumbers.indices) {
                 val magNumber = magNumbers[i]
@@ -86,7 +86,7 @@ object Main {
                 val writerService: HtmlWriterService = kodein.instance()
                 writerService.write(magazine, file, doIncludePictures, doResize)
                 if (i != magNumbers.size - 1) {
-                    log.info("pause de ${PAUSE_BETWEEN_MAG_DL}s avant de télécharger le prochain numéro")
+                    log.info("pause de ${PAUSE_BETWEEN_MAG_DL}s avant de telecharger le prochain numero")
                     TimeUnit.SECONDS.sleep(PAUSE_BETWEEN_MAG_DL)
                     log.info(" ok\n")
                 }
@@ -94,10 +94,10 @@ object Main {
         }
 
         if (doIndex) {
-            log.info("création du sommaire de tous les numéros disponibles : {}", headers)
+            log.info("creation du sommaire de tous les numeros disponibles : {}", headers)
             // TODO
         }
 
-        log.info("terminé !")
+        log.info("termine !")
     }
 }

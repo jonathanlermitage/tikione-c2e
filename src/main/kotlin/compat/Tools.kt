@@ -48,7 +48,7 @@ class Tools {
             p.waitFor(30, TimeUnit.SECONDS)
             val ev = p.exitValue()
             if (ev != 0) {
-                log.warn("la commande ImageMagick [$cmd] s'est teminée ave le code [$ev]")
+                log.warn("la commande ImageMagick [$cmd] s'est teminee ave le code [$ev]")
             }
             return ev
         }
