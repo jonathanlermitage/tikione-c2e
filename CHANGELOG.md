@@ -1,11 +1,17 @@
 ## TikiOne C2E Change Log
 
 ### 1.4.0 (dev en cours)
+
 * ajout du paramètre `-index` : génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
 * correction du listing des numéros disponibles.
 * interne : introduction de l'injecteur de dépendance [Kodein](https://github.com/SalomonBrys/Kodein).
 
+### 1.3.4 (2017/09/28)
+
+* correction de la vérification de l'authentification (suite aux récentes modifications du site).
+
 ### 1.3.3 (2017/09/21)
+
 * suppression du paramètre `-html`, devient implicite lorsque `-cpcXXX` est utilisé.
 * le paramètre `-cpcXXX` est maintenant plus souple et permet la sélection du magazine hors-série 22 (`hs22`, tapez donc `-cpchs22`).
 * le paramètre `-list` est lui aussi plus souple et intègre désormais les magazines hors-série dans la liste des numéros disponibles. 

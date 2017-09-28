@@ -30,9 +30,7 @@ class CPCAuthServiceImpl : AbstractReader(), CPCAuthService {
         if (loginForm.cookies().isEmpty()) {
             throw IOException("login failed: no cookies")
         }
-        if (!loginForm.parse().title().toUpperCase().contains(username.toUpperCase())) {
-            throw IOException("login failed: can't find username in page title")
-        }
+        loginForm.parse().body().getElementsByClass("user-logged") ?: throw IOException("login failed: can't find username in page header")
         return Auth(loginForm.cookies(), username, password)
     }
 }
