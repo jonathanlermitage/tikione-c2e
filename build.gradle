@@ -7,19 +7,44 @@ buildscript {
     repositories {
         mavenCentral()
     }
+    repositories {
+        jcenter()
+    }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.ksoichiro:gradle-build-info-plugin:0.2.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
     }
 }
 
 apply plugin: 'idea'
 apply plugin: 'kotlin'
 apply plugin: 'com.github.ksoichiro.build.info'
+apply plugin: 'com.github.ben-manes.versions' // https://github.com/ben-manes/gradle-versions-plugin
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencyUpdates.resolutionStrategy = {
+    //noinspection GroovyAssignabilityCheck
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'Alpha', 'ALPHA', 'b', 'beta', 'Beta', 'BETA', 'rc', '‌RC', 'M', 'EA', 'pr'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
 
 configurations {
     jar.archiveName = 'c2e.jar'
 }
+
 task copyToLib(type: Copy) {
     into "$buildDir/libs/lib"
     from configurations.runtime
@@ -27,10 +52,6 @@ task copyToLib(type: Copy) {
 
 jar {
     dependsOn copyToLib
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
