@@ -80,7 +80,7 @@ Je développe TikiOne C2E grâce à ces logiciels :
 
 |Gradle|
 |:--|
-|[![Maven](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_gradle.png)](https://gradle.org)|
+|[![Gradle](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_gradle.png)](https://gradle.org)|
 
 |Oracle JDK|
 |:--|
