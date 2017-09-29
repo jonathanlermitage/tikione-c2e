@@ -28,7 +28,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?) {
         file.delete()
         if (file.exists()) {
-            throw IOException("impossible d'écraser le fichier : " + file.absolutePath)
+            throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
         }
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
         val fontRobotoBase64 = resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
@@ -94,7 +94,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         }
         val fileSize = FileUtils.sizeOf(file)
         val sizeInMb = fileSize > ONE_MB
-        log.info("fichier HTML créé : {} (environ {}{})",
+        log.info("fichier HTML cree : {} (environ {}{})",
                 file.absolutePath,
                 if (sizeInMb) fileSize / ONE_MB else fileSize / ONE_KB,
                 if (sizeInMb) "MB" else "KB")
@@ -215,10 +215,10 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         }
         if (hasPictures) {
             w.write("<div class='article-pictures'>\n")
-            w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la réduire.</div>\n")
+            w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la reduire.</div>\n")
             for (picture in article.pictures) {
                 if (picture.url != null && !picture.url!!.isEmpty()) {
-                    log.info("récupération de l'image {}", picture.url as String)
+                    log.info("recuperation de l'image {}", picture.url as String)
                     var picBytes = IOUtils.toByteArray(URL(picture.url!!))
                     TimeUnit.MILLISECONDS.sleep(250) // be nice with CanardPC website
                     val magicmatch = Magic.getMagicMatch(picBytes)

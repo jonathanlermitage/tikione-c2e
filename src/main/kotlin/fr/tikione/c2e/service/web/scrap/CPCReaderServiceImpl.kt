@@ -32,14 +32,14 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         try {
             magNumers.add(Integer.toString(Integer.parseInt(magNumers[0]) + 1))
         } catch (e: Exception) {
-            log.debug("erreur lors du listing des numéros disponibles ('{}' n'est pas un nombre entier)", magNumers[0])
+            log.debug("erreur lors du listing des numeros disponibles ('{}' n'est pas un nombre entier)", magNumers[0])
         }
         magNumers.sortDescending()
         return magNumers
     }
 
     override fun downloadMagazine(auth: Auth, number: String): Magazine {
-        log.info("téléchargement du numéro {}...", number)
+        log.info("telechargement du numero {}...", number)
         val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
         val mag = Magazine()
         mag.number = number
@@ -79,7 +79,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     }
 
     private fun extractArticles(auth: Auth, url: String): List<Article>? {
-        log.info("récupération de l'article {}", url)
+        log.info("recuperation de l'article {}", url)
         TimeUnit.MILLISECONDS.sleep(500) // be nice with CanardPC website
         val doc = queryUrl(auth, url)
         val articles = cpcScraperService.extractBestArticles(doc)
