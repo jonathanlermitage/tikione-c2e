@@ -3,10 +3,9 @@
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
 
-Trois branches sont développées :
+Deux branches sont développées :
 
 * [master](https://github.com/jonathanlermitage/tikione-c2e) : le programme pour PC, stable.
-* [gradle](https://github.com/jonathanlermitage/tikione-c2e/tree/gradle) : migration de Maven vers Gradle. Déjà stable, sera bientôt intégrée à la branche `master`.
 * [android](https://github.com/jonathanlermitage/tikione-c2e/tree/android) : l'application pour Android 5 et supérieur, en cours de dev.
 
 ## Téléchargement et utilisation en ligne de commande
@@ -46,8 +45,7 @@ Téléchargez et décompressez la version packagée ``c2e-x.y.z.zip``. Comme Win
 
 ## Compilation
 
-Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Maven 3.3.9. Installez un JDK8 et Maven 3.3.9+, puis lancez ``mvn clean package`` pour construire un applicatif dans le répertoire ``dist``.  
-Si vous disposez d'une ancienne version de Maven, vous pouvez utiliser celle embarquée dans le projet : pour cela, ne lancez pas ``mvn`` mais ``mvnw``, par exemple ``mvnw clean package``.
+Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Maven 3.3.9. Installez un JDK8 et Gradle 3+, puis lancez ``gradle jar`` pour construire un applicatif dans le répertoire ``buld/lib`` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
 
 ## Avancement
 
@@ -80,9 +78,9 @@ Je développe TikiOne C2E grâce à ces logiciels :
 |:--|
 |[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_intellij.png)](https://www.jetbrains.com/idea/)|
 
-|Apache Maven|
+|Gradle|
 |:--|
-|[![Maven](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_maven.png)](https://maven.apache.org)|
+|[![Maven](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_gradle.png)](https://gradle.org)|
 
 |Oracle JDK|
 |:--|
