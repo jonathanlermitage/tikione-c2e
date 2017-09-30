@@ -32,7 +32,7 @@ Exemples :
 * Pour télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
 * Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
     
-Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` rappelle certains paramètres (``-nopic``), par exemple ``CPC348-nopic.html``.
+Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom ``CPCxxx-opts.html`` où ``xxx`` est le numéro et ``-opts`` rappelle certains paramètres (``-nopic``, `-resize`), par exemple ``CPC348-nopic.html``.
 
 Trois versions packagées existent : 
 * avec un JRE Windows 64bits et ImageMagick (``c2e-x.y.z-withWin64JRE-withImageMagick.zip``), **recommandé**.
