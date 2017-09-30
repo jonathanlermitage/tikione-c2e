@@ -45,7 +45,7 @@ Téléchargez et décompressez la version packagée ``c2e-x.y.z.zip``. Comme Win
 
 ## Compilation
 
-Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Maven 3.3.9. Installez un JDK8 et Gradle 3+, puis lancez ``gradle jar`` pour construire un applicatif dans le répertoire ``buld/lib`` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
+Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Gradle. Installez un JDK8 et Gradle 3+, puis lancez ``gradle jar`` pour construire un applicatif dans le répertoire ``build/lib`` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
 
 ## Avancement
 
