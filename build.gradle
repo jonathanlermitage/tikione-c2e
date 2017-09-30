@@ -45,13 +45,24 @@ configurations {
     jar.archiveName = 'c2e.jar'
 }
 
-task copyToLib(type: Copy) {
-    into "$buildDir/libs/lib"
+task copyLibs(type: Copy) {
     from configurations.runtime
+    into "$buildDir/libs/lib"
 }
-
+task copyWindowsLauncher(type: Copy) {
+    from "./launcher"
+    into "$buildDir/libs"
+    include('*.cmd')
+}
+task copyDoc(type: Copy) {
+    from "."
+    into "$buildDir/libs"
+    include('*.md', "LICENSE.txt")
+}
 jar {
-    dependsOn copyToLib
+    dependsOn copyLibs
+    dependsOn copyWindowsLauncher
+    dependsOn copyDoc
 }
 
 dependencies {
