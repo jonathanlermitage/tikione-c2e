@@ -10,7 +10,12 @@ Deux branches sont développées :
 
 ## Téléchargement et utilisation en ligne de commande
 
-Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. La version ``c2e-x.y.z.zip`` (où x.y.z correspond à un numéro de version, par exemple 1.0.0) est multiplateforme, tandis que la ``c2e-x.y.z-withWin64JRE.zip`` contient un JRE (Java 8) propre à Windows. C2E est un programme nécessitant Java 8 ou supérieur.
+Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. 
+
+Trois versions packagées existent : 
+* avec un JRE Windows 64bits et ImageMagick (``c2e-x.y.z-withWin64JRE-withImageMagick.zip``), **recommandé**.
+* avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``).
+* et sans JRE (``c2e-x.y.z.zip``).
 
 ### Windows
 
@@ -33,11 +38,6 @@ Exemples :
 * Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
     
 Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom ``CPCxxx-opts.html`` où ``xxx`` est le numéro et ``-opts`` rappelle certains paramètres (``-nopic``, `-resize`), par exemple ``CPC348-nopic.html``.
-
-Trois versions packagées existent : 
-* avec un JRE Windows 64bits et ImageMagick (``c2e-x.y.z-withWin64JRE-withImageMagick.zip``), **recommandé**.
-* avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``).
-* et sans JRE (``c2e-x.y.z.zip``).
 
 ### MacOS, Linux, BSD
 
