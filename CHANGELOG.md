@@ -4,6 +4,7 @@
 
 * ajout du paramètre `-index` : génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
 * correction du listing des numéros disponibles.
+* suppression des caractères accentués dans la console et les logs.
 * interne : introduction de l'injecteur de dépendance [Kodein](https://github.com/SalomonBrys/Kodein).
 * interne : projet migré de [Maven](https://maven.apache.org) vers [Gradle](https://gradle.org).
 
