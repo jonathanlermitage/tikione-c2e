@@ -3,7 +3,11 @@
 ### 1.4.0 (dev en cours)
 
 * ajout du paramètre `-index` : génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
-* correction du listing des numéros disponibles.
+
+### 1.3.5 (dev en cours, publication vers le samedi 2017/10/21)
+
+* correction bug [GitHub #2](https://github.com/jonathanlermitage/tikione-c2e/issues/2) : le paramètre `-cpcall` ne téléchargeait plus aucun pagazine.
+* correction du listing des numéros disponibles : le numéro du dernier magazine était mal calculé.
 * suppression des caractères accentués dans la console et les logs.
 * interne : introduction de l'injecteur de dépendance [Kodein](https://github.com/SalomonBrys/Kodein).
 * interne : projet migré de [Maven](https://maven.apache.org) vers [Gradle](https://gradle.org).
