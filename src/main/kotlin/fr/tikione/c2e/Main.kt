@@ -62,6 +62,7 @@ object Main {
         val magNumbers = ArrayList<String>()
         if (doAllMags) {
             magNumbers.addAll(headers)
+            doHtml = true
         } else {
             args.filter { it.startsWith("-cpc") }.forEach {
                 magNumbers.add(it.substring("-cpc".length))
