@@ -60,6 +60,16 @@ task copyDoc(type: Copy) {
     include('*.md', "LICENSE.txt")
 }
 jar {
+    doFirst {
+        manifest {
+            if (!configurations.compile.isEmpty()) {
+                attributes(
+                        'Main-Class': 'fr.tikione.c2e.Main',
+                        'Class-Path': configurations.runtimeClasspath.files.collect { 'lib/' + it.getName() }.join(' ')
+                )
+            }
+        }
+    }
     dependsOn copyLibs
     dependsOn copyWindowsLauncher
     dependsOn copyDoc
