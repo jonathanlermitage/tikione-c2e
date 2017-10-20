@@ -6,7 +6,7 @@
 
 ### 1.3.5 (2017/10/20)
 
-* correction bug [GitHub #2](https://github.com/jonathanlermitage/tikione-c2e/issues/2) : le paramètre `-cpcall` ne téléchargeait plus aucun pagazine.
+* correction bug [GitHub #2](https://github.com/jonathanlermitage/tikione-c2e/issues/2) : le paramètre `-cpcall` ne téléchargeait plus aucun magazine.
 * correction du listing des numéros disponibles : le numéro du dernier magazine était mal calculé.
 * suppression des caractères accentués dans la console et les logs.
 * interne : introduction de l'injecteur de dépendance [Kodein](https://github.com/SalomonBrys/Kodein).
