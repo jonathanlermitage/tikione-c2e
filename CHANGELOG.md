@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.4.0 (dev en cours)
+### 1.3.6 (dev en cours)
 
 * ajout du paramètre `-index` : génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
 
