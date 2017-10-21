@@ -24,7 +24,13 @@ object Main {
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {
-        log.info("TikiOne C2E version {}, Java {}", VERSION, System.getProperty("java.version"))
+        log.info("TikiOne C2E version {}, Java {}, {} {} by {}, on {} with {} file encoding", VERSION,
+                System.getProperty("java.version"),
+                System.getProperty("java.vm.name"),
+                System.getProperty("java.vm.version"),
+                System.getProperty("java.vm.vendor"),
+                System.getProperty("os.name"),
+                System.getProperty("file.encoding"))
         try {
             val latestVersion = Jsoup.connect(VERSION_URL).get().text().trim()
             if (VERSION != latestVersion) {
