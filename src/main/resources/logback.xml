@@ -98,7 +98,7 @@
 
     <appender name="CONSOLE_ALL_TRACE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss} %-5p %c{30}:%L - %m%n</pattern>
+            <pattern>%d{HH:mm:ss} %-5p %m%n</pattern>
         </encoder>
     </appender>
 

@@ -3,6 +3,7 @@
 ### 1.3.6 (dev en cours)
 
 * ajout du paramètre `-index` : génère un sommaire de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
+* la console affiche des messages moins verbeux : ne garde que l'horodatage, niveau de log et message. Les informations détaillées (package, classe, ligne) restent visibles dans les logs fichier.
 
 ### 1.3.5 (2017/10/20)
 
