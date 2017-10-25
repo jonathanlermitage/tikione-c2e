@@ -6,6 +6,8 @@ import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
 import fr.tikione.c2e.service.html.HtmlWriterService
 import fr.tikione.c2e.service.html.HtmlWriterServiceImpl
+import fr.tikione.c2e.service.index.IndexWriterService
+import fr.tikione.c2e.service.index.IndexWriterServiceImpl
 import fr.tikione.c2e.service.web.CPCAuthService
 import fr.tikione.c2e.service.web.CPCAuthServiceImpl
 import fr.tikione.c2e.service.web.scrap.CPCReaderService
@@ -18,4 +20,5 @@ val kodein = Kodein {
     bind<CPCReaderService>() with singleton { CPCReaderServiceImpl() }
     bind<CPCScraperService>() with singleton { CPCScraperServiceImpl() }
     bind<HtmlWriterService>() with singleton { HtmlWriterServiceImpl(AssetManager()) }
+    bind<IndexWriterService>() with singleton { IndexWriterServiceImpl() }
 }

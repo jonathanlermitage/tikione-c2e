@@ -2,6 +2,7 @@ package fr.tikione.c2e
 
 import com.github.salomonbrys.kodein.instance
 import fr.tikione.c2e.service.html.HtmlWriterService
+import fr.tikione.c2e.service.index.IndexWriterService
 import fr.tikione.c2e.service.web.CPCAuthService
 import fr.tikione.c2e.service.web.scrap.CPCReaderService
 import org.jsoup.Jsoup
@@ -42,7 +43,8 @@ object Main {
         }
         val argsToShow = args.clone()
         if (argsToShow.isNotEmpty()) {
-            argsToShow[1] = "*".repeat(argsToShow[1].length)
+            argsToShow[0] = "(identifiant)"
+            argsToShow[1] = "(mot de passe)"
         }
         log.info("les parametres de lancement sont : {}", Arrays.toString(argsToShow))
         val argsList = Arrays.asList(*args)
@@ -101,8 +103,10 @@ object Main {
         }
 
         if (doIndex) {
-            log.info("creation du sommaire de tous les numeros disponibles : {}", headers)
-            // TODO
+            log.info("creation de l'index de tous les numeros disponibles : {}", headers)
+            val file = File("CPC-index.csv")
+            val writerService: IndexWriterService = kodein.instance()
+            writerService.write(auth, headers, file)
         }
 
         log.info("termine !")
