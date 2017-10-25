@@ -1,9 +1,10 @@
 ## TikiOne C2E Change Log
 
-### 1.3.6 (dev en cours)
+### 1.3.6 (2017/10/25)
 
 * ajout du paramètre `-index` : génère un sommaire CSV (codage ISO 8859-1, séparateur : virgule) de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.
 * la console affiche des messages moins verbeux : ne garde que l'horodatage, niveau de log et message. Les informations détaillées (package, classe, ligne) restent visibles dans les logs fichier.
+* interne : refactoring et nettoyage de code.
 
 ### 1.3.5 (2017/10/20)
 
