@@ -13,120 +13,34 @@ abstract class AbstractScraper : AbstractReader(), CPCScraperService {
         return articles.sumBy { it.rate() }
     }
 
+
+
     override fun extractBestArticles(doc: Document): List<Article> {
-        var score = 0
-        var best: List<Article> = emptyList()
+        val extractions = listOf(
+                safe { extractNews(doc) },
+                safe { extractSingleNews(doc) },
+                safe { extractPlumePudding(doc) },
+                safe { extractShortTests(doc) },
+                safe { extractTests(doc) },
+                safe { extractComing(doc) },
+                safe { extractUnderConstruction(doc) },
+                safe { extractTechno(doc) },
+                safe { extractStudy(doc) },
+                safe { extractEverythingElse(doc) }
+        )
 
-        try {
-            val extract = extractNews(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
+        return extractions.map { Pair(rate(it), it ?: emptyList()) }
+                //sort by highest score (first) and return the articles (second)
+                .sortedByDescending { it.first }.map { it.second }[0]
+    }
+
+    private inline fun <T> safe(function: () -> T): T? {
+        return try {
+            function()
         } catch (e: Exception) {
             e.printStackTrace()
+            null
         }
-
-        try {
-            val extract = extractSingleNews(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractTests(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractShortTests(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractPlumePudding(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractComing(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractUnderConstruction(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractTechno(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractStudy(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-                score = rate
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        try {
-            val extract = extractEverythingElse(doc)
-            val rate = rate(extract)
-            if (rate > score) {
-                best = extract
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return best
     }
 
     override fun extractSingleNews(doc: Document): List<Article> {
