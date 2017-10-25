@@ -5,6 +5,7 @@ import compat.Tools
 import fr.tikione.c2e.Main
 import fr.tikione.c2e.model.web.Article
 import fr.tikione.c2e.model.web.ArticleType
+import fr.tikione.c2e.model.web.Edito
 import fr.tikione.c2e.model.web.Magazine
 import fr.tikione.c2e.service.AbstractWriter
 import net.sf.jmimemagic.Magic
@@ -74,6 +75,9 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             w.write("<br/><br/><br/></div>\n")
             w.write("<div id='articles'>\n")
 
+
+            writeEdito(w, magazine.edito)
+
             // articles
             for (category in magazine.toc) {
                 w.write("<h2 class=\"category-title\">" + category.title + "</h2>\n\n")
@@ -98,6 +102,16 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 file.absolutePath,
                 if (sizeInMb) fileSize / ONE_MB else fileSize / ONE_KB,
                 if (sizeInMb) "MB" else "KB")
+    }
+
+    private fun writeEdito(w: Writer, edito: Edito?) {
+        w.write(
+                div("edito",
+                        div("category-title", edito?.title),
+                        div("article-author-creationdate", edito?.authorAndDate),
+                        div("article-content", edito?.content)
+                )
+        )
     }
 
     private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?) {
@@ -138,12 +152,10 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     }
 
     private fun writeArticleAuthorCreationdate(w: Writer, article: Article) {
-        if (filled(article.authorAndDate)) {
-            w.write("<div class='article-author-creationdate'>")
-            w.write(article.authorAndDate!!)
-            w.write("</div>\n")
-        }
+        w.write(div("article-author-creationdate", article.authorAndDate))
     }
+
+
 
     private fun writeArticleSpecs(w: Writer, article: Article) {
         val buff = StringBuilder()
@@ -319,5 +331,44 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
 
     private fun boldSpecTitle(str: String): String {
         return if (str.contains(":")) "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) else str
+    }
+
+
+    /**
+     * return a div element with the given name, class and contents
+     */
+    private fun div(cssClass: String? , vararg contents: String?) : String {
+        return createElmWithAttr("div", mapOf("class" to cssClass), contents.asList())
+    }
+
+    /**
+     * return an element with the given class and contents
+     */
+    private fun elm(name : String, cssClass: String?, vararg contents: String) : String {
+        return createElmWithAttr(name, mapOf("class" to cssClass), contents.asList())
+    }
+
+    /**
+     * Simple generic way to produce an html 'tag' with attributes and content
+     */
+    private fun createElmWithAttr(name : String, attributes : Map<String?, String?> , contents : List<String?>) : String {
+        if(contents.isEmpty())
+            return ""
+
+        val elmCContent = contents.filterNotNull().joinToString("\n")
+
+        @Suppress("SimplifiableCallChain")
+        val elemAttributes= attributes
+                //rules: an empty key is discarded, but an empty value is kept. To withdraw a value it must be null
+                .filterKeys { !it.isNullOrBlank() }.filterValues { it != null }
+                .map { it -> "${it.key}='${it.value}'" }
+                .joinToString(" ")
+
+
+        return """
+            <$name $elemAttributes>
+                $elmCContent
+            </$name>
+            """.trimIndent()
     }
 }
