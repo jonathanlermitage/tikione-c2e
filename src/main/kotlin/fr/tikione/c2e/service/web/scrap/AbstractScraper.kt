@@ -35,9 +35,9 @@ abstract class AbstractScraper : AbstractReader(), CPCScraperService {
     }
 
 
-    private inline fun noException(extrractor: () -> List<Article>): List<Article> {
+    private inline fun noException(extractor: () -> List<Article>): List<Article> {
         return try {
-            extrractor()
+            extractor()
         } catch (e: Exception) {
             e.printStackTrace()
             emptyList()
