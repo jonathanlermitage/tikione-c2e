@@ -106,11 +106,11 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
 
     private fun writeEdito(w: Writer, edito: Edito?) {
         w.write(
-                div("edito",
-                        div("category-title", edito?.title),
-                        div("article-author-creationdate", edito?.authorAndDate),
-                        div("article-content", edito?.content)
-                )
+            div("edito",
+                div("category-title", edito?.title),
+                div("article-author-creationdate", edito?.authorAndDate),
+                div("article-content", edito?.content)
+            )
         )
     }
 
