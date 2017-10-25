@@ -17,29 +17,30 @@ abstract class AbstractScraper : AbstractReader(), CPCScraperService {
 
     override fun extractBestArticles(doc: Document): List<Article> {
         val extractions = listOf(
-                safe { extractNews(doc) },
-                safe { extractSingleNews(doc) },
-                safe { extractPlumePudding(doc) },
-                safe { extractShortTests(doc) },
-                safe { extractTests(doc) },
-                safe { extractComing(doc) },
-                safe { extractUnderConstruction(doc) },
-                safe { extractTechno(doc) },
-                safe { extractStudy(doc) },
-                safe { extractEverythingElse(doc) }
+                noException { extractNews(doc) },
+                noException { extractSingleNews(doc) },
+                noException { extractPlumePudding(doc) },
+                noException { extractShortTests(doc) },
+                noException { extractTests(doc) },
+                noException { extractComing(doc) },
+                noException { extractUnderConstruction(doc) },
+                noException { extractTechno(doc) },
+                noException { extractStudy(doc) },
+                noException { extractEverythingElse(doc) }
         )
 
-        return extractions.map { Pair(rate(it), it ?: emptyList()) }
+        return extractions.map { Pair(rate(it), it) }
                 //sort by highest score (first) and return the articles (second)
                 .sortedByDescending { it.first }.map { it.second }[0]
     }
 
-    private inline fun <T> safe(function: () -> T): T? {
+
+    private inline fun noException(extrractor: () -> List<Article>): List<Article> {
         return try {
-            function()
+            extrractor()
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            emptyList()
         }
     }
 
