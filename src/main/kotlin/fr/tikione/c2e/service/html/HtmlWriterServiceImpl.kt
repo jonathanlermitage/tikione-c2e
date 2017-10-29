@@ -52,7 +52,6 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         BufferedWriter(FileWriter(file)).use { w ->
             w.write(header)
 
-
             // toc
             w.write("<div id='toc'>\n")
             w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.number + "</h1>\n")
@@ -169,8 +168,6 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     private fun writeArticleAuthorCreationdate(w: Writer, article: Article) {
         w.write(div("article-author-creationdate", article.authorAndDate))
     }
-
-
 
     private fun writeArticleSpecs(w: Writer, article: Article) {
         val buff = StringBuilder()
