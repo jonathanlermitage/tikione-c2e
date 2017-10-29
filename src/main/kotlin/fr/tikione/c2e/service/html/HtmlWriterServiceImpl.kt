@@ -5,6 +5,7 @@ import compat.Tools
 import fr.tikione.c2e.Main
 import fr.tikione.c2e.model.web.Article
 import fr.tikione.c2e.model.web.ArticleType
+import fr.tikione.c2e.model.web.Edito
 import fr.tikione.c2e.model.web.Magazine
 import fr.tikione.c2e.service.AbstractWriter
 import net.sf.jmimemagic.Magic
@@ -19,6 +20,7 @@ import java.io.*
 import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.LinkedHashMap
 
 class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWriterService {
 
@@ -54,6 +56,18 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             w.write("<div id='toc'>\n")
             w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.number + "</h1>\n")
             w.write("<div class='toc-columns-container'>\n")
+
+            // Edito is apart, prepend it as the first item in the TOC
+            w.write(elm("h3", "toc-item-title",
+                a("", mapOf<String?, String?>(
+                        "href" to "#Edito",
+                        "onclick" to "showToc(false);"),
+                        normalizeAnchorUrl("Edito")
+                )
+            ))
+
+
+            // now create the links for all the categories and articles
             for (category in magazine.toc) {
                 w.write("<h2 class='toc-category-title'>" + category.title + "</h2>\n\n")
                 for (tocItem in category.items) {
@@ -73,6 +87,9 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                     .replace("$\$funpicNight_base64$$", funpicNight))
             w.write("<br/><br/><br/></div>\n")
             w.write("<div id='articles'>\n")
+
+
+            writeEdito(w, magazine.edito)
 
             // articles
             for (category in magazine.toc) {
@@ -98,6 +115,17 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 file.absolutePath,
                 if (sizeInMb) fileSize / ONE_MB else fileSize / ONE_KB,
                 if (sizeInMb) "MB" else "KB")
+    }
+
+    private fun writeEdito(w: Writer, edito: Edito?) {
+        w.write( div("edito-cotainer", mapOf<String?, String?>("id" to normalizeAnchorUrl("Edito")),
+                div("article-title", edito?.title)
+                + div("article",
+                    div("article-author-creationdate", edito?.authorAndDate),
+                    div("article-content", edito?.content)
+                )
+        )
+        )
     }
 
     private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?) {
@@ -138,11 +166,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     }
 
     private fun writeArticleAuthorCreationdate(w: Writer, article: Article) {
-        if (filled(article.authorAndDate)) {
-            w.write("<div class='article-author-creationdate'>")
-            w.write(article.authorAndDate!!)
-            w.write("</div>\n")
-        }
+        w.write(div("article-author-creationdate", article.authorAndDate))
     }
 
     private fun writeArticleSpecs(w: Writer, article: Article) {
@@ -319,5 +343,66 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
 
     private fun boldSpecTitle(str: String): String {
         return if (str.contains(":")) "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) else str
+    }
+
+
+    /**
+     * return a 'a' element with the given class, attributes and contents
+     */
+    private fun a(cssClass: String? , attributes: Map<String?, String?>, vararg contents: String?) : String {
+        return elmWithAttr("a", cssClass, attributes, contents.asList())
+    }
+
+    /**
+     * return a div element with the given class, attributes and contents
+     */
+    private fun div(cssClass: String? , attributes: Map<String?, String?> = emptyMap(), vararg contents: String?) : String {
+        return elmWithAttr("div", cssClass, attributes, contents.asList())
+    }
+
+    /**
+     * return a div element with the given class and contents
+     */
+    private fun div(cssClass: String? , vararg contents: String?) : String {
+        return elmWithAttr("div", cssClass,  mapOf("class" to cssClass), contents.asList())
+    }
+
+    /**
+     * return an element with the given class and contents
+     */
+    private fun elm(name : String, cssClass: String?, vararg contents: String?) : String {
+        return elmWithAttr(name, cssClass, mapOf("class" to cssClass), contents.asList())
+    }
+
+
+    /**
+     * Simple generic way to produce an html 'tag' with attributes and content
+     */
+    private fun elmWithAttr(name : String, cssClass : String?, attributes : Map<String?, String?>, contents : List<String?>) : String {
+        if(contents.isEmpty())
+            return ""
+
+        val elmCContent = contents.filterNotNull().joinToString("\n")
+
+        val htmlAttributesMap = LinkedHashMap<String?, String?>(attributes.size+1)
+        htmlAttributesMap["class"]=cssClass
+
+        htmlAttributesMap.putAll(attributes
+                //rules: an empty key is discarded, but an empty value is kept. To withdraw a value it must be null
+                .filterKeys { !it.isNullOrBlank() }
+                .filterValues { it != null }
+        )
+
+        @Suppress("SimplifiableCallChain")
+        val htmlAttributes = htmlAttributesMap
+                .map { it -> "${it.key}='${it.value}'" }
+                .joinToString(" ")
+
+
+        return """
+            <$name $htmlAttributes>
+                $elmCContent
+            </$name>
+            """.trimIndent()
     }
 }
