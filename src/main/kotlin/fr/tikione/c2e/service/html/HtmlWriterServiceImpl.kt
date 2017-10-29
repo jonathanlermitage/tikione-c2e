@@ -20,6 +20,7 @@ import java.io.*
 import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.LinkedHashMap
 
 class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWriterService {
 
@@ -51,10 +52,23 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         BufferedWriter(FileWriter(file)).use { w ->
             w.write(header)
 
+
             // toc
             w.write("<div id='toc'>\n")
             w.write("<h1 class='toc-title'>Sommaire CanardPC n°" + magazine.number + "</h1>\n")
             w.write("<div class='toc-columns-container'>\n")
+
+            // Edito is apart, prepend it as the first item in the TOC
+            w.write(elm("h3", "toc-item-title",
+                a("", mapOf<String?, String?>(
+                        "href" to "#Edito",
+                        "onclick" to "showToc(false);"),
+                        normalizeAnchorUrl("Edito")
+                )
+            ))
+
+
+            // now create the links for all the categories and articles
             for (category in magazine.toc) {
                 w.write("<h2 class='toc-category-title'>" + category.title + "</h2>\n\n")
                 for (tocItem in category.items) {
@@ -105,12 +119,13 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     }
 
     private fun writeEdito(w: Writer, edito: Edito?) {
-        w.write(
-            div("edito",
-                div("category-title", edito?.title),
-                div("article-author-creationdate", edito?.authorAndDate),
-                div("article-content", edito?.content)
-            )
+        w.write( div("edito-cotainer", mapOf<String?, String?>("id" to normalizeAnchorUrl("Edito")),
+                div("article-title", edito?.title)
+                + div("article",
+                    div("article-author-creationdate", edito?.authorAndDate),
+                    div("article-content", edito?.content)
+                )
+        )
         )
     }
 
@@ -335,38 +350,60 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
 
 
     /**
-     * return a div element with the given name, class and contents
+     * return a 'a' element with the given class, attributes and contents
+     */
+    private fun a(cssClass: String? , attributes: Map<String?, String?>, vararg contents: String?) : String {
+        return elmWithAttr("a", cssClass, attributes, contents.asList())
+    }
+
+    /**
+     * return a div element with the given class, attributes and contents
+     */
+    private fun div(cssClass: String? , attributes: Map<String?, String?> = emptyMap(), vararg contents: String?) : String {
+        return elmWithAttr("div", cssClass, attributes, contents.asList())
+    }
+
+    /**
+     * return a div element with the given class and contents
      */
     private fun div(cssClass: String? , vararg contents: String?) : String {
-        return createElmWithAttr("div", mapOf("class" to cssClass), contents.asList())
+        return elmWithAttr("div", cssClass,  mapOf("class" to cssClass), contents.asList())
     }
 
     /**
      * return an element with the given class and contents
      */
-    private fun elm(name : String, cssClass: String?, vararg contents: String) : String {
-        return createElmWithAttr(name, mapOf("class" to cssClass), contents.asList())
+    private fun elm(name : String, cssClass: String?, vararg contents: String?) : String {
+        return elmWithAttr(name, cssClass, mapOf("class" to cssClass), contents.asList())
     }
+
 
     /**
      * Simple generic way to produce an html 'tag' with attributes and content
      */
-    private fun createElmWithAttr(name : String, attributes : Map<String?, String?> , contents : List<String?>) : String {
+    private fun elmWithAttr(name : String, cssClass : String?, attributes : Map<String?, String?>, contents : List<String?>) : String {
         if(contents.isEmpty())
             return ""
 
         val elmCContent = contents.filterNotNull().joinToString("\n")
 
-        @Suppress("SimplifiableCallChain")
-        val elemAttributes= attributes
+        val htmlAttributesMap = LinkedHashMap<String?, String?>(attributes.size+1)
+        htmlAttributesMap["class"]=cssClass
+
+        htmlAttributesMap.putAll(attributes
                 //rules: an empty key is discarded, but an empty value is kept. To withdraw a value it must be null
-                .filterKeys { !it.isNullOrBlank() }.filterValues { it != null }
+                .filterKeys { !it.isNullOrBlank() }
+                .filterValues { it != null }
+        )
+
+        @Suppress("SimplifiableCallChain")
+        val htmlAttributes = htmlAttributesMap
                 .map { it -> "${it.key}='${it.value}'" }
                 .joinToString(" ")
 
 
         return """
-            <$name $elemAttributes>
+            <$name $htmlAttributes>
                 $elmCContent
             </$name>
             """.trimIndent()
