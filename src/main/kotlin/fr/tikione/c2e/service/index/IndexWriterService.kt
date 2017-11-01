@@ -6,6 +6,9 @@ import java.io.IOException
 
 interface IndexWriterService {
 
+    /**
+     * Write an index file of given magazines.
+     */
     @Throws(IOException::class)
-    fun write(auth: Auth, magNumbers: List<String>, file: File)
+    fun write(auth: Auth, magNumbers: ArrayList<String>, file: File)
 }

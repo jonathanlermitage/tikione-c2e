@@ -1,5 +1,10 @@
 ## TikiOne C2E Change Log
 
+### 1.3.7 (dev en cours)
+
+* ajout de l'édito.
+* la création de l'index est désormais incrémentale : seuls les nouveaux numéros sont ajoutés à l'index existant.
+
 ### 1.3.6 (2017/10/25)
 
 * ajout du paramètre `-index` : génère un sommaire CSV (codage ISO 8859-1, séparateur : virgule) de tous les numéros disponibles au téléchargement. Ce sommaire permet de lister l'intégralité des jeux testés, previews, etc, et quelques données associées comme la note, date de publication, détails technique.

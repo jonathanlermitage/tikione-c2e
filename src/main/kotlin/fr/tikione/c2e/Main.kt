@@ -18,7 +18,7 @@ object Main {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     var DEBUG = false
-    val VERSION = "1.3.6"
+    val VERSION = "1.3.7"
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
     private val PAUSE_BETWEEN_MAG_DL = 30L
 
@@ -103,7 +103,7 @@ object Main {
         }
 
         if (doIndex) {
-            log.info("creation de l'index de tous les numeros disponibles : {}", headers)
+            log.info("creation de l'index de tous les numeros disponibles")
             val file = File("CPC-index.csv")
             val writerService: IndexWriterService = kodein.instance()
             writerService.write(auth, headers, file)

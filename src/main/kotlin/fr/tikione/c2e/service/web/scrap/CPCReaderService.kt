@@ -11,15 +11,15 @@ interface CPCReaderService {
     /**
      * List downloadable magazines: archives and current.
      * @param auth authentication data.
-     * @return web number and title.
+     * @return magazines number and title.
      */
-    fun listDownloadableMagazines(auth: Auth): List<String>
+    fun listDownloadableMagazines(auth: Auth): ArrayList<String>
 
     /**
-     * Download a web.
+     * Download a magazine.
      * @param auth authentication data.
-     * @param number web number.
-     * @return web.
+     * @param number magazine number.
+     * @return magazine.
      */
     fun downloadMagazine(auth: Auth, number: String): Magazine
 }
