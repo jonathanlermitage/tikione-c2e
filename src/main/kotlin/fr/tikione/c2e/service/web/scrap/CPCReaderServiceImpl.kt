@@ -19,7 +19,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
 
     private val cpcScraperService: CPCScraperService = kodein.instance()
 
-    override fun listDownloadableMagazines(auth: Auth): List<String> {
+    override fun listDownloadableMagazines(auth: Auth): ArrayList<String> {
         val doc = Jsoup.connect(CPC_BASE_URL)
                 .cookies(auth.cookies)
                 .userAgent(AbstractReader.UA)

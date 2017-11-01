@@ -20,13 +20,35 @@ class IndexWriterServiceImpl : IndexWriterService {
     private val csvDelimiterRegex = ",".toRegex()
 
     @Throws(IOException::class)
-    override fun write(auth: Auth, magNumbers: List<String>, file: File) {
+    override fun write(auth: Auth, magNumbers: ArrayList<String>, file: File) {
+
+        if (magNumbers.contains("hs22")) {
+            magNumbers.remove("hs22") // TODO maybe detect and remove all HS mags? hs22 contains no game test.
+        }
+
+        val games = ArrayList<GameEntry>(magNumbers.size * 24)
+        val indexReader: IndexReaderService = kodein.instance()
+        val existingMags = indexReader.read(file)
+
+        if (existingMags.magNumbers.size > 0) {
+            log.info("les numeros suivants sont deja presents dans l'index, ils ne seront pas retelecharges: {}", existingMags.magNumbers)
+            magNumbers.removeAll(existingMags.magNumbers)
+            games.addAll(existingMags.games)
+            if (magNumbers.size > 0) {
+                log.info("il reste {} numeros a telecharger : {}", magNumbers.size, magNumbers)
+            } else {
+                log.info("il ne reste plus rien a telecharger, l'index est deja a jour")
+                log.info("rappel : le fichier d'index est : {}", file.absolutePath)
+                return
+            }
+        }
+        log.info("creation de l'index des numeros : {}", magNumbers)
+
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
         }
         val reader: CPCReaderService = kodein.instance()
-        val games = ArrayList<GameEntry>(magNumbers.size * 24)
         magNumbers.forEach { number ->
             val mag = reader.downloadMagazine(auth, number)
             mag.toc.forEach { toc ->

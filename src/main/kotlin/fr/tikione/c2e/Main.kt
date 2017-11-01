@@ -103,7 +103,7 @@ object Main {
         }
 
         if (doIndex) {
-            log.info("creation de l'index de tous les numeros disponibles : {}", headers)
+            log.info("creation de l'index de tous les numeros disponibles")
             val file = File("CPC-index.csv")
             val writerService: IndexWriterService = kodein.instance()
             writerService.write(auth, headers, file)

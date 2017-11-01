@@ -26,7 +26,7 @@ Trois versions packagées existent :
   * ``-list`` savoir quels numéros sont accessibles au téléchargement.
   * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON.
   * ``-resizeXX`` redimensionne les images selon le ratio `XX` (ex: `-resize50` pour un ratio de 50%). Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows uniquement, mais doit fonctionner partout où ImageMagick est disponible.
-  * `-index` génère un sommaire CSV (`CPC-index.csv`) de tous les numéros disponibles au téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention, prévoir plusieurs dizaines de minutes pour ce traitement.
+  * `-index` génère un sommaire CSV (`CPC-index.csv`) de tous les numéros disponibles au téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention, prévoir plusieurs dizaines de minutes pour ce traitement. Si le fichier `CPC-index.csv` existe déjà, il sera complété avec les numéros manquants.
   
 *Attention, le paramètre `-html` est supprimé depuis la version 1.3.3. Pour les versions précédentes, n'oubliez pas de préciser `-html` pour générer le fichier.* 
     
