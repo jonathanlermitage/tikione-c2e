@@ -42,6 +42,7 @@ class IndexReaderServiceImpl : IndexReaderService {
                 gameEntries.magNumbers.add(ge.magNumber)
             }
         }
+        gameEntries.magNumbers.sortDescending()
         return gameEntries
     }
 }
