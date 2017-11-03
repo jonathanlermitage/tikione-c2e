@@ -13,19 +13,19 @@ Deux branches sont développées :
 Téléchargez [la dernière release](https://github.com/jonathanlermitage/tikione-c2e/releases) et décompressez-là dans un répertoire accessible en écriture. 
 
 Trois versions packagées existent : 
-* avec un JRE Windows 64bits et ImageMagick (``c2e-x.y.z-withWin64JRE-withImageMagick.zip``), **recommandé**.
-* avec un JRE Windows 64bits (``c2e-x.y.z-withWin64JRE.zip``).
-* et sans JRE (``c2e-x.y.z.zip``).
+* avec un JRE Windows 64bits et ImageMagick (`c2e-x.y.z-withWin64JRE-withImageMagick.zip`), **recommandé**.
+* avec un JRE Windows 64bits (`c2e-x.y.z-withWin64JRE.zip`).
+* et sans JRE (`c2e-x.y.z.zip`).
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez ``c2e.cmd username password -cpcXXX -nopic -list -debug -resizeXX`` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
-  * ``username`` et ``password`` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires.
-  * ``-cpcXXX`` télécharger le numéro XXX, par exemple ``-cpc348``.  *(depuis la version 1.1.0)* Télécharger plusieurs numéros, par exemple ``-cpc348 -cpc349 -cpc350 -cpc351``. Vous pouvez aussi utiliser ``-cpcall`` pour télécharger l'intégralité des numéros à votre disposition.
-  * ``-nopic`` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
-  * ``-list`` savoir quels numéros sont accessibles au téléchargement.
-  * ``-debug`` affiche le détail du téléchargement dans un format proche de JSON.
-  * ``-resizeXX`` redimensionne les images selon le ratio `XX` (ex: `-resize50` pour un ratio de 50%). Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows uniquement, mais doit fonctionner partout où ImageMagick est disponible.
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez `c2e.cmd username password -cpcXXX -nopic -list -debug -resizeXX` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
+  * `username` et `password` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires.
+  * `-cpcXXX` télécharger le numéro XXX, par exemple `-cpc348`.  *(depuis la version 1.1.0)* Télécharger plusieurs numéros, par exemple `-cpc348 -cpc349 -cpc350 -cpc351`. Vous pouvez aussi utiliser `-cpcall` pour télécharger l'intégralité des numéros à votre disposition.
+  * `-nopic` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
+  * `-list` savoir quels numéros sont accessibles au téléchargement.
+  * `-debug` affiche le détail du téléchargement dans un format proche de JSON.
+  * `-resizeXX` redimensionne les images selon le ratio `XX` (ex: `-resize50` pour un ratio de 50%). Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows uniquement, mais doit fonctionner partout où ImageMagick est disponible.
   * `-index` génère un sommaire CSV (`CPC-index.csv`) de tous les numéros disponibles au téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention, prévoir plusieurs dizaines de minutes pour ce traitement. Si le fichier `CPC-index.csv` existe déjà, il sera complété avec les numéros manquants.
   
 *Attention, le paramètre `-html` est supprimé depuis la version 1.3.3. Pour les versions précédentes, n'oubliez pas de préciser `-html` pour générer le fichier.* 
@@ -39,15 +39,17 @@ Exemples :
 * Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
 * Pour générer le sommaire de l'intégralité des numéros disponibles, tapez `c2e.cmd username password -index`.
     
-Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom ``CPCxxx-opts.html`` où ``xxx`` est le numéro et ``-opts`` rappelle certains paramètres (``-nopic``, `-resize`), par exemple ``CPC348-nopic.html``.
+Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom `CPCxxx-opts.html` où `xxx` est le numéro et `-opts` rappelle certains paramètres (`-nopic`, `-resize`), par exemple `CPC348-nopic.html`.
 
 ### MacOS, Linux, BSD
 
-Téléchargez et décompressez la version packagée ``c2e-x.y.z.zip``. Comme Windows, mais remplacez ``c2e.cmd`` par ``java -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar"``. Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez ``sudo apt-get install default-jre``).
+Téléchargez et décompressez la version packagée `c2e-x.y.z.zip`. Comme Windows, mais remplacez `c2e.cmd` par `./c2e.sh`.  
+Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez `sudo apt-get install default-jre`). Aussi, `c2e.sh` doit être rendu exécutable : tapez `chmod +x c2e.sh`.  
+Ce script est testé sous Ubuntu 16.04 LTS et devrait fonctionner sur la majorité des distributions Linux.
 
 ## Compilation
 
-Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Gradle. Installez un JDK8 et Gradle 3+, puis lancez ``gradle jar`` pour construire un applicatif dans le répertoire ``build/libs`` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
+Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Gradle. Installez un JDK8 et Gradle 3+, puis lancez `gradle jar` pour construire un applicatif dans le répertoire `build/libs` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
 
 ## Avancement
 

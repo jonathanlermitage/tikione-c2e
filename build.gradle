@@ -49,10 +49,10 @@ task copyLibs(type: Copy) {
     from configurations.runtime
     into "$buildDir/libs/lib"
 }
-task copyWindowsLauncher(type: Copy) {
+task copyLaunchers(type: Copy) {
     from "./launcher"
     into "$buildDir/libs"
-    include('*.cmd')
+    include('*.cmd', "*.sh")
 }
 task copyDoc(type: Copy) {
     from "."
@@ -71,7 +71,7 @@ jar {
         }
     }
     dependsOn copyLibs
-    dependsOn copyWindowsLauncher
+    dependsOn copyLaunchers
     dependsOn copyDoc
 }
 

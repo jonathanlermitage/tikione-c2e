@@ -1,9 +1,10 @@
 ## TikiOne C2E Change Log
 
-### 1.3.7 (dev en cours)
+### 1.3.7 (2017/11/03)
 
-* ajout de l'édito.
+* intégration de l'édito lors du téléchargement d'un numéro.
 * la création de l'index est désormais incrémentale : seuls les nouveaux numéros sont ajoutés à l'index existant.
+* ajout du script de démarrage Linux. Testé sous Ubuntu 16.04 LTS.
 
 ### 1.3.6 (2017/10/25)
 
@@ -54,7 +55,7 @@
 
 ### 1.2.2 (2017/08/05)
 
-* tous les messages sont archivés dans des logs. Voir le sous-dossier ``logs``.
+* tous les messages sont archivés dans des logs. Voir le sous-dossier `logs`.
 * le numéro de version de l'application est affiché au démarrage.
 
 ### 1.2.1 (2017/07/21)
@@ -63,7 +64,7 @@
 
 ### 1.2.0 (2017/07/06)
 
-* le fichier de sortie porte maintenant le nom ``CPCxxx-opts.ext`` où ``xxx`` est le numéro, ``ext`` l'extension voulue et ``-opts`` reprends le nom de certains paramètres (``-nopic``, ``-compresspic``), par exemple ``CPC348-nopic.html``.
+* le fichier de sortie porte maintenant le nom `CPCxxx-opts.ext` où `xxx` est le numéro, `ext` l'extension voulue et `-opts` reprends le nom de certains paramètres (`-nopic`, `-compresspic`), par exemple `CPC348-nopic.html`.
 * optimisations et nettoyage du code.
 
 ### 1.1.0 (2017/06/30)
@@ -75,20 +76,20 @@
 * la taille du fichier d'export HTML est affichée en fin de process.
 * de courtes pauses son marquées durant le téléchargement pour ne pas surcharger le serveur CanardPC : 30s entre chaque numéro, 500ms entre chaque article et 250ms entre chaque image. Cela permet aussi de réduire drastiquement les erreurs de téléchargement (articles vides).
 * il est désormais possible de télécharger un, plusieurs ou tous les numéros :
-  * ``-cpc348`` télécharge uniquement le numéro 348.
-  * ``-cpc348 -cpc349 -cpc350...`` le paramètre ``-cpc`` peut être répété, ici pour télécharger les numéros 348, 349 et 350.
-  * ``-cpcall`` télécharge tous les numéros à votre disposition.
-* correction d'un crash (sans conséquences) à la fermeture du programme lorsque ``-list`` est utilisé sans demander d'export.
-* ajout du paramètre ``-compresspic`` pour compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final. Les images ne sont donc plus compressées par défaut car certaines images PNG posent problème (le canal Alpha semble mal géré et les images compressées ne sont pas satisfaisantes).
+  * `-cpc348` télécharge uniquement le numéro 348.
+  * `-cpc348 -cpc349 -cpc350...` le paramètre `-cpc` peut être répété, ici pour télécharger les numéros 348, 349 et 350.
+  * `-cpcall` télécharge tous les numéros à votre disposition.
+* correction d'un crash (sans conséquences) à la fermeture du programme lorsque `-list` est utilisé sans demander d'export.
+* ajout du paramètre `-compresspic` pour compresser les images lorsque c'est possible, afin de gagner quelques Mo sur le fichier final. Les images ne sont donc plus compressées par défaut car certaines images PNG posent problème (le canal Alpha semble mal géré et les images compressées ne sont pas satisfaisantes).
 
 ### 1.0.0 (2017/06/15)
 
-* le programme est packagé pour Windows avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). Lancer ``c2e.cmd`` suivi des paramètres décrits dans la version 0.0.4, par exemple ``c2e.bat username password -cpc348``. Attention, ``-gui`` n'est pas encore branché, ni ``-pdf`` et ``-epub``. Les utilisateurs de MacOS, Linux ou BSD devraient savoir se débrouiller pour installer un JRE (un script sera créé plus tard).
+* le programme est packagé pour Windows avec un JRE [Zulu d'Azul](http://www.azul.com/downloads/zulu/zulu-windows/) (se compresse beaucoup mieux que la [HotSpot d'Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html)). Lancer `c2e.cmd` suivi des paramètres décrits dans la version 0.0.4, par exemple `c2e.bat username password -cpc348`. Attention, `-gui` n'est pas encore branché, ni `-pdf` et `-epub`. Les utilisateurs de MacOS, Linux ou BSD devraient savoir se débrouiller pour installer un JRE (un script sera créé plus tard).
 
 ### 0.0.4 (2017/06/14)
 
 * un affichage optimisé pour la lecture en journée, et un autre pour la nuit. Un bouton permet de passer de l'un à l'autre facilement.
-* une CLI basique est disponible. Les paramètres sont : ``username password [-gui] [-debug] [-list] [-cpc348] [-pdf] [-epub] [-html] [-nopic]`` où ``-gui`` démarre une interface graphique au lieu de la ligne de commande, ``-cpc`` spécifie le numéro à télécharger, ``-pdf`` ``-epub`` ``-html`` le format de sortie (seul ``-html`` est branché aujourd'hui), ``-nopic`` pour ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte), et ``-list`` pour savoir quels numéros sont accessibles au téléchargement. Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom ``CPCxxx.ext`` où ``xxx`` est le numéro et ``ext`` l'extension voulue, par exemple ``CPC348.html``. Enfin, ``-debug`` affiche le détail du téléchargement dans un format proche de JSON.
+* une CLI basique est disponible. Les paramètres sont : `username password [-gui] [-debug] [-list] [-cpc348] [-pdf] [-epub] [-html] [-nopic]` où `-gui` démarre une interface graphique au lieu de la ligne de commande, `-cpc` spécifie le numéro à télécharger, `-pdf` `-epub` `-html` le format de sortie (seul `-html` est branché aujourd'hui), `-nopic` pour ne pas téléchanger les images (un numéro contient 60~100Mo d'images, et ~500Ko de texte), et `-list` pour savoir quels numéros sont accessibles au téléchargement. Le fichier est généré (ou écrasé) dans le répertoire courant et porte le nom `CPCxxx.ext` où `xxx` est le numéro et `ext` l'extension voulue, par exemple `CPC348.html`. Enfin, `-debug` affiche le détail du téléchargement dans un format proche de JSON.
   
 ### 0.0.3 (2017/06/06)
 
