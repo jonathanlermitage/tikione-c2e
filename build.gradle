@@ -1,5 +1,5 @@
 group 'tikione'
-version '1.3.7'
+version '1.3.8'
 
 buildscript {
     ext.kotlin_version = '1.1.51'
@@ -45,6 +45,11 @@ configurations {
     jar.archiveName = 'c2e.jar'
 }
 
+task createProperties {
+    def file = new File("$buildDir/resources/main/version.txt")
+    file.delete()
+    file.write(project.version.toString())
+}
 task copyLibs(type: Copy) {
     from configurations.runtime
     into "$buildDir/libs/lib"
@@ -70,9 +75,13 @@ jar {
             }
         }
     }
+    dependsOn createProperties
     dependsOn copyLibs
     dependsOn copyLaunchers
     dependsOn copyDoc
+}
+build {
+    dependsOn createProperties
 }
 
 dependencies {

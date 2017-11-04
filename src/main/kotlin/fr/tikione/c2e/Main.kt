@@ -1,6 +1,8 @@
 package fr.tikione.c2e
 
+import android.content.res.AssetManager
 import com.github.salomonbrys.kodein.instance
+import compat.Tools
 import fr.tikione.c2e.service.html.HtmlWriterService
 import fr.tikione.c2e.service.index.IndexWriterService
 import fr.tikione.c2e.service.web.CPCAuthService
@@ -18,7 +20,7 @@ object Main {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     var DEBUG = false
-    val VERSION = "1.3.7"
+    var VERSION = Tools.resourceAsStr("version.txt", AssetManager())
     private val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
     private val PAUSE_BETWEEN_MAG_DL = 30L
 
