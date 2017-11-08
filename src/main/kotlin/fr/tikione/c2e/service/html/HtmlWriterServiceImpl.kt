@@ -98,7 +98,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 for (tocItem in category.items) {
                     w.write("<div id='"
                             + normalizeAnchorUrl(category.title!! + tocItem.title!!)
-                            + "'class=\"article-title\">"
+                            + " 'class=\"article-title\">"
                             + tocItem.title
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
