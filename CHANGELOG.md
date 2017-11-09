@@ -1,5 +1,10 @@
 ## TikiOne C2E Change Log
 
+### 1.3.8 (dev en cours)
+
+* correction d'un code HTML invalide dans le titre des articles.
+* ajout des paramètres `-proxy=http|https:address:port` et `-sysproxy` pour définir un proxy. Exemple pour utiliser le proxy HTTP "companygateway" sur le port 3128 : `-proxy=http:companygateway:3128`. Pour le proxy système : `-sysproxy`.
+
 ### 1.3.7 (2017/11/03)
 
 * intégration de l'édito lors du téléchargement d'un numéro.

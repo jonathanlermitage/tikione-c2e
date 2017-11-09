@@ -56,6 +56,23 @@ object Main {
     private fun startCLI(vararg args: String) {
         assert(args.size > 2)
         val switchList = Arrays.asList(*args).subList(2, args.size)
+        if (args.contains("-sysproxy")) {
+            System.setProperty("java.net.useSystemProxies", "true")
+            log.info("utilisation du proxy système")
+        } else {
+            val proxy: List<String> = args.firstOrNull { it.startsWith("-proxy=") }?.substring("-proxy=".length)?.split(":").orEmpty()
+            if (3 == proxy.size) {
+                if (proxy[0] == "http") {
+                    System.setProperty("http.proxyHost", proxy[1])
+                    System.setProperty("http.proxyPort", proxy[2])
+                    log.info("utilisation du proxy HTTP {}:{}", proxy[1], proxy[2])
+                } else if (proxy[0] == "https") {
+                    System.setProperty("https.proxyHost", proxy[1])
+                    System.setProperty("https.proxyPort", proxy[2])
+                    log.info("utilisation du proxy HTTPS {}:{}", proxy[1], proxy[2])
+                }
+            }
+        }
         val doList = switchList.contains("-list")
         val doIncludePictures = !switchList.contains("-nopic")
         val doIndex = switchList.contains("-index")
