@@ -60,7 +60,7 @@ object Main {
             System.setProperty("java.net.useSystemProxies", "true")
             log.info("utilisation du proxy système")
         } else {
-            val proxy: List<String> = args.firstOrNull { it.startsWith("-proxy=") }?.substring("-proxy=".length)?.split(":").orEmpty()
+            val proxy: List<String> = args.firstOrNull { it.startsWith("-proxy:") }?.substring("-proxy:".length)?.split(":").orEmpty()
             if (3 == proxy.size) {
                 if (proxy[0] == "http") {
                     System.setProperty("http.proxyHost", proxy[1])
