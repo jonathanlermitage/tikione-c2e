@@ -45,11 +45,6 @@ configurations {
     jar.archiveName = 'c2e.jar'
 }
 
-task createProperties {
-    def file = new File("$buildDir/resources/main/version.txt")
-    file.delete()
-    file.write(project.version.toString())
-}
 task copyLibs(type: Copy) {
     from configurations.runtime
     into "$buildDir/libs/lib"
@@ -75,13 +70,21 @@ jar {
             }
         }
     }
-    dependsOn createProperties
+    doLast {
+        def file = new File("$buildDir/resources/main/version.txt")
+        file.delete()
+        file.write(project.version.toString())
+    }
     dependsOn copyLibs
     dependsOn copyLaunchers
     dependsOn copyDoc
 }
 build {
-    dependsOn createProperties
+    doLast {
+        def file = new File("$buildDir/resources/main/version.txt")
+        file.delete()
+        file.write(project.version.toString())
+    }
 }
 
 dependencies {
