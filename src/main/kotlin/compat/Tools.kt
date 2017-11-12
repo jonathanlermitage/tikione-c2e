@@ -17,6 +17,12 @@ class Tools {
 
     companion object {
 
+        val PAUSE_BETWEEN_MAG_DL = 30L
+        val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
+        val VERSION = resourceAsStr("version.txt", AssetManager())
+
+        var debug = false
+
         private val log: Logger = LoggerFactory.getLogger(Tools::class.java.javaClass)
 
         @Suppress("UNUSED_PARAMETER")
@@ -55,6 +61,21 @@ class Tools {
                 log.warn("la commande ImageMagick [$cmd] s'est teminee ave le code [$ev]")
             }
             return ev
+        }
+
+        @JvmStatic
+        fun setProxy(host: String, port: String) {
+            log.info("utilisation du proxy HTTP(S) {}:{}", host, port)
+            System.setProperty("http.proxyHost", host)
+            System.setProperty("http.proxyPort", port)
+            System.setProperty("https.proxyHost", host)
+            System.setProperty("https.proxyPort", port)
+        }
+
+        @JvmStatic
+        fun setSysProxy() {
+            log.info("utilisation du proxy systeme")
+            System.setProperty("java.net.useSystemProxies", "true")
         }
     }
 }

@@ -4,6 +4,7 @@
 
 * correction d'un code HTML invalide dans le titre des articles.
 * ajout des paramètres `-proxy:address:port` et `-sysproxy` pour définir un proxy. Exemple pour utiliser le proxy HTTP(S) "companygateway" sur le port 3128 : `-proxy:companygateway:3128`. Pour le proxy système : `-sysproxy`.
+* interne : refactoring en vue de simplifier le développement d'une interface graphique et l'application Android.
 
 ### 1.3.7 (2017/11/03)
 
