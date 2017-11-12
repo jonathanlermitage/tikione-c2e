@@ -56,23 +56,24 @@ object Main {
     private fun startCLI(vararg args: String) {
         assert(args.size > 2)
         val switchList = Arrays.asList(*args).subList(2, args.size)
+
+        // Proxy declaration
         if (args.contains("-sysproxy")) {
             System.setProperty("java.net.useSystemProxies", "true")
-            log.info("utilisation du proxy système")
+            log.info("utilisation du proxy systeme")
         } else {
-            val proxy: List<String> = args.firstOrNull { it.startsWith("-proxy:") }?.substring("-proxy:".length)?.split(":").orEmpty()
-            if (3 == proxy.size) {
-                if (proxy[0] == "http") {
-                    System.setProperty("http.proxyHost", proxy[1])
-                    System.setProperty("http.proxyPort", proxy[2])
-                    log.info("utilisation du proxy HTTP {}:{}", proxy[1], proxy[2])
-                } else if (proxy[0] == "https") {
-                    System.setProperty("https.proxyHost", proxy[1])
-                    System.setProperty("https.proxyPort", proxy[2])
-                    log.info("utilisation du proxy HTTPS {}:{}", proxy[1], proxy[2])
+            args.filter { arg -> arg.startsWith("-proxy:") }.forEach { arg ->
+                val proxy: List<String> = arg.substring("-proxy:".length).split(":")
+                if (2 == proxy.size) {
+                    System.setProperty("http.proxyHost", proxy[0])
+                    System.setProperty("http.proxyPort", proxy[1])
+                    System.setProperty("https.proxyHost", proxy[0])
+                    System.setProperty("https.proxyPort", proxy[1])
+                    log.info("utilisation du proxy HTTP(S) {}:{}", proxy[0], proxy[1])
                 }
             }
         }
+
         val doList = switchList.contains("-list")
         val doIncludePictures = !switchList.contains("-nopic")
         val doIndex = switchList.contains("-index")
