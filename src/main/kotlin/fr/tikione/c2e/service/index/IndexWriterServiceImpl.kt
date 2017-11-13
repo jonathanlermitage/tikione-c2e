@@ -2,6 +2,7 @@ package fr.tikione.c2e.service.index
 
 import com.github.salomonbrys.kodein.instance
 import fr.tikione.c2e.kodein
+import fr.tikione.c2e.model.index.GameEntries
 import fr.tikione.c2e.model.index.GameEntry
 import fr.tikione.c2e.model.web.Article
 import fr.tikione.c2e.model.web.Auth
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
+import java.util.*
 
 class IndexWriterServiceImpl : IndexWriterService {
 
@@ -28,7 +31,17 @@ class IndexWriterServiceImpl : IndexWriterService {
 
         val games = ArrayList<GameEntry>(magNumbers.size * 24)
         val indexReader: IndexReaderService = kodein.instance()
-        val existingMags = indexReader.read(file)
+        
+        //whenever we have an issue reading the index file, we rebuild it. This is quite rude, but it will avoid a crash
+        //if the file has been compromised or if the index format has changed
+        var existingMags: GameEntries
+        try {
+             existingMags = indexReader.read(file)
+        }
+        catch (e: Exception) {
+            deleteIndexFile(file)
+            existingMags = GameEntries()
+        }
 
         if (existingMags.magNumbers.size > 0) {
             log.info("les numeros suivants sont deja presents dans l'index, ils ne seront pas retelecharges: {}", existingMags.magNumbers)
@@ -44,6 +57,7 @@ class IndexWriterServiceImpl : IndexWriterService {
         }
         log.info("creation de l'index des numeros : {}", magNumbers)
 
+        //todo - question guillaume: I don't understand why the index file is deleted here ?
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
@@ -58,7 +72,8 @@ class IndexWriterServiceImpl : IndexWriterService {
                             val ge = GameEntry()
                             ge.title = article.title!!
                             ge.magNumber = number
-                            ge.authorAndDate = article.authorAndDate ?: ""
+                            ge.author = article.author ?: ""
+                            ge.date = formatDate(article.date) ?: ""
                             ge.gameConfig = article.gameConfig ?: ""
                             ge.gameDDL = article.gameDDL ?: ""
                             ge.gameDRM = article.gameDRM ?: ""
@@ -78,11 +93,12 @@ class IndexWriterServiceImpl : IndexWriterService {
         val orderedGames = games.sortedWith(compareBy({ it.title }, { it.magNumber }))
 
         val content = StringBuilder()
-        content.append("titre,numero mag,auteur et date,config,telechargement,DRM,developpeur,editeur,langue,plateforme,score,testeur\n")
+        content.append("titre,numero mag,auteur, date,config,telechargement,DRM,developpeur,editeur,langue,plateforme,score,testeur\n")
         orderedGames.forEach { game ->
             content.append(formatCSV(game.title)).append(",")
                     .append(formatCSV(game.magNumber)).append(",")
-                    .append(formatCSV(game.authorAndDate)).append(",")
+                    .append(formatCSV(game.author)).append(",")
+                    .append(formatCSV(game.date)).append(",")
                     .append(formatCSV(game.gameConfig)).append(",")
                     .append(formatCSV(game.gameDDL)).append(",")
                     .append(formatCSV(game.gameDRM)).append(",")
@@ -95,6 +111,22 @@ class IndexWriterServiceImpl : IndexWriterService {
         }
         FileUtils.write(file, content.toString(), StandardCharsets.ISO_8859_1.name())
         log.info("fichier d'index cree : {}", file.absolutePath)
+    }
+
+    private fun deleteIndexFile(file: File) {
+        try {
+            if (file.exists())
+                file.delete()
+        } catch (e: Exception) {
+            throw IOException("impossible de supprimer le fichier : " + file.absolutePath)
+        }
+    }
+
+    private fun formatDate(date: Date?): String? {
+        if(date == null) 
+            return ""
+        
+        return SimpleDateFormat("yyyy/MM/dd").format(date)
     }
 
     private fun isGame(a: Article): Boolean {

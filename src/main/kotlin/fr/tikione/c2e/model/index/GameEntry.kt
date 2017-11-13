@@ -5,8 +5,8 @@ class GameEntry {
     var title: String = ""
 
     var magNumber: String = ""
-
-    var authorAndDate: String = ""
+    var author: String = ""
+    var date: String = ""
     var gameConfig: String = ""
     var gameDev: String = ""
     var gameDDL: String = ""

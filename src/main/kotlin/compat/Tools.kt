@@ -36,6 +36,10 @@ class Tools {
         /**
          * Resize a picture.
          * Based on ImageMagick (must be in path) and validated with ImageMagick-7.0.6-10-Q16-x64 on Windows-8.1-x64.
+         *
+         * todo: why not using Java directly for this operation ?
+         * see https://stackoverflow.com/questions/244164/how-can-i-resize-an-image-using-java
+         * 
          * @param src original picture.
          * @param dest new picture.
          * @param resize new size ratio (percents), eg. '50'.
