@@ -14,7 +14,6 @@ abstract class AbstractScraper : AbstractReader(), CPCScraperService {
     }
 
 
-
     override fun extractBestArticles(doc: Document): List<Article> {
         val extractions = listOf(
                 noException { extractNews(doc) },

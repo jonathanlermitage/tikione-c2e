@@ -97,7 +97,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 for (tocItem in category.items) {
                     w.write("<div id='"
                             + normalizeAnchorUrl(category.title!! + tocItem.title!!)
-                            + " 'class=\"article-title\">"
+                            + "' class=\"article-title\">"
                             + tocItem.title
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
@@ -167,19 +167,18 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
 
     private fun writeArticleAuthorCreationdate(w: Writer, article: Article) {
         val content = ArrayList<String>()
-        
-        if(!article.author.isNullOrBlank()) {
+
+        if (!article.author.isNullOrBlank()) {
             content.add("Par ${article.author}")
         }
-        
-        if(article.date != null) {
-            content.add("${if(content.isEmpty()) "Le " else "le "} ${article.getFormattedDate()}")
+
+        if (article.date != null) {
+            content.add("${if (content.isEmpty()) "Le " else "le "} ${article.getFormattedDate()}")
         }
-        
+
         w.write(div("article-author-creationdate", content.joinToString(separator = " | ")))
     }
 
- 
 
     private fun writeArticleSpecs(w: Writer, article: Article) {
         val buff = StringBuilder()

@@ -8,7 +8,6 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.regex.Pattern
 
 class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
 
@@ -67,7 +66,7 @@ class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
      * CPC Format is  "Par Maria Kalash | le 29 août 2017"
      */
     fun extractDate(authorAndDate: String?): Date? {
-        if(authorAndDate == null)
+        if (authorAndDate == null)
             return null
 
         val splittenAuthorAndDate = authorAndDate.toLowerCase().split("| le ")
@@ -75,21 +74,21 @@ class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
         if (splittenAuthorAndDate.size != 2)
             return null
 
-        val rawDate=splittenAuthorAndDate[1].trim()
+        val rawDate = splittenAuthorAndDate[1].trim()
         //ok, how trusty can we be with the CPC data format ? let's try a regular french parser
         return SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH).parse(rawDate)
     }
 
-    
+
     /**
      * CPC Format is  "Par Maria Kalash | le 29 août 2017"
      */
     fun extractAuthor(authorAndDate: String?): String? {
-        if(authorAndDate == null)
+        if (authorAndDate == null)
             return null
-        
+
         return "Par *(.*) *\\|.*".toRegex().matchEntire(authorAndDate)?.groups?.get(1)?.value?.trim()
-        
+
     }
 
     override fun extractTests(doc: Document): List<Article> {

@@ -10,7 +10,7 @@ import java.io.IOException
 class CPCAuthServiceImpl : AbstractReader(), CPCAuthService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
-    
+
     override fun authenticate(username: String, password: String): Auth {
         var loginForm: Connection.Response = Jsoup.connect(CPC_LOGIN_FORM_POST_URL)
                 .method(Connection.Method.GET)
@@ -20,9 +20,9 @@ class CPCAuthServiceImpl : AbstractReader(), CPCAuthService {
         val formBuildStr = "name=\"form_build_id\" value=\""
         var formBuildId = welcomeBody.substring(welcomeBody.indexOf(formBuildStr) + formBuildStr.length)
         formBuildId = formBuildId.substring(0, formBuildId.indexOf("\""))
-        
+
         log.debug("authenticate user by connecting to: {} ", CPC_LOGIN_FORM_POST_URL)
-        
+
         loginForm = Jsoup.connect(CPC_LOGIN_FORM_POST_URL)
                 .data("form_build_id", formBuildId)
                 .data("form_id", "user_login_form")

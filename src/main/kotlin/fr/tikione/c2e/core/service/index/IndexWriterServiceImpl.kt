@@ -34,13 +34,11 @@ class IndexWriterServiceImpl : IndexWriterService {
 
         //whenever we have an issue reading the index file, we rebuild it. This is quite rude, but it will avoid a crash
         //if the file has been compromised or if the index format has changed
-        var existingMags: GameEntries
-        try {
-             existingMags = indexReader.read(file)
-        }
-        catch (e: Exception) {
+        val existingMags: GameEntries = try {
+            indexReader.read(file)
+        } catch (e: Exception) {
             deleteIndexFile(file)
-            existingMags = GameEntries()
+            GameEntries()
         }
 
         if (existingMags.magNumbers.size > 0) {
@@ -57,10 +55,7 @@ class IndexWriterServiceImpl : IndexWriterService {
         }
         log.info("creation de l'index des numeros : {}", magNumbers)
 
-        file.delete()
-        if (file.exists()) {
-            throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
-        }
+        deleteIndexFile(file)
         val reader: CPCReaderService = kodein.instance()
         magNumbers.forEach { number ->
             val mag = reader.downloadMagazine(auth, number)
@@ -92,7 +87,7 @@ class IndexWriterServiceImpl : IndexWriterService {
         val orderedGames = games.sortedWith(compareBy({ it.title }, { it.magNumber }))
 
         val content = StringBuilder()
-        content.append("titre,numero mag,auteur, date,config,telechargement,DRM,developpeur,editeur,langue,plateforme,score,testeur\n")
+        content.append("titre,numero mag,auteur,date,config,telechargement,DRM,developpeur,editeur,langue,plateforme,score,testeur\n")
         orderedGames.forEach { game ->
             content.append(formatCSV(game.title)).append(",")
                     .append(formatCSV(game.magNumber)).append(",")
@@ -122,7 +117,7 @@ class IndexWriterServiceImpl : IndexWriterService {
     }
 
     private fun formatDate(date: Date?): String? {
-        if(date == null)
+        if (date == null)
             return ""
 
         return SimpleDateFormat("yyyy/MM/dd").format(date)

@@ -45,7 +45,7 @@ class Tools {
          *
          * todo: why not using Java directly for this operation ?
          * see https://stackoverflow.com/questions/244164/how-can-i-resize-an-image-using-java
-         * 
+         *
          * @param src original picture.
          * @param dest new picture.
          * @param resize new size ratio (percents), eg. '50'.
