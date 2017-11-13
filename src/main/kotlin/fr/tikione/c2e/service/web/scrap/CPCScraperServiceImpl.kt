@@ -6,7 +6,9 @@ import fr.tikione.c2e.model.web.Paragraph
 import fr.tikione.c2e.model.web.Picture
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
 
@@ -38,7 +40,7 @@ class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
         val article = Article()
         article.type = SINGLE_NEWS
         article.title = text(doc.getElementsByClass("article-title"))
-        article.authorAndDate = text(doc.getElementsByClass("article-author"))
+        extractAuthorAndDate(doc, article)
         article.contents.add(Paragraph(text(doc.getElementsByClass("article-body"))))
         doc.getElementsByClass("article-images")
                 .forEach { images ->
@@ -54,12 +56,48 @@ class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
         return listOf(article)
     }
 
+    private fun CPCScraperServiceImpl.extractAuthorAndDate(doc: Document, article: Article) {
+        val authorAndDate = text(doc.getElementsByClass("article-author"))
+        article.author = extractAuthor(authorAndDate)
+        article.date = extractDate(authorAndDate)
+    }
+
+
+    /**
+     * CPC Format is  "Par Maria Kalash | le 29 août 2017"
+     */
+    fun extractDate(authorAndDate: String?): Date? {
+        if(authorAndDate == null)
+            return null
+
+        val splittenAuthorAndDate = authorAndDate.toLowerCase().split("| le ")
+
+        if (splittenAuthorAndDate.size != 2)
+            return null
+
+        val rawDate=splittenAuthorAndDate[1].trim()
+        //ok, how trusty can we be with the CPC data format ? let's try a regular french parser
+        return SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH).parse(rawDate)
+    }
+
+    
+    /**
+     * CPC Format is  "Par Maria Kalash | le 29 août 2017"
+     */
+    fun extractAuthor(authorAndDate: String?): String? {
+        if(authorAndDate == null)
+            return null
+        
+        return "Par *(.*) *\\|.*".toRegex().matchEntire(authorAndDate)?.groups?.get(1)?.value?.trim()
+        
+    }
+
     override fun extractTests(doc: Document): List<Article> {
         val article = Article()
         article.type = TESTS
         article.title = text(doc.getElementsByClass("article-title"))
         article.subtitle = text(doc.getElementsByClass("article-subtitle"))
-        article.authorAndDate = text(doc.getElementsByClass("article-author"))
+        extractAuthorAndDate(doc, article)
         article.headerContent = text(doc.getElementsByClass("article-chapo"))
         doc.getElementsByClass("article-body")
                 .forEach { element -> article.contents.add(Paragraph(richText(element))) }
