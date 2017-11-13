@@ -36,7 +36,7 @@ Exemples :
       
 * Pour télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
 * Pour télécharger le numéro 348 avec les images, tapez `c2e.cmd username password -cpc348`.  
-* Pour télécharger le numéro 348 avec les images et réduire celles-ci de 50%, tapez `c2e.cmd username password -cpc348 -resize50`.  
+* Pour télécharger le numéro 348 avec les images et réduire celles-ci à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
 * Pour télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
 * Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
 * Pour générer le sommaire de l'intégralité des numéros disponibles, tapez `c2e.cmd username password -index`.
