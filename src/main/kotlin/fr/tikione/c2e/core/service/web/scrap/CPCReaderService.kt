@@ -1,0 +1,25 @@
+package fr.tikione.c2e.core.service.web.scrap
+
+import fr.tikione.c2e.core.model.web.Auth
+import fr.tikione.c2e.core.model.web.Magazine
+
+/**
+ * Tools to download CanardPC magazines.
+ */
+interface CPCReaderService {
+
+    /**
+     * List downloadable magazines: archives and current.
+     * @param auth authentication data.
+     * @return magazines number and title.
+     */
+    fun listDownloadableMagazines(auth: Auth): ArrayList<String>
+
+    /**
+     * Download a magazine.
+     * @param auth authentication data.
+     * @param number magazine number.
+     * @return magazine.
+     */
+    fun downloadMagazine(auth: Auth, number: String): Magazine
+}

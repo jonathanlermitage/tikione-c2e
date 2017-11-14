@@ -8,7 +8,7 @@ cd %~dp0%
 
 set "OPATH=%PATH%"
 set "PATH=%cd%\imagemagick\;%~dp0%\imagemagick\"
-set "PATH=%cd%\jre\bin\;%~dp0%\jre\bin\"
+set "PATH=%PATH%;%cd%\jre\bin\;%~dp0%\jre\bin\"
 set "PATH=%PATH%;C:\Program Files (x86)\Java\jre8\bin\"
 set "PATH=%PATH%;C:\Program Files (x86)\Java\jre9\bin\"
 set "PATH=%PATH%;C:\Program Files (x86)\Java\jre10\bin\"

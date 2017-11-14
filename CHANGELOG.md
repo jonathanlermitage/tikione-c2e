@@ -1,9 +1,18 @@
 ## TikiOne C2E Change Log
 
+### 1.3.8 (dev en cours)
+
+* amélioration du sommaire : distinction de l'auteur et de la date de chaque test.
+* correction d'un code HTML invalide dans le titre des articles.
+* ajout des paramètres `-proxy:address:port` et `-sysproxy` pour définir un proxy. Exemple pour utiliser le proxy HTTP(S) "companygateway" sur le port 3128 : `-proxy:companygateway:3128`. Pour le proxy système : `-sysproxy`.
+* interne : la version de l'application est désormais définie dans la configuration Gradle et non plus en dur dans le code Kotlin.
+* interne : refactoring en vue de simplifier le développement d'une interface graphique et l'application Android.
+* interne : stabilisation du build Gradle.
+
 ### 1.3.7 (2017/11/03)
 
 * intégration de l'édito lors du téléchargement d'un numéro.
-* la création de l'index est désormais incrémentale : seuls les nouveaux numéros sont ajoutés à l'index existant.
+* la création du sommaire est désormais incrémentale : seuls les nouveaux numéros sont ajoutés au sommaire existant.
 * ajout du script de démarrage Linux. Testé sous Ubuntu 16.04 LTS.
 
 ### 1.3.6 (2017/10/25)
