@@ -61,6 +61,10 @@ task copyDoc(type: Copy) {
 }
 jar {
     doFirst {
+        def file = new File("$buildDir/resources/main/version.txt")
+        file.write(project.version.toString())
+    }
+    doFirst {
         manifest {
             if (!configurations.compile.isEmpty()) {
                 attributes(
@@ -70,19 +74,13 @@ jar {
             }
         }
     }
-    doLast {
-        def file = new File("$buildDir/resources/main/version.txt")
-        file.delete()
-        file.write(project.version.toString())
-    }
     dependsOn copyLibs
     dependsOn copyLaunchers
     dependsOn copyDoc
 }
 build {
-    doLast {
+    doFirst {
         def file = new File("$buildDir/resources/main/version.txt")
-        file.delete()
         file.write(project.version.toString())
     }
 }
