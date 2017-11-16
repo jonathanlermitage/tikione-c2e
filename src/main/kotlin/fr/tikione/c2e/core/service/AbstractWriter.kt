@@ -9,11 +9,7 @@ import java.text.Normalizer.Form.NFD
 
 abstract class AbstractWriter(private var asset: AssetManager) {
 
-    fun filled(str: String?): Boolean {
-        //that's a surprise for a Java dev ;)
-        //https://stackoverflow.com/questions/41162797/how-to-idiomatically-test-for-non-null-non-empty-strings-in-kotlin
-        return !str.isNullOrBlank()
-    }
+    fun filled(str: String?): Boolean = !str.isNullOrBlank()
 
     fun normalizeAnchorUrl(str: String): String {
         return Normalizer.normalize(str, NFD)

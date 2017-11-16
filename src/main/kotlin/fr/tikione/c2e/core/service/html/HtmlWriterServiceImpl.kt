@@ -214,13 +214,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     private fun writeArticleContents(w: Writer, article: Article) {
         for (content in article.contents) {
             if (!content.text!!.isEmpty()) {
-                var cssClass = "article-content"
-                for (encadre in article.encadreContents) {
-                    if (fastEquals(content.text as String, encadre)) {
-                        cssClass = "article-encadre"
-                        break
-                    }
-                }
+                val cssClass = if (article.encadreContents.any { fastEquals(content.text as String, it) }) "article-encadre" else "article-content"
                 w.write("<p class=\"" + cssClass + "\">" + richToHtml(content.text as String) + "</p>\n")
             }
         }
@@ -241,13 +235,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     }
 
     private fun writeArticlePictures(w: Writer, article: Article, resize: String?) {
-        var hasPictures = false
-        for (picture in article.pictures) {
-            if (picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty()) {
-                hasPictures = true
-                break
-            }
-        }
+        val hasPictures = article.pictures.any { picture -> picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty() }
         if (hasPictures) {
             w.write("<div class='article-pictures'>\n")
             w.write("<div class='article-pictures-tip'>Images : cliquez/tapez sur une image pour l'agrandir, recommencez pour la reduire.</div>\n")
@@ -352,42 +340,36 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         }
     }
 
-    private fun boldSpecTitle(str: String): String {
-        return if (str.contains(":")) "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) else str
-    }
-
+    private fun boldSpecTitle(str: String): String =
+            if (str.contains(":")) "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) else str
 
     /**
-     * return a 'a' element with the given class, attributes and contents
+     * Return a 'a' element with the given class, attributes and contents.
      */
-    private fun a(cssClass: String?, attributes: Map<String?, String?>, vararg contents: String?): String {
-        return elmWithAttr("a", cssClass, attributes, contents.asList())
-    }
+    private fun a(cssClass: String?, attributes: Map<String?, String?>, vararg contents: String?): String =
+            elmWithAttr("a", cssClass, attributes, contents.asList())
 
     /**
-     * return a div element with the given class, attributes and contents
+     * Return a div element with the given class, attributes and contents.
      */
-    private fun div(cssClass: String?, attributes: Map<String?, String?> = emptyMap(), vararg contents: String?): String {
-        return elmWithAttr("div", cssClass, attributes, contents.asList())
-    }
+    private fun div(cssClass: String?, attributes: Map<String?, String?> = emptyMap(), vararg contents: String?): String =
+            elmWithAttr("div", cssClass, attributes, contents.asList())
 
     /**
-     * return a div element with the given class and contents
+     * Return a div element with the given class and contents.
      */
-    private fun div(cssClass: String?, vararg contents: String?): String {
-        return elmWithAttr("div", cssClass, mapOf("class" to cssClass), contents.asList())
-    }
+    private fun div(cssClass: String?, vararg contents: String?): String =
+            elmWithAttr("div", cssClass, mapOf("class" to cssClass), contents.asList())
 
     /**
-     * return an element with the given class and contents
+     * Return an element with the given class and contents.
      */
-    private fun elm(name: String, cssClass: String?, vararg contents: String?): String {
-        return elmWithAttr(name, cssClass, mapOf("class" to cssClass), contents.asList())
-    }
+    private fun elm(name: String, cssClass: String?, vararg contents: String?): String =
+            elmWithAttr(name, cssClass, mapOf("class" to cssClass), contents.asList())
 
 
     /**
-     * Simple generic way to produce an html 'tag' with attributes and content
+     * Simple generic way to produce an html 'tag' with attributes and content.
      */
     private fun elmWithAttr(name: String, cssClass: String?, attributes: Map<String?, String?>, contents: List<String?>): String {
         if (contents.isEmpty())

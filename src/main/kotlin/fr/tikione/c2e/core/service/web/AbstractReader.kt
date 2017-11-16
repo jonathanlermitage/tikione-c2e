@@ -10,10 +10,6 @@ import java.io.IOException
 
 abstract class AbstractReader {
 
-    val CPC_BASE_URL = "https://www.canardpc.com"
-    val CPC_LOGIN_FORM_POST_URL = CPC_BASE_URL + "/user/login"
-    val CPC_MAG_NUMBER_BASE_URL = CPC_BASE_URL + "/numero/_NUM_"
-
     /** Replace unbreakable spaces by regular spaces, and apply trim.  */
     fun clean(strToClean: String): String {
         var str = strToClean
@@ -29,16 +25,12 @@ abstract class AbstractReader {
 
     /** Get a remote document.  */
     @Throws(IOException::class)
-    fun queryUrl(auth: Auth, url: String): Document {
-        return Jsoup.connect(url)
-                .cookies(auth.cookies)
-                .userAgent(UA)
-                .get()
-    }
+    fun queryUrl(auth: Auth, url: String): Document = Jsoup.connect(url)
+            .cookies(auth.cookies)
+            .userAgent(UA)
+            .get()
 
-    fun text(elt: Element?): String? {
-        return if (elt == null) null else clean(elt.text())
-    }
+    fun text(elt: Element?): String? = if (elt == null) null else clean(elt.text())
 
     /** Get text and keep some HTML styling tags: `em` and `strong`.  */
     fun richText(elt: Element?): String? {
@@ -74,19 +66,17 @@ abstract class AbstractReader {
         return buff.toString()
     }
 
-    fun attr(elt: Element?, attr: String): String? {
-        return elt?.attr(attr)
-    }
+    fun attr(elt: Element?, attr: String): String? = elt?.attr(attr)
 
-    fun attr(elt: Elements?, attr: String): String? {
-        return elt?.attr(attr)
-    }
+    fun attr(elt: Elements?, attr: String): String? = elt?.attr(attr)
 
-    fun attr(baseUrl: String, elt: Elements?, attr: String): String? {
-        return if (elt?.attr(attr) == null || elt.attr(attr).trim { it <= ' ' }.isEmpty()) null else baseUrl + elt.attr(attr)
-    }
+    fun attr(baseUrl: String, elt: Elements?, attr: String): String? =
+            if (elt?.attr(attr) == null || elt.attr(attr).trim { it <= ' ' }.isEmpty()) null else baseUrl + elt.attr(attr)
 
     companion object {
+        val CPC_BASE_URL = "https://www.canardpc.com"
+        val CPC_LOGIN_FORM_POST_URL = CPC_BASE_URL + "/user/login"
+        val CPC_MAG_NUMBER_BASE_URL = CPC_BASE_URL + "/numero/_NUM_"
         val CUSTOMTAG_EM_START = "__c2e_emStart__"
         val CUSTOMTAG_EM_END = "__c2e_emEnd__"
         val CUSTOMTAG_STRONG_START = "__c2e_strongStart__"

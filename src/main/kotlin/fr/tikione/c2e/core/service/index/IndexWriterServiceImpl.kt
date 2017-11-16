@@ -123,9 +123,8 @@ class IndexWriterServiceImpl : IndexWriterService {
         return SimpleDateFormat("yyyy/MM/dd").format(date)
     }
 
-    private fun isGame(a: Article): Boolean {
-        return a.gamePlatform != null && a.gamePlatform!!.isNotEmpty() && a.title != null && a.title!!.isNotEmpty()
-    }
+    private fun isGame(a: Article): Boolean =
+            a.gamePlatform != null && a.gamePlatform!!.isNotEmpty() && a.title != null && a.title!!.isNotEmpty()
 
     private fun formatCSV(s: String): String {
         return s.replace(csvDelimiterRegex, " ")

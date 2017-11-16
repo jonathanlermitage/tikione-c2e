@@ -21,7 +21,7 @@ class CPCAuthServiceImpl : AbstractReader(), CPCAuthService {
         var formBuildId = welcomeBody.substring(welcomeBody.indexOf(formBuildStr) + formBuildStr.length)
         formBuildId = formBuildId.substring(0, formBuildId.indexOf("\""))
 
-        log.debug("authenticate user by connecting to: {} ", CPC_LOGIN_FORM_POST_URL)
+        log.debug("authentification via : {} ", CPC_LOGIN_FORM_POST_URL)
 
         loginForm = Jsoup.connect(CPC_LOGIN_FORM_POST_URL)
                 .data("form_build_id", formBuildId)

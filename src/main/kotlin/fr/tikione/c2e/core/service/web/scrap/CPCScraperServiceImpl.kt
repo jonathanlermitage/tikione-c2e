@@ -61,7 +61,6 @@ class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
         article.date = extractDate(authorAndDate)
     }
 
-
     /**
      * CPC Format is  "Par Maria Kalash | le 29 août 2017"
      */
@@ -78,7 +77,6 @@ class CPCScraperServiceImpl : AbstractScraper(), CPCScraperService {
         //ok, how trusty can we be with the CPC data format ? let's try a regular french parser
         return SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH).parse(rawDate)
     }
-
 
     /**
      * CPC Format is  "Par Maria Kalash | le 29 août 2017"
