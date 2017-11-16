@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.3.8 (dev en cours)
+### 1.3.8 (2017/11/17)
 
 * amélioration du sommaire CSV : distinction de l'auteur et de la date de chaque test.
 * correction d'un code HTML invalide dans le titre des articles.
