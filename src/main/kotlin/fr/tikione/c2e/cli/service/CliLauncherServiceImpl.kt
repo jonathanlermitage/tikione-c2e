@@ -21,16 +21,6 @@ class CliLauncherServiceImpl : CliLauncherService {
 
     @Throws(IOException::class, InterruptedException::class)
     override fun start(args: Array<String>) {
-        try {
-            val latestVersion = Jsoup.connect(Tools.VERSION_URL).get().text().trim()
-            if (Tools.VERSION != latestVersion) {
-                log.warn("<< une nouvelle version de TikiOne C2E est disponible (" + latestVersion + "), " +
-                        "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases >>")
-            }
-        } catch (e: Exception) {
-            log.warn("impossible de verifier la presence d'une nouvelle version de TikiOne C2E", e)
-        }
-
         assert(args.size > 2)
         val argsToShow = args.clone()
         if (argsToShow.isNotEmpty()) {
@@ -51,6 +41,16 @@ class CliLauncherServiceImpl : CliLauncherService {
                     .map { arg -> arg.substring("-proxy:".length).split(":") }
                     .filter { proxy -> 2 == proxy.size }
                     .forEach { proxy -> Tools.setProxy(proxy[0], proxy[1]) }
+        }
+
+        try {
+            val latestVersion = Jsoup.connect(Tools.VERSION_URL).get().text().trim()
+            if (Tools.VERSION != latestVersion) {
+                log.warn("<< une nouvelle version de TikiOne C2E est disponible (" + latestVersion + "), " +
+                        "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases >>")
+            }
+        } catch (e: Exception) {
+            log.warn("impossible de verifier la presence d'une nouvelle version de TikiOne C2E", e)
         }
 
         val doList = switchList.contains("-list")
