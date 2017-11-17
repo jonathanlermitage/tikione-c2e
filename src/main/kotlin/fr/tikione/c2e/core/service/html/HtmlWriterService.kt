@@ -13,7 +13,8 @@ interface HtmlWriterService {
      * @param file HTML file.
      * @param incluePictures should include magazine pictures in HTML file?
      * @param resize resize screenshots (percents). Use null to disable resize.
+     * @param dark activate dark-mode by default.
      */
     @Throws(IOException::class)
-    fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?)
+    fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean)
 }

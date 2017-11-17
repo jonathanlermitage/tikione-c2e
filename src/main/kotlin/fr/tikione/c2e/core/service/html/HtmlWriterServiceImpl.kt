@@ -27,7 +27,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @Throws(IOException::class)
-    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?) {
+    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean) {
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
@@ -38,6 +38,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
         val cssNight = resourceAsStr("tmpl/html-export/style/night.css")
         val js = resourceAsStr("tmpl/html-export/main.js")
+        val forceDarkModeJs = if (dark) resourceAsStr("tmpl/html-export/force-dark-mode.js") else ""
         val header = resourceAsStr("tmpl/html-export/header.html")
                 .replace("$\$login$$", magazine.login!!)
                 .replace("$\$version$$", Tools.VERSION)
@@ -47,6 +48,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 .replace("/*$\$css_day$$*/", cssDay)
                 .replace("/*$\$css_night$$*/", cssNight)
                 .replace("/*$\$js$$*/", js)
+                .replace("/*$\$force_dark_mode$$*/", forceDarkModeJs)
         val footer = resourceAsStr("tmpl/html-export/footer.html")
 
         BufferedWriter(FileWriter(file)).use { w ->

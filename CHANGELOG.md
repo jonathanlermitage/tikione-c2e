@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.3.9 (dev en cours)
+
+* [#10](https://github.com/jonathanlermitage/tikione-c2e/issues/10) ajout du paramètre `-dark` : active par défaut le mode nuit.
+
 ### 1.3.8 (2017/11/17)
 
 * amélioration du sommaire CSV : distinction de l'auteur et de la date de chaque test.

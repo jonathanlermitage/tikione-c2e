@@ -56,6 +56,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doList = switchList.contains("-list")
         val doIncludePictures = !switchList.contains("-nopic")
         val doIndex = switchList.contains("-index")
+        val doDarkMode = switchList.contains("-dark")
         var doHtml = false
         val doAllMags = switchList.contains("-cpcall")
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
@@ -90,7 +91,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                         + (if (doResize == null) "" else "-resize$doResize")
                         + ".html")
                 val writerService: HtmlWriterService = kodein.instance()
-                writerService.write(magazine, file, doIncludePictures, doResize)
+                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de ${Tools.PAUSE_BETWEEN_MAG_DL}s avant de telecharger le prochain numero")
                     TimeUnit.SECONDS.sleep(Tools.PAUSE_BETWEEN_MAG_DL)
