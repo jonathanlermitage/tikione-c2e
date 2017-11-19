@@ -29,14 +29,10 @@ abstract class AbstractWriter(private var asset: AssetManager) {
     }
 
     @Throws(IOException::class)
-    fun resourceAsBase64(path: String): String {
-        return Tools.resourceAsBase64(path, asset)
-    }
+    fun resourceAsBase64(path: String): String = Tools.resourceAsBase64(path, asset)
 
     @Throws(IOException::class)
-    fun resourceAsStr(path: String): String {
-        return Tools.resourceAsStr(path, asset)
-    }
+    fun resourceAsStr(path: String): String = Tools.resourceAsStr(path, asset)
 
     fun richToHtml(rich: String): String {
         return rich.replace(AbstractReader.CUSTOMTAG_EM_START.toRegex(), " <em> ")

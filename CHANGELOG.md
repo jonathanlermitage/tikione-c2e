@@ -2,6 +2,7 @@
 
 ### 1.3.9 (dev en cours)
 
+* [#9](https://github.com/jonathanlermitage/tikione-c2e/issues/9) si un fichier TTF (`.ttf`) est présent dans le répertoire de l'application, il sera utilisé à la place de la police embarquée `RobotoSlab-Light`. Si plusieurs fichiers TTF sont présents, le premier est utilisé (classement par ordre alphabétique).
 * [#10](https://github.com/jonathanlermitage/tikione-c2e/issues/10) ajout du paramètre `-dark` : active par défaut le mode nuit.
 
 ### 1.3.8 (2017/11/17)

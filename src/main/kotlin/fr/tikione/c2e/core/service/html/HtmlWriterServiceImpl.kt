@@ -2,6 +2,7 @@ package fr.tikione.c2e.core.service.html
 
 import android.content.res.AssetManager
 import compat.Tools
+import compat.Tools.Companion.fileAsBase64
 import fr.tikione.c2e.core.model.web.Article
 import fr.tikione.c2e.core.model.web.ArticleType
 import fr.tikione.c2e.core.model.web.Edito
@@ -26,6 +27,16 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
+    private fun findFontAsBase64(): String {
+        val ttfs = File(".").listFiles { _, name -> name.toUpperCase().endsWith(".TTF") }
+        return if (ttfs.isEmpty()) {
+            resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
+        } else {
+            log.info("utilisation de la police de caracteres {}", ttfs[0].absolutePath)
+            fileAsBase64(ttfs[0], AssetManager())
+        }
+    }
+
     @Throws(IOException::class)
     override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean) {
         file.delete()
@@ -33,7 +44,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
         }
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
-        val fontRobotoBase64 = resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
+        val fontRobotoBase64 = findFontAsBase64()
         val cssDay = resourceAsStr("tmpl/html-export/style/day.css")
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
         val cssNight = resourceAsStr("tmpl/html-export/style/night.css")
