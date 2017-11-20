@@ -5,6 +5,7 @@ import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
@@ -28,16 +29,20 @@ class Tools {
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsBase64(path: String, asset: AssetManager): String {
-            return Base64.encodeBase64String(IOUtils.toByteArray(Tools::class.java.classLoader.getResourceAsStream(path)))
-        }
+        fun fileAsBase64(file: File, asset: AssetManager): String =
+                Base64.encodeBase64String(IOUtils.toByteArray(file.toURI()))
 
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsStr(path: String, asset: AssetManager): String {
-            return IOUtils.toString(Tools::class.java.classLoader.getResourceAsStream(path), StandardCharsets.UTF_8)
-        }
+        fun resourceAsBase64(path: String, asset: AssetManager): String =
+                Base64.encodeBase64String(IOUtils.toByteArray(Tools::class.java.classLoader.getResourceAsStream(path)))
+
+        @Suppress("UNUSED_PARAMETER")
+        @Throws(IOException::class)
+        @JvmStatic
+        fun resourceAsStr(path: String, asset: AssetManager): String =
+                IOUtils.toString(Tools::class.java.classLoader.getResourceAsStream(path), StandardCharsets.UTF_8)
 
         /**
          * Resize a picture.
