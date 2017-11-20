@@ -59,6 +59,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doDarkMode = switchList.contains("-dark")
         var doHtml = false
         val doAllMags = switchList.contains("-cpcall")
+        val doAllMissing = switchList.contains("-cpcmissing")
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
         val cpcAuthService: CPCAuthService = kodein.instance()
         val cpcReaderService: CPCReaderService = kodein.instance()
@@ -66,15 +67,27 @@ class CliLauncherServiceImpl : CliLauncherService {
         val auth = cpcAuthService.authenticate(args[0], args[1])
         val headers = cpcReaderService.listDownloadableMagazines(auth)
         val magNumbers = ArrayList<String>()
-        if (doAllMags) {
-            magNumbers.addAll(headers)
-            doHtml = true
-        } else {
-            args.filter { it.startsWith("-cpc") }.forEach {
+
+        when {
+            doAllMags -> {
+                magNumbers.addAll(headers)
+                doHtml = true
+            }
+            doAllMissing -> {
+                magNumbers.addAll(headers)
+                val existing = listDownloadedMags()
+                if (existing.isNotEmpty()) {
+                    log.info("les numeros deja presents ne seront pas telecharges : {}", existing)
+                }
+                magNumbers.removeAll(existing)
+                doHtml = true
+            }
+            else -> args.filter { it.startsWith("-cpc") }.forEach {
                 magNumbers.add(it.substring("-cpc".length))
                 doHtml = true
             }
         }
+
         if (doList) {
             log.info("les numeros disponibles sont : {}", headers)
         }
@@ -82,14 +95,13 @@ class CliLauncherServiceImpl : CliLauncherService {
         if (doHtml) {
             if (magNumbers.size > 1) {
                 log.info("telechargement des numeros : {}", magNumbers)
+            } else if (magNumbers.isEmpty()) {
+                log.info("il ne reste aucun numero a telecharger")
             }
             for (i in magNumbers.indices) {
                 val magNumber = magNumbers[i]
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
-                val file = File("CPC" + magNumber
-                        + (if (doIncludePictures) "" else "-nopic")
-                        + (if (doResize == null) "" else "-resize$doResize")
-                        + ".html")
+                val file = File(makeMagFilename(magNumber, doIncludePictures, doResize))
                 val writerService: HtmlWriterService = kodein.instance()
                 writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode)
                 if (i != magNumbers.size - 1) {
@@ -109,4 +121,12 @@ class CliLauncherServiceImpl : CliLauncherService {
 
         log.info("termine !")
     }
+
+    private fun listDownloadedMags(): List<String> =
+            File(".").listFiles { _, name -> name.startsWith("CPC") && name.contains('-') && name.toUpperCase().endsWith(".HTML") }
+                    .map { file -> file.name.substring("CPC".length, file.name.indexOf('-')) }
+                    .sortedDescending()
+
+    private fun makeMagFilename(magNumber: String, doIncludePictures: Boolean, doResize: String?): String =
+            "CPC" + magNumber + (if (doIncludePictures) "" else "-nopic") + (if (doResize == null) "" else "-resize$doResize") + ".html"
 }
