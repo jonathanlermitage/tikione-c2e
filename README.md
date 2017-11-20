@@ -19,9 +19,11 @@ Trois versions packagées existent :
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez `c2e.cmd username password -cpcXXX -nopic -list -debug -resizeXX` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
+* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez `c2e.cmd username password paramètres...` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
   * `username` et `password` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires.
-  * `-cpcXXX` télécharger le numéro XXX, par exemple `-cpc348`.  *(depuis la version 1.1.0)* Télécharger plusieurs numéros, par exemple `-cpc348 -cpc349 -cpc350 -cpc351`. Vous pouvez aussi utiliser `-cpcall` pour télécharger l'intégralité des numéros à votre disposition.
+  * `-cpcXXX` télécharger le numéro XXX, par exemple `-cpc348`. Répétez ce paramètre pour télécharger plusieurs numéros, par exemple `-cpc348 -cpc349 -cpc350 -cpc351`.
+  * `-cpcall` télécharger l'intégralité des numéros à votre disposition.
+  * `-cpcmising` télécharge uniquement les numéros manquants.
   * `-nopic` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
   * `-list` savoir quels numéros sont accessibles au téléchargement.
   * `-debug` affiche le détail du téléchargement dans un format proche de JSON.
@@ -29,18 +31,20 @@ Trois versions packagées existent :
   * `-index` génère un sommaire CSV (`CPC-index.csv`) de tous les numéros disponibles au téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention, prévoir plusieurs dizaines de minutes pour ce traitement. Si le fichier `CPC-index.csv` existe déjà, il sera complété avec les numéros manquants.
   * `-proxy:address:port` utilise le proxy HTTP(S) définit par l'adresse `address` (nom de domaine ou adresse IP) et le port `port`. Cette option est généralement utile si vous vous connectez depuis le réseau d'un entreprise qui impose un proxy pour accéder au web.
   * `-sysproxy` utilise le proxy système.
+  * `-dark` active par défaut le mode nuit.
   
-*Attention, le paramètre `-html` est supprimé depuis la version 1.3.3. Pour les versions précédentes, n'oubliez pas de préciser `-html` pour générer le fichier.* 
-    
-Exemples :
+La police de caractères par défaut est `RobotoSlab-Light` (celle utilisée sur le site CanardPC). Pour utiliser une autre police, déposez un fichier TTF (par exemple `Arial.ttf`) dans le répertoire de application (à côté de `c2e.cmd` et `c2e.sh`) : elle sera automatiquement utilisée.
       
+Exemples :
+
+* Pour télécharger le numéro 348, tapez `c2e.cmd username password -cpc348`.  
 * Pour télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
-* Pour télécharger le numéro 348 avec les images, tapez `c2e.cmd username password -cpc348`.  
-* Pour télécharger le numéro 348 avec les images et réduire celles-ci à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
+* Pour télécharger le numéro 348 réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
 * Pour télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
 * Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
+* pour télécharger les numéros manquants, tapez `c2e.cmd username password -cpcmissing`.  
 * Pour générer le sommaire de l'intégralité des numéros disponibles, tapez `c2e.cmd username password -index`.
-* Pour télécharger le numéro 348 au travers du proxy HTTP(S) companygateway:3128, tapez `c2e.cmd username password -cpc348 -proxy:companygateway:3218`.  
+* Pour télécharger le numéro 348 au travers du proxy HTTP(S) companygateway sur le port 3128, tapez `c2e.cmd username password -cpc348 -proxy:companygateway:3218`.  
 * Pour télécharger le numéro 348 au travers du proxy système, tapez `c2e.cmd username password -cpc348 -sysproxy`.  
     
 Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom `CPCxxx-opts.html` où `xxx` est le numéro et `-opts` rappelle certains paramètres (`-nopic`, `-resize`), par exemple `CPC348-nopic.html`.
