@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.3.10 (dev en cours)
+
+* ajout d'un guide de contribution dans le `readme.md`.
+
 ### 1.3.9 (2017/11/20)
 
 * [#8](https://github.com/jonathanlermitage/tikione-c2e/issues/8) ajout du paramètre `-cpcmissing` en alternative à `-cpcall` : télécharge uniquement les numéros manquants.
