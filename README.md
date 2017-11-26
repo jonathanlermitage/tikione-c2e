@@ -76,7 +76,7 @@ Merci !
  * consultez la [liste de tickets ouvert](https://github.com/jonathanlermitage/tikione-c2e/issues) : cela pourrait vous donner des idées. N'hésitez pas à ouvrir de nouveaux tickets, que ce soit pour signaler un bug, proposer une amélioration ou une nouvelle fonctionnalité. Cette étape est facultative, mais elle a le mérite de laisser une trace et invite à la discussion.
  * conserver une qualité de code : 
    * toute amélioration ou nouvelle fonctionnalité doit être un minimum testée.
-   * on développe an anglais (code et javadoc), mais les fichiers Markdown (`.md`) restent en français.
+   * on développe en anglais (code et javadoc), mais les fichiers Markdown (`.md`) restent en français.
    * le code est formaté avec les règles par défaut d'[IntelliJ IDEA](https://www.jetbrains.com/idea/) (`Ctrl + Alt + L` : reformate de code, `Ctrl + Alt + O` : réorganise les imports).
    * nommez correctement vos commits : indiquez ce que vous avez voulu faire en quelques mots.
    * réduisez le nombre de commits au minimum via un `squash`, et faites un `rebase` avant de soumettre une Pull Request : l'historique Git doit rester cohérent.
