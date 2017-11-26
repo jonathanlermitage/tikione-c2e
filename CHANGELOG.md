@@ -2,6 +2,7 @@
 
 ### 1.3.10 (dev en cours)
 
+[#8](https://github.com/jonathanlermitage/tikione-c2e/issues/13) un échec d'authentification arrête maintenant le programme au lieu de télécharger des magazines vides.
 * ajout d'un guide de contribution dans le `readme.md`.
 
 ### 1.3.9 (2017/11/20)

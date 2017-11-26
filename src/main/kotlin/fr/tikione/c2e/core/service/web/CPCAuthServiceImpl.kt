@@ -37,7 +37,10 @@ class CPCAuthServiceImpl : AbstractReader(), CPCAuthService {
         if (loginForm.cookies().isEmpty()) {
             throw IOException("login failed: no cookies")
         }
-        loginForm.parse().body().getElementsByClass("user-logged") ?: throw IOException("login failed: can't find username in page header")
+        if (loginForm.parse().body().getElementsByClass("user-anonymous").isNotEmpty()) {
+            log.error("echec d'authentification")
+            throw IOException("echec d'authentification")
+        }
         return Auth(loginForm.cookies(), username, password)
     }
 }
