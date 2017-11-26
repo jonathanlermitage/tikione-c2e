@@ -32,13 +32,12 @@ class CPCAuthServiceImpl : AbstractReader(), CPCAuthService {
                 .userAgent(AbstractReader.UA + " with username '" + username + "'")
                 .execute()
         if (200 != loginForm.statusCode()) {
-            throw IOException("login failed: status code is " + loginForm.statusCode())
+            throw IOException("echec d'authentification, le site semble ne pas repondre (code " + loginForm.statusCode() + ")")
         }
         if (loginForm.cookies().isEmpty()) {
-            throw IOException("login failed: no cookies")
+            throw IOException("echec d'authentification : impossible de touver des cookies")
         }
         if (loginForm.parse().body().getElementsByClass("user-anonymous").isNotEmpty()) {
-            log.error("echec d'authentification")
             throw IOException("echec d'authentification")
         }
         return Auth(loginForm.cookies(), username, password)
