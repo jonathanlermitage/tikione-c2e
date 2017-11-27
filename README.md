@@ -72,7 +72,7 @@ Merci !
 ## Guide de contribution
 
  * le projet reste sous [license MIT](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) et doit respecter la license des modules tiers (librairies, images).
- * le programme doit pouvoir fonctionner sous Windows et Linux, et possible MacOS et BSD. A titre personnel, je teste sous Windows 10 et [Lubuntu 16.04.3 LTS](http://lubuntu.net).
+ * le programme doit pouvoir fonctionner sous Windows et Linux, et si possible MacOS et BSD. A titre personnel, je teste sous Windows 10 et [Lubuntu 16.04.3 LTS](http://lubuntu.net).
  * consultez la [liste de tickets ouvert](https://github.com/jonathanlermitage/tikione-c2e/issues) : cela pourrait vous donner des idées. N'hésitez pas à ouvrir de nouveaux tickets, que ce soit pour signaler un bug, proposer une amélioration ou une nouvelle fonctionnalité. Cette étape est facultative, mais elle a le mérite de laisser une trace et invite à la discussion.
  * conserver une qualité de code : 
    * toute amélioration ou nouvelle fonctionnalité doit être un minimum testée.
