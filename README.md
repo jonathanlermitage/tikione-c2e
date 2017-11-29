@@ -37,15 +37,15 @@ La police de caractères par défaut est `RobotoSlab-Light` (celle utilisée sur
       
 Exemples :
 
-* Pour télécharger le numéro 348, tapez `c2e.cmd username password -cpc348`.  
-* Pour télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
-* Pour télécharger le numéro 348 réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
-* Pour télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
-* Pour télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
-* pour télécharger les numéros manquants, tapez `c2e.cmd username password -cpcmissing`.  
-* Pour générer le sommaire de l'intégralité des numéros disponibles, tapez `c2e.cmd username password -index`.
-* Pour télécharger le numéro 348 au travers du proxy HTTP(S) companygateway sur le port 3128, tapez `c2e.cmd username password -cpc348 -proxy:companygateway:3218`.  
-* Pour télécharger le numéro 348 au travers du proxy système, tapez `c2e.cmd username password -cpc348 -sysproxy`.  
+* télécharger le numéro 348, tapez `c2e.cmd username password -cpc348`.  
+* télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
+* télécharger le numéro 348 réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
+* télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
+* télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
+* télécharger les numéros manquants, tapez `c2e.cmd username password -cpcmissing`.  
+* générer le sommaire de l'intégralité des numéros disponibles, tapez `c2e.cmd username password -index`.
+* télécharger le numéro 348 au travers du proxy HTTP(S) companygateway sur le port 3128, tapez `c2e.cmd username password -cpc348 -proxy:companygateway:3218`.  
+* télécharger le numéro 348 au travers du proxy système, tapez `c2e.cmd username password -cpc348 -sysproxy`.  
     
 Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom `CPCxxx-opts.html` où `xxx` est le numéro et `-opts` rappelle certains paramètres (`-nopic`, `-resize`), par exemple `CPC348-nopic.html`.
 
@@ -68,6 +68,19 @@ Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master
 * [guame](https://github.com/guame)
 
 Merci !
+
+## Guide de contribution
+
+ * le projet reste sous [license MIT](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) et doit respecter la license des modules tiers (librairies, images).
+ * le programme doit pouvoir fonctionner sous Windows et Linux, et si possible MacOS et BSD. A titre personnel, je teste sous Windows 10 et [Lubuntu 16.04.3 LTS](http://lubuntu.net).
+ * consultez la [liste de tickets ouvert](https://github.com/jonathanlermitage/tikione-c2e/issues) : cela pourrait vous donner des idées. N'hésitez pas à ouvrir de nouveaux tickets, que ce soit pour signaler un bug, proposer une amélioration ou une nouvelle fonctionnalité. Cette étape est facultative, mais elle a le mérite de laisser une trace et invite à la discussion.
+ * conserver une qualité de code : 
+   * toute amélioration ou nouvelle fonctionnalité doit être un minimum testée.
+   * on développe en anglais (code et javadoc), mais les fichiers Markdown (`.md`) restent en français.
+   * le code est formaté avec les règles par défaut d'[IntelliJ IDEA](https://www.jetbrains.com/idea/) (`Ctrl + Alt + L` : reformate de code, `Ctrl + Alt + O` : réorganise les imports).
+   * nommez correctement vos commits : indiquez ce que vous avez voulu faire en quelques mots.
+   * réduisez le nombre de commits au minimum via un `squash`, et faites un `rebase` avant de soumettre une Pull Request : l'historique Git doit rester cohérent.
+ * n'hésitez pas à me contacter par email à *jonathan.lermitage@gmail.com*, ou ouvez un [ticket](https://github.com/jonathanlermitage/tikione-c2e/issues).
 
 ## Motivation
 

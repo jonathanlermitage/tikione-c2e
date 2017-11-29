@@ -56,6 +56,10 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         edito.authorAndDate = container.getElementById("numero-auteur-date").text()
         edito.title = container.getElementById("numero-titre").text()
         edito.content = container.getElementById("numero-edito").text()
+        edito.coverUrl = doc.getElementById("numero-couverture")?.attr("src")
+        if (edito.coverUrl != null) {
+            edito.coverUrl = CPC_BASE_URL + edito.coverUrl
+        }
         return edito
     }
 

@@ -59,8 +59,8 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                 .replace("/*$\$css_day$$*/", cssDay)
                 .replace("/*$\$css_night$$*/", cssNight)
                 .replace("/*$\$js$$*/", js)
-                .replace("/*$\$force_dark_mode$$*/", forceDarkModeJs)
         val footer = resourceAsStr("tmpl/html-export/footer.html")
+                .replace("/*$\$force_dark_mode$$*/", forceDarkModeJs)
 
         BufferedWriter(FileWriter(file)).use { w ->
             w.write(header)
@@ -78,7 +78,6 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                             normalizeAnchorUrl("Edito")
                     )
             ))
-
 
             // now create the links for all the categories and articles
             for (category in magazine.toc) {
@@ -131,11 +130,12 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
     }
 
     private fun writeEdito(w: Writer, edito: Edito?) {
-        w.write(div("edito-cotainer", mapOf<String?, String?>("id" to normalizeAnchorUrl("Edito")),
+        w.write(div("edito-container", mapOf<String?, String?>("id" to normalizeAnchorUrl("Edito")),
                 div("article-title", edito?.title)
                         + div("article",
                         div("article-author-creationdate", edito?.authorAndDate),
                         div("article-content", edito?.content)
+                                + img("edito-cover-img", mapOf("src" to "data:image/jpeg;base64," + readRemoteToBase64(edito?.coverUrl)))
                 )
         )
         )
@@ -353,6 +353,10 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         }
     }
 
+    private fun readRemoteToBase64(url: String?): String {
+        return Base64.encodeBase64String(IOUtils.toByteArray(URL(url)))
+    }
+
     private fun boldSpecTitle(str: String): String =
             if (str.contains(":")) "<strong>" + str.substring(0, str.indexOf(":")) + "</strong> : " + str.substring(1 + str.indexOf(":")) else str
 
@@ -361,6 +365,12 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
      */
     private fun a(cssClass: String?, attributes: Map<String?, String?>, vararg contents: String?): String =
             elmWithAttr("a", cssClass, attributes, contents.asList())
+
+    /**
+     * Return a 'img' element with the given class, attributes and contents.
+     */
+    private fun img(cssClass: String?, attributes: Map<String?, String?>): String =
+            elmWithAttr("img", cssClass, attributes, arrayListOf(""))
 
     /**
      * Return a div element with the given class, attributes and contents.
@@ -379,7 +389,6 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
      */
     private fun elm(name: String, cssClass: String?, vararg contents: String?): String =
             elmWithAttr(name, cssClass, mapOf("class" to cssClass), contents.asList())
-
 
     /**
      * Simple generic way to produce an html 'tag' with attributes and content.

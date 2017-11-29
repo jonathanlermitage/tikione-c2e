@@ -370,3 +370,9 @@ a.article-ext-lnk {
     color: red;
     text-decoration: none;
 }
+
+.edito-cover-img {
+    display: block;
+    margin: 0 auto;
+    max-width: 300px;
+}
