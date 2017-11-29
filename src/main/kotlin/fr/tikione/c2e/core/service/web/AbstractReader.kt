@@ -28,7 +28,7 @@ abstract class AbstractReader {
     fun queryUrl(auth: Auth, url: String): Document = Jsoup.connect(url)
             .cookies(auth.cookies)
             .userAgent(UA)
-            .get()
+            .execute().parse()
 
     fun text(elt: Element?): String? = if (elt == null) null else clean(elt.text())
 
