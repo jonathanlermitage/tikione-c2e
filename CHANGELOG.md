@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.3.10 (dev en cours)
+### 1.3.10 (2017/11/29)
 
 * [#13](https://github.com/jonathanlermitage/tikione-c2e/issues/13) un échec d'authentification arrête maintenant le programme au lieu de télécharger des magazines vides.
 * [#24](https://github.com/jonathanlermitage/tikione-c2e/issues/24) intégration de la jaquette dans l'édito.
