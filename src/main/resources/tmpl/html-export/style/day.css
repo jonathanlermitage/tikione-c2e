@@ -376,3 +376,8 @@ a.article-ext-lnk {
     margin: 0 auto;
     max-width: 300px;
 }
+
+.first-letter {
+    font-size: 1.3em;
+    font-weight: bold;
+}

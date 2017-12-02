@@ -227,10 +227,13 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         for (content in article.contents) {
             if (!content.text!!.isEmpty()) {
                 val cssClass = if (article.encadreContents.any { fastEquals(content.text as String, it) }) "article-encadre" else "article-content"
-                w.write("<p class=\"" + cssClass + "\">" + richToHtml(content.text as String) + "</p>\n")
+                w.write("<p class=\"" + cssClass + "\">" + magnifyFirstLetter(richToHtml(content.text as String)) + "</p>\n")
             }
         }
     }
+
+    private fun magnifyFirstLetter(content: String): String =
+            "<span class=\"first-letter\">${content[0]}</span>${content.substring(1)}"
 
     private fun writeArticleLinks(w: Writer, article: Article) {
         if (!article.gameLinks.isEmpty()) {
