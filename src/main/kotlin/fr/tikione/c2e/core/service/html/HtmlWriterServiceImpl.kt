@@ -1,6 +1,5 @@
 package fr.tikione.c2e.core.service.html
 
-import android.content.res.AssetManager
 import compat.Tools
 import compat.Tools.Companion.fileAsBase64
 import fr.tikione.c2e.core.model.web.Article
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 
-class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWriterService {
+class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -33,7 +32,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
         } else {
             log.info("utilisation de la police de caracteres {}", ttfs[0].absolutePath)
-            fileAsBase64(ttfs[0], AssetManager())
+            fileAsBase64(ttfs[0], assetService.getAssetManager())
         }
     }
 

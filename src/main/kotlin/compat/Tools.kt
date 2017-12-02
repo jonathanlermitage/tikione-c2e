@@ -29,19 +29,19 @@ class Tools {
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun fileAsBase64(file: File, asset: AssetManager): String =
+        fun fileAsBase64(file: File, asset: AssetManager?): String =
                 Base64.encodeBase64String(IOUtils.toByteArray(file.toURI()))
 
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsBase64(path: String, asset: AssetManager): String =
+        fun resourceAsBase64(path: String, asset: AssetManager?): String =
                 Base64.encodeBase64String(IOUtils.toByteArray(Tools::class.java.classLoader.getResourceAsStream(path)))
 
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsStr(path: String, asset: AssetManager): String =
+        fun resourceAsStr(path: String, asset: AssetManager?): String =
                 IOUtils.toString(Tools::class.java.classLoader.getResourceAsStream(path), StandardCharsets.UTF_8)
 
         /**
