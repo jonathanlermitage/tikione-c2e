@@ -2,7 +2,6 @@ package fr.tikione.c2e
 
 import android.content.Context
 import android.content.Intent
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Vibrator
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun downloadMag() {
         progressBar.visibility = View.VISIBLE
         try {
-            val dlTask = DownloadTask(this.assets, "***", "***", 348, false)
+            val dlTask = DownloadTask(this.assets, "***", "***", "348", false)
             dlTask.execute()
             val res = dlTask.get()
 

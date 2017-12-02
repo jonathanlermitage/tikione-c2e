@@ -3,6 +3,7 @@ package compat
 import android.content.res.AssetManager
 import android.util.Base64
 import org.apache.commons.io.IOUtils
+import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -14,22 +15,40 @@ class Tools {
 
     companion object {
 
+        val VERSION = "android-1.0.0_c2ecore-1.3.10"
+        var debug = false
+
+        @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsBase64(path: String, asset: AssetManager): String {
-            return Base64.encodeToString(IOUtils.toByteArray(asset.open(path)), Base64.DEFAULT)
-        }
+        fun fileAsBase64(file: File, asset: AssetManager?): String =
+                Base64.encodeToString(IOUtils.toByteArray(file.toURI()), Base64.DEFAULT)
 
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsStr(path: String, asset: AssetManager): String {
-            return IOUtils.toString(asset.open(path), StandardCharsets.UTF_8)
-        }
+        fun resourceAsBase64(path: String, asset: AssetManager?): String =
+                Base64.encodeToString(IOUtils.toByteArray(asset?.open(path)), Base64.DEFAULT)
+
+        @Throws(IOException::class)
+        @JvmStatic
+        fun resourceAsStr(path: String, asset: AssetManager?): String =
+                IOUtils.toString(asset?.open(path), StandardCharsets.UTF_8)
 
         @Suppress("unused", "UNUSED_PARAMETER")
         @JvmStatic
-        fun resizePicture(src: String, dest: String, resize: String): Int {
-            return 0
+        fun resizePicture(src: String, dest: String, resize: String): Int = 0
+
+        @JvmStatic
+        fun setProxy(host: String, port: String) {
+            System.setProperty("http.proxyHost", host)
+            System.setProperty("http.proxyPort", port)
+            System.setProperty("https.proxyHost", host)
+            System.setProperty("https.proxyPort", port)
+        }
+
+        @JvmStatic
+        fun setSysProxy() {
+            System.setProperty("java.net.useSystemProxies", "true")
         }
     }
 }
