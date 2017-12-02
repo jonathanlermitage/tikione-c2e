@@ -3,9 +3,10 @@
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
 
-Deux branches sont développées :
+Trois branches sont développées :
 
-* [master](https://github.com/jonathanlermitage/tikione-c2e) : le programme pour PC, stable.
+* [master](https://github.com/jonathanlermitage/tikione-c2e) : la version stable de l'application pour PC.
+* [desktop-x.y.z](https://github.com/jonathanlermitage/tikione-c2e/branches) : la prochaine version de l'application pour PC. Par exemple `desktop-1.3.11` pour la version 1.3.11.
 * [android](https://github.com/jonathanlermitage/tikione-c2e/tree/android) : l'application pour Android 5 et supérieur, en cours de dev.
 
 ## Téléchargement et utilisation en ligne de commande
