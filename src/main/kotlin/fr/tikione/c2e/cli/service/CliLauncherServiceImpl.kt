@@ -7,11 +7,13 @@ import fr.tikione.c2e.core.service.html.HtmlWriterService
 import fr.tikione.c2e.core.service.index.IndexWriterService
 import fr.tikione.c2e.core.service.web.CPCAuthService
 import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
+import org.apache.commons.io.FileUtils
 import org.jsoup.Jsoup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -43,11 +45,24 @@ class CliLauncherServiceImpl : CliLauncherService {
                     .forEach { proxy -> Tools.setProxy(proxy[0], proxy[1]) }
         }
 
+        val doUpgrade = switchList.contains("-up")
         try {
             val latestVersion = Jsoup.connect(Tools.VERSION_URL).get().text().trim()
             if (Tools.VERSION != latestVersion) {
-                log.warn("<< une nouvelle version de TikiOne C2E est disponible (" + latestVersion + "), " +
-                        "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases >>")
+                if (doUpgrade) {
+                    val upgradeFile = File("c2e-$latestVersion.zip")
+                    if (upgradeFile.exists()) {
+                        log.info("<< une nouvelle version de TikiOne C2E ($latestVersion) a deja ete telechargee (${upgradeFile.absolutePath}), libre a vous de l'utiliser >>")
+                    } else {
+                        log.info("<< une nouvelle version de TikiOne C2E va etre telechargee ($latestVersion) >>")
+                        val upgradeFileUrl = "https://github.com/jonathanlermitage/tikione-c2e/releases/download/v$latestVersion/c2e-$latestVersion.zip"
+                        FileUtils.copyURLToFile(URL(upgradeFileUrl), upgradeFile)
+                        log.info("<< TikiOne C2E $latestVersion a ete telechargee (${upgradeFile.absolutePath}), libre a vous de l'utiliser >>")
+                    }
+                } else {
+                    log.warn("<< une nouvelle version de TikiOne C2E est disponible ($latestVersion), " +
+                            "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases ou relancez C2E avec la paramètre -up >>")
+                }
             }
         } catch (e: Exception) {
             log.warn("impossible de verifier la presence d'une nouvelle version de TikiOne C2E", e)
