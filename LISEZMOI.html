@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+
+<head>
+    <title>Aide - C2E</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <style media="all" type="text/css">
+        body {
+            background-color: #FEFEFE;
+            font-family: serif;
+            font-size: 1em;
+            color: #333;
+            padding: 0;
+            margin: 1em 1em 3em;
+        }
+
+        code {
+            color: #111;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        h3 {
+            background-color: bisque;
+            padding: 0.25em;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>
+    TikiOne C2E
+</h1>
+<p>
+    Télécharge vos magazines <a href="https://www.canardpc.com/" title="lien vers le site CanardPC">CanardPC</a> (abo
+    numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.<br/>
+    Fonctionne sous Windows, MacOS, Linux, BSD. Appli Android en cours de développement.
+</p>
+
+<h2>
+    Téléchargement et utilisation en ligne de commande
+</h2>
+
+<h3>Windows</h3>
+<p>
+    Placez-vous dans le répertoire de l'application et lancez une console (<code>Maj + clic droit</code>, <i>"Ouvrir un
+    invité de commande ici"</i>). Tapez <code>c2e.cmd username password <i>paramètres...</i></code> (les seuls
+    paramètres
+    obligatoires sont <code>username</code> et <code>password</code>, les autres sont optionnnels).
+</p>
+<ul>
+    <li>
+        <code>username</code> et <code>password</code> sont votre identifiant et mot de passe à l'abonnement CanardPC
+        numérique, ces paramètres sont obligatoires.
+    </li>
+    <li>
+        <code>-cpcXXX</code> télécharger le numéro XXX, par exemple <code>-cpc348</code>. Répétez ce paramètre pour
+        télécharger plusieurs numéros, par exemple <code>-cpc348 -cpc349 -cpc350 -cpc351</code>.
+    </li>
+    <li>
+        <code>-cpcall</code> télécharger l'intégralité des numéros à votre disposition.
+    </li>
+    <li>
+        <code>-cpcmising</code> télécharge uniquement les numéros manquants.
+    </li>
+    <li>
+        <code>-nopic</code> ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
+    </li>
+    <li>
+        <code>-list</code> savoir quels numéros sont accessibles au téléchargement.
+    </li>
+    <li>
+        <code>-debug</code> affiche le détail du téléchargement dans un format proche de JSON.
+    </li>
+    <li>
+        <code>-resizeXX</code> redimensionne les images selon le ratio XX (ex: <code>-resize50</code> pour un ratio de
+        50%). Basé sur ImageMagick, lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows
+        uniquement, mais doit fonctionner partout où ImageMagick est disponible.
+    </li>
+    <li>
+        <code>-index</code> génère un sommaire CSV (<code>CPC-index.csv</code>) de tous les numéros disponibles au
+        téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention,
+        prévoir plusieurs dizaines de minutes pour ce traitement. Si le fichier <code>CPC-index.csv</code> existe déjà,
+        il sera complété avec les numéros manquants.
+    </li>
+    <li>
+        <code>-proxy:address:port</code> utilise le proxy HTTP(S) définit par l'adresse address (nom de domaine ou
+        adresse IP) et le port port. Cette option est généralement utile si vous vous connectez depuis le réseau d'un
+        entreprise qui impose un proxy pour accéder au web.
+    </li>
+    <li>
+        <code>-sysproxy</code> utilise le proxy système.
+    </li>
+    <li>
+        <code>-dark</code> active par défaut le mode nuit.
+    </li>
+</ul>
+<h4>Exemples</h4>
+<ul>
+    <li>
+        télécharger le numéro 348, tapez <code>c2e.cmd username password -cpc348.</code>
+    </li>
+    <li>
+        télécharger le numéro 348 sans les images, tapez <code>c2e.cmd username password -cpc348 -nopic</code>.
+    </li>
+    <li>
+        télécharger le numéro 348 et réduire les images à 40% de leur taille originelle, tapez <code>c2e.cmd username
+        password -cpc348 -resize40</code>.
+    </li>
+    <li>
+        télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez <code>c2e.cmd username password
+        -cpc348 -cpc350 -cpc355</code>.
+    </li>
+    <li>
+        télécharger l'intégralité des numéros disponibles, tapez <code>c2e.cmd username password -cpcall</code>.
+    </li>
+    <li>
+        télécharger les numéros manquants, tapez <code>c2e.cmd username password -cpcmissing</code>.
+    </li>
+    <li>
+        générer le sommaire de l'intégralité des numéros disponibles, tapez <code>c2e.cmd username password
+        -index</code>.
+    </li>
+    <li>
+        télécharger le numéro 348 au travers du proxy HTTP(S) companygateway sur le port 3128, tapez <code>c2e.cmd
+        username password -cpc348 -proxy:companygateway:3218</code>.
+    </li>
+    <li>
+        télécharger le numéro 348 au travers du proxy système, tapez <code>c2e.cmd username password -cpc348
+        -sysproxy</code>.
+    </li>
+</ul>
+
+<h3>MacOS, Linux, BSD</h3>
+<p>
+    Comme Windows, mais remplacez <code>c2e.cmd</code> par <code>./c2e.sh</code>.<br/>
+    Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez <code>sudo apt-get install
+    default-jre</code>). Aussi, <code>c2e.sh</code> doit être rendu exécutable : tapez <code>chmod +x
+    c2e.sh</code>.<br/>
+    Ce script est testé sous Ubuntu 16.04 LTS et devrait fonctionner sur la majorité des distributions Linux.
+</p>
+
+</body>
+
+</html>

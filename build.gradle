@@ -65,7 +65,7 @@ task copyLaunchers(type: Copy) {
 task copyDoc(type: Copy) {
     from "."
     into "$buildDir/libs"
-    include('*.md', "LICENSE.txt")
+    include('CHANGELOG.md', "LICENSE.txt", "LISEZMOI.html")
 }
 jar {
     doFirst {

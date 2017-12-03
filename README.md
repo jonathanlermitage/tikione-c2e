@@ -3,7 +3,7 @@
 # TikiOne C2E
 
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
-Fonctionne sous Windows, MacOS, Linux, BSD.
+Fonctionne sous Windows, MacOS, Linux, BSD. Appli Android en cours de développement.
 
 Trois branches sont développées :
 
@@ -43,7 +43,7 @@ Exemples :
 
 * télécharger le numéro 348, tapez `c2e.cmd username password -cpc348`.  
 * télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
-* télécharger le numéro 348 réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
+* télécharger le numéro 348 et réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
 * télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
 * télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
 * télécharger les numéros manquants, tapez `c2e.cmd username password -cpcmissing`.  
