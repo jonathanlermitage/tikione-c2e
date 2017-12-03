@@ -7,6 +7,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
@@ -44,12 +45,17 @@ class Tools {
         fun resourceAsStr(path: String, asset: AssetManager?): String =
                 IOUtils.toString(Tools::class.java.classLoader.getResourceAsStream(path), StandardCharsets.UTF_8)
 
+        @Throws(IOException::class)
+        @JvmStatic
+        fun readRemoteToBase64(url: String?): String {
+            return Base64.encodeBase64String(IOUtils.toByteArray(URL(url)))
+        }
+
         /**
          * Resize a picture.
          * Based on ImageMagick (must be in path) and validated with ImageMagick-7.0.6-10-Q16-x64 on Windows-8.1-x64.
-         *
-         * todo: why not using Java directly for this operation ?
-         * see https://stackoverflow.com/questions/244164/how-can-i-resize-an-image-using-java
+         * We could resize via pure-Java, but it fails to handle some pictures: it adds something like a (horrible) grey
+         * or pink filter. ImageMagick does a better job.
          *
          * @param src original picture.
          * @param dest new picture.

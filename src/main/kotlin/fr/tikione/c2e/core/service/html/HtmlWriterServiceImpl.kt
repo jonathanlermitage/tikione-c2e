@@ -2,10 +2,8 @@ package fr.tikione.c2e.core.service.html
 
 import compat.Tools
 import compat.Tools.Companion.fileAsBase64
-import fr.tikione.c2e.core.model.web.Article
-import fr.tikione.c2e.core.model.web.ArticleType
-import fr.tikione.c2e.core.model.web.Edito
-import fr.tikione.c2e.core.model.web.Magazine
+import compat.Tools.Companion.readRemoteToBase64
+import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
 import net.sf.jmimemagic.Magic
 import org.apache.commons.codec.binary.Base64
@@ -113,7 +111,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
                             + "</a></div>\n\n")
-                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize) }
+                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize, magazine.authorsPicture) }
                 }
             }
             w.write("</div>\n")
@@ -140,7 +138,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         )
     }
 
-    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?) {
+    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?, authorsPicture: Map<String, AuthorPicture>) {
         w.write("\n<!--article.getType()=" + article.type + "-->\n\n")
         if (ArticleType.NEWS === article.type) {
             w.write("<div class='news'>\n")
@@ -150,14 +148,14 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             if (filled(article.title)) {
                 w.write("<div class='news-title'>" + article.title + "</div>\n")
             }
-            writeArticleAuthorCreationdate(w, article)
+            writeArticleAuthorCreationdate(w, article, incluePictures, authorsPicture)
             writeArticleContents(w, article)
         } else {
             w.write("<div class='article'>\n")
             writeArticleSpecs(w, article)
             writeArticleSubtitle(w, article)
             writeArticleHeaderContent(w, article)
-            writeArticleAuthorCreationdate(w, article)
+            writeArticleAuthorCreationdate(w, article, incluePictures, authorsPicture)
             writeArticleContents(w, article)
             if (incluePictures) {
                 writeArticlePictures(w, article, resize)
@@ -177,7 +175,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         }
     }
 
-    private fun writeArticleAuthorCreationdate(w: Writer, article: Article) {
+    private fun writeArticleAuthorCreationdate(w: Writer, article: Article, incluePictures: Boolean, authorsPicture: Map<String, AuthorPicture>) {
         val content = ArrayList<String>()
 
         if (!article.author.isNullOrBlank()) {
@@ -188,9 +186,16 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             content.add("${if (content.isEmpty()) "Le " else "le "} ${article.getFormattedDate()}")
         }
 
+        if (incluePictures) {
+            val normalizedAuthor = article.author?.toUpperCase()?.replace("Par", "")?.trim()
+            if (authorsPicture.containsKey(normalizedAuthor)) {
+                w.write(img("author-picture-img",
+                        mapOf(pair = "src" to "data:image/jpeg;base64,${authorsPicture[normalizedAuthor]?.pictureAsBase64}")
+                ))
+            }
+        }
         w.write(div("article-author-creationdate", content.joinToString(separator = " | ")))
     }
-
 
     private fun writeArticleSpecs(w: Writer, article: Article) {
         val buff = StringBuilder()
@@ -353,10 +358,6 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         if (contentFilled) {
             w.write(buff.toString())
         }
-    }
-
-    private fun readRemoteToBase64(url: String?): String {
-        return Base64.encodeBase64String(IOUtils.toByteArray(URL(url)))
     }
 
     private fun boldSpecTitle(str: String): String =

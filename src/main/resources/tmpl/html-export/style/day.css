@@ -381,3 +381,12 @@ a.article-ext-lnk {
     font-size: 1.3em;
     font-weight: bold;
 }
+
+.author-picture-img {
+    float: right;
+    margin: 0.5em;
+    padding: 0.2em;
+    border: 2px pink dashed;
+    width: 80px;
+    height: 80px;
+}

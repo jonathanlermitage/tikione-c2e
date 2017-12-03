@@ -75,8 +75,9 @@ abstract class AbstractReader {
 
     companion object {
         val CPC_BASE_URL = "https://www.canardpc.com"
-        val CPC_LOGIN_FORM_POST_URL = CPC_BASE_URL + "/user/login"
-        val CPC_MAG_NUMBER_BASE_URL = CPC_BASE_URL + "/numero/_NUM_"
+        val CPC_LOGIN_FORM_POST_URL = "$CPC_BASE_URL/user/login"
+        val CPC_MAG_NUMBER_BASE_URL = "$CPC_BASE_URL/numero/_NUM_"
+        val CPC_AUTHORS_URL = "$CPC_BASE_URL/qui-sommes-nous"
         val CUSTOMTAG_EM_START = "__c2e_emStart__"
         val CUSTOMTAG_EM_END = "__c2e_emEnd__"
         val CUSTOMTAG_STRONG_START = "__c2e_strongStart__"

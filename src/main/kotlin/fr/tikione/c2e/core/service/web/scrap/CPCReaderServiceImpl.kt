@@ -38,6 +38,27 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         return magNumers
     }
 
+    override fun extractAuthorsPicture(doc: Document): Map<String, AuthorPicture> {
+        val authorsAndPic = HashMap<String, AuthorPicture>()
+        try {
+            doc.getElementsByClass("lequipe")[0].getElementsByTag("td").forEach { elt ->
+                val realName: String = text(elt.getElementsByTag("h3"))!!
+                if (realName.isNotEmpty() && !authorsAndPic.containsKey(realName.toUpperCase())) {
+                    val picture = Tools.readRemoteToBase64(CPC_BASE_URL + elt.getElementsByTag("img").attr("src"))
+                    authorsAndPic.put(realName.toUpperCase(), AuthorPicture(realName, picture))
+
+                    // Some authors have different names in About-page and articles: register both
+                    if (realName.equals("Louis-Ferdinand Sébum", true)) {
+                        authorsAndPic.put("L-F. Sébum".toUpperCase(), AuthorPicture(realName, picture))
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            log.warn("impossible de recuperer les pictos des redacteurs, poursuite du telechargement", e)
+        }
+        return authorsAndPic
+    }
+
     override fun downloadMagazine(auth: Auth, number: String): Magazine {
         log.info("telechargement du numero {}...", number)
         val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
@@ -47,6 +68,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         mag.login = auth.login
         mag.edito = extractEdito(doc)
         mag.toc = extractToc(auth, doc)
+        mag.authorsPicture = extractAuthorsPicture(queryUrl(auth, CPC_AUTHORS_URL))
         return mag
     }
 
