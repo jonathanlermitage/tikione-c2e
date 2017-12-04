@@ -68,7 +68,10 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         mag.login = auth.login
         mag.edito = extractEdito(doc)
         mag.toc = extractToc(auth, doc)
-        mag.authorsPicture = extractAuthorsPicture(queryUrl(auth, CPC_AUTHORS_URL))
+
+        // Décision de la rédac CanardCPC : ne pas intégrer ed picto du site CanardPC
+        mag.authorsPicture = Collections.emptyMap() //extractAuthorsPicture(queryUrl(auth, CPC_AUTHORS_URL))
+
         return mag
     }
 
