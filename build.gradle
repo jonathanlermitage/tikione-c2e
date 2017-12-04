@@ -21,6 +21,12 @@ apply plugin: 'idea'
 apply plugin: 'kotlin'
 apply plugin: 'com.github.ksoichiro.build.info' // https://github.com/ksoichiro/gradle-build-info-plugin
 apply plugin: 'com.github.ben-manes.versions' // https://github.com/ben-manes/gradle-versions-plugin
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
 
 sourceCompatibility = 1.6
 compileKotlin {
@@ -65,7 +71,16 @@ task copyLaunchers(type: Copy) {
 task copyDoc(type: Copy) {
     from "."
     into "$buildDir/libs"
-    include('CHANGELOG.md', "LICENSE.txt", "LISEZMOI.html")
+    include('CHANGELOG.md', 'LICENSE.txt', 'LISEZMOI.html')
+}
+task copy3rdPartyLicenses(type: Copy) {
+    from "./3rdparty-licenses"
+    into "$buildDir/libs/3rdparty-licenses"
+}
+task copyLicense(type: Copy) {
+    from "./"
+    into "$buildDir/libs"
+    include('LICENSE.txt')
 }
 jar {
     doFirst {
@@ -85,6 +100,8 @@ jar {
     dependsOn copyLibs
     dependsOn copyLaunchers
     dependsOn copyDoc
+    dependsOn copy3rdPartyLicenses
+    dependsOn copyLicense
 }
 build {
     doFirst {

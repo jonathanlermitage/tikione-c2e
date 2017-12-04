@@ -2,11 +2,12 @@
 
 ### 1.3.11 (en cours de dev)
 
-* [#7](https://github.com/jonathanlermitage/tikione-c2e/issues/7) ajout de l'avatar des rédacteurs dans chaque article.
 * [#12](https://github.com/jonathanlermitage/tikione-c2e/issues/12) ajout d'un guide utilisateur `LISEZMOI.html`
 * [#14](https://github.com/jonathanlermitage/tikione-c2e/issues/14) ajout du paramètre `-up`: si une nouvelle version de l'application est disponible, télécharge la version ZIP minimale (sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée).
 * [#16](https://github.com/jonathanlermitage/tikione-c2e/issues/16) la première lettre de chaque article est décorée à la manière du magazine en ligne.
 * interne : refactoring en vue de simplifier le développement de l'application Android.
+* interne : les licences tierces sont packagées avec l'application dans le dossier `3rdparty-licenses`. 
+* interne : `build.gradle`, téléchargement automatique de la javadoc et des sources des dépendances sous IntelliJ.
 
 ### 1.3.10 (2017/11/29)
 
