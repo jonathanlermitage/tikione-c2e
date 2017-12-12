@@ -59,9 +59,22 @@ Téléchargez et décompressez la version packagée `c2e-x.y.z.zip`. Comme Windo
 Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez `sudo apt-get install default-jre`). Aussi, `c2e.sh` doit être rendu exécutable : tapez `chmod +x c2e.sh`.  
 Ce script est testé sous Ubuntu 16.04 LTS et devrait fonctionner sur la majorité des distributions Linux.
 
-## Compilation
+## Compilation et paquetage
 
+### Compilation
+  
 Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Gradle. Installez un JDK8 et Gradle 3+, puis lancez `gradle jar` pour construire un applicatif dans le répertoire `build/libs` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
+
+### Assembler un paquetage
+
+*Sous Windows uniquement (les scripts MacOS, Linux et BSD ne sont pas prêts).*
+    
+Créez trois variables d'environnement :  
+* `TK1_7Z` : chemin de 7-zip (par exemple `C:\Program Files\7-Zip\`, doit contenir `7z.exe`)
+* `TK1_JRE` : chemin d'un JRE8 (par exemple `C:\Program Files\Java8\`, doit contenir `bin\java.exe`)
+* `TK1_MAGICK` : chemin d'un dossier ImageMagick (par exemple `C:\Program Files\ImageMagick-7.0.6-10-portable-Q16-x64\`, doit contenir `magick.exe`)
+
+Ensuite, lancez une compilation puis `make-windows.cmd x.y.z`, où `x.y.z` est un numéro de version, par exemple `make-windows.cmd 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
 
 ## Avancement
 

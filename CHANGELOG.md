@@ -8,6 +8,7 @@
 * interne : refactoring en vue de simplifier le développement de l'application Android.
 * interne : les licences tierces sont packagées avec l'application dans le dossier `3rdparty-licenses`. 
 * interne : `build.gradle`, téléchargement automatique de la javadoc et des sources des dépendances sous IntelliJ.
+* interne : ajout d'un script pour packager chaque release Windows (`make-windows.cmd`). Les versions de l'application proposées au téléchargement sont créées avec ce script.
 
 ### 1.3.10 (2017/11/29)
 

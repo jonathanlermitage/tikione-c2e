@@ -1,1 +1,1 @@
-gradlew wrapper --gradle-version=%1
+gradle wrapper --gradle-version=%1
