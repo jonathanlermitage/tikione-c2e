@@ -1,7 +1,9 @@
 package fr.tikione.c2e.core.service.web.scrap
 
 import fr.tikione.c2e.core.model.web.Auth
+import fr.tikione.c2e.core.model.web.AuthorPicture
 import fr.tikione.c2e.core.model.web.Magazine
+import org.jsoup.nodes.Document
 
 /**
  * Tools to download CanardPC magazines.
@@ -22,4 +24,6 @@ interface CPCReaderService {
      * @return magazine.
      */
     fun downloadMagazine(auth: Auth, number: String): Magazine
+
+    fun extractAuthorsPicture(doc: Document): Map<String, AuthorPicture>
 }

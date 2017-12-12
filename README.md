@@ -3,7 +3,7 @@
 # TikiOne C2E
 
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
-Fonctionne sous Windows, MacOS, Linux, BSD.
+Fonctionne sous Windows, MacOS, Linux, BSD. Appli Android en cours de développement.
 
 Trois branches sont développées :
 
@@ -35,6 +35,7 @@ Trois versions packagées existent :
   * `-proxy:address:port` utilise le proxy HTTP(S) définit par l'adresse `address` (nom de domaine ou adresse IP) et le port `port`. Cette option est généralement utile si vous vous connectez depuis le réseau d'un entreprise qui impose un proxy pour accéder au web.
   * `-sysproxy` utilise le proxy système.
   * `-dark` active par défaut le mode nuit.
+  * `-up` télécharge toute nouvelle version de l'application (version ZIP minimale, sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée).
   
 La police de caractères par défaut est `RobotoSlab-Light` (celle utilisée sur le site CanardPC). Pour utiliser une autre police, déposez un fichier TTF (par exemple `Arial.ttf`) dans le répertoire de application (à côté de `c2e.cmd` et `c2e.sh`) : elle sera automatiquement utilisée.
       
@@ -42,7 +43,7 @@ Exemples :
 
 * télécharger le numéro 348, tapez `c2e.cmd username password -cpc348`.  
 * télécharger le numéro 348 sans les images, tapez `c2e.cmd username password -cpc348 -nopic`.  
-* télécharger le numéro 348 réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
+* télécharger le numéro 348 et réduire les images à 40% de leur taille originelle, tapez `c2e.cmd username password -cpc348 -resize40`.  
 * télécharger plusieurs numéros à la fois, par exemple 348, 350 et 355, tapez `c2e.cmd username password -cpc348 -cpc350 -cpc355`.  
 * télécharger l'intégralité des numéros disponibles, tapez `c2e.cmd username password -cpcall`.
 * télécharger les numéros manquants, tapez `c2e.cmd username password -cpcmissing`.  
@@ -58,9 +59,22 @@ Téléchargez et décompressez la version packagée `c2e-x.y.z.zip`. Comme Windo
 Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez `sudo apt-get install default-jre`). Aussi, `c2e.sh` doit être rendu exécutable : tapez `chmod +x c2e.sh`.  
 Ce script est testé sous Ubuntu 16.04 LTS et devrait fonctionner sur la majorité des distributions Linux.
 
-## Compilation
+## Compilation et paquetage
 
+### Compilation
+  
 Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Gradle. Installez un JDK8 et Gradle 3+, puis lancez `gradle jar` pour construire un applicatif dans le répertoire `build/libs` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
+
+### Assembler un paquetage
+
+*Sous Windows uniquement (les scripts MacOS, Linux et BSD ne sont pas prêts).*
+    
+Créez trois variables d'environnement :  
+* `TK1_7Z` : chemin de 7-zip (par exemple `C:\Program Files\7-Zip\`, doit contenir `7z.exe`)
+* `TK1_JRE` : chemin d'un JRE8 (par exemple `C:\Program Files\Java8\`, doit contenir `bin\java.exe`)
+* `TK1_MAGICK` : chemin d'un dossier ImageMagick (par exemple `C:\Program Files\ImageMagick-7.0.6-10-portable-Q16-x64\`, doit contenir `magick.exe`)
+
+Ensuite, lancez une compilation puis `make-windows.cmd x.y.z`, où `x.y.z` est un numéro de version, par exemple `make-windows.cmd 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
 
 ## Avancement
 

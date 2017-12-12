@@ -1,5 +1,15 @@
 ## TikiOne C2E Change Log
 
+### 1.3.11 (2017/12/12)
+
+* [#12](https://github.com/jonathanlermitage/tikione-c2e/issues/12) ajout d'un guide utilisateur `LISEZMOI.html`
+* [#14](https://github.com/jonathanlermitage/tikione-c2e/issues/14) ajout du paramètre `-up`: si une nouvelle version de l'application est disponible, télécharge la version ZIP minimale (sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée).
+* [#16](https://github.com/jonathanlermitage/tikione-c2e/issues/16) la première lettre de chaque article est décorée à la manière du magazine en ligne.
+* interne : refactoring en vue de simplifier le développement de l'application Android.
+* interne : les licences tierces sont packagées avec l'application dans le dossier `3rdparty-licenses`. 
+* interne : `build.gradle`, téléchargement automatique de la javadoc et des sources des dépendances sous IntelliJ.
+* interne : ajout d'un script pour packager chaque release Windows (`make-windows.cmd`). Les versions de l'application proposées au téléchargement sont créées avec ce script.
+
 ### 1.3.10 (2017/11/29)
 
 * [#13](https://github.com/jonathanlermitage/tikione-c2e/issues/13) un échec d'authentification arrête maintenant le programme au lieu de télécharger des magazines vides.

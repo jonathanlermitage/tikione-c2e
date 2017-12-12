@@ -18,3 +18,7 @@ gradle-app.setting
 
 # dependencyUpdates output
 report.txt
+
+# Release files
+c2e*.zip
+c2e*.tar.gz

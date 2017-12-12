@@ -1,12 +1,9 @@
 package fr.tikione.c2e.core.service.html
 
-import android.content.res.AssetManager
 import compat.Tools
 import compat.Tools.Companion.fileAsBase64
-import fr.tikione.c2e.core.model.web.Article
-import fr.tikione.c2e.core.model.web.ArticleType
-import fr.tikione.c2e.core.model.web.Edito
-import fr.tikione.c2e.core.model.web.Magazine
+import compat.Tools.Companion.readRemoteToBase64
+import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
 import net.sf.jmimemagic.Magic
 import org.apache.commons.codec.binary.Base64
@@ -23,7 +20,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
 
-class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWriterService {
+class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -33,7 +30,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
         } else {
             log.info("utilisation de la police de caracteres {}", ttfs[0].absolutePath)
-            fileAsBase64(ttfs[0], AssetManager())
+            fileAsBase64(ttfs[0], assetService.getAssetManager())
         }
     }
 
@@ -114,7 +111,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
                             + "</a></div>\n\n")
-                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize) }
+                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize, magazine.authorsPicture) }
                 }
             }
             w.write("</div>\n")
@@ -141,7 +138,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         )
     }
 
-    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?) {
+    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?, authorsPicture: Map<String, AuthorPicture>) {
         w.write("\n<!--article.getType()=" + article.type + "-->\n\n")
         if (ArticleType.NEWS === article.type) {
             w.write("<div class='news'>\n")
@@ -151,14 +148,14 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             if (filled(article.title)) {
                 w.write("<div class='news-title'>" + article.title + "</div>\n")
             }
-            writeArticleAuthorCreationdate(w, article)
+            writeArticleAuthorCreationdate(w, article, incluePictures, authorsPicture)
             writeArticleContents(w, article)
         } else {
             w.write("<div class='article'>\n")
             writeArticleSpecs(w, article)
             writeArticleSubtitle(w, article)
             writeArticleHeaderContent(w, article)
-            writeArticleAuthorCreationdate(w, article)
+            writeArticleAuthorCreationdate(w, article, incluePictures, authorsPicture)
             writeArticleContents(w, article)
             if (incluePictures) {
                 writeArticlePictures(w, article, resize)
@@ -178,7 +175,7 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         }
     }
 
-    private fun writeArticleAuthorCreationdate(w: Writer, article: Article) {
+    private fun writeArticleAuthorCreationdate(w: Writer, article: Article, incluePictures: Boolean, authorsPicture: Map<String, AuthorPicture>) {
         val content = ArrayList<String>()
 
         if (!article.author.isNullOrBlank()) {
@@ -189,9 +186,16 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
             content.add("${if (content.isEmpty()) "Le " else "le "} ${article.getFormattedDate()}")
         }
 
+        if (incluePictures) {
+            val normalizedAuthor = article.author?.toUpperCase()?.replace("Par", "")?.trim()
+            if (authorsPicture.containsKey(normalizedAuthor)) {
+                w.write(img("author-picture-img",
+                        mapOf(pair = "src" to "data:image/jpeg;base64,${authorsPicture[normalizedAuthor]?.pictureAsBase64}")
+                ))
+            }
+        }
         w.write(div("article-author-creationdate", content.joinToString(separator = " | ")))
     }
-
 
     private fun writeArticleSpecs(w: Writer, article: Article) {
         val buff = StringBuilder()
@@ -228,10 +232,13 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         for (content in article.contents) {
             if (!content.text!!.isEmpty()) {
                 val cssClass = if (article.encadreContents.any { fastEquals(content.text as String, it) }) "article-encadre" else "article-content"
-                w.write("<p class=\"" + cssClass + "\">" + richToHtml(content.text as String) + "</p>\n")
+                w.write("<p class=\"" + cssClass + "\">" + magnifyFirstLetter(richToHtml(content.text as String)) + "</p>\n")
             }
         }
     }
+
+    private fun magnifyFirstLetter(content: String): String =
+            "<span class=\"first-letter\">${content[0]}</span>${content.substring(1)}"
 
     private fun writeArticleLinks(w: Writer, article: Article) {
         if (!article.gameLinks.isEmpty()) {
@@ -351,10 +358,6 @@ class HtmlWriterServiceImpl(asset: AssetManager) : AbstractWriter(asset), HtmlWr
         if (contentFilled) {
             w.write(buff.toString())
         }
-    }
-
-    private fun readRemoteToBase64(url: String?): String {
-        return Base64.encodeBase64String(IOUtils.toByteArray(URL(url)))
     }
 
     private fun boldSpecTitle(str: String): String =
