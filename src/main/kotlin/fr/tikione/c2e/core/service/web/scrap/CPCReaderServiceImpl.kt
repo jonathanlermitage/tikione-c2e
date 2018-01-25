@@ -91,13 +91,33 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     private fun extractToc(auth: Auth, doc: Document): ArrayList<TocCategory> {
         val container = doc.getElementById("block-numerosommaire")
         val columns = container.getElementsByClass("columns")
-        return columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
+        val tocCategories = columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
+
+        // Fix https://github.com/jonathanlermitage/tikione-c2e/issues/27
+        val fixedTocCategories = ArrayList<TocCategory>()
+        for (tocCategory in tocCategories) {
+            if (tocCategory.title.isNullOrEmpty() && !fixedTocCategories.isEmpty()) {
+                fixedTocCategories.get(fixedTocCategories.size - 1).items.addAll(tocCategory.items)
+            } else {
+                fixedTocCategories.add(tocCategory)
+            }
+        }
+
+        return fixedTocCategories
+
     }
 
     private fun buildTocItem(auth: Auth, elt: Element): TocCategory {
         val tocCategory = TocCategory()
-        val title = clean(elt.getElementsByTag("h3")[0].text())
-        tocCategory.title = title
+        val titleElt = elt.getElementsByTag("h3")
+        if (titleElt.size == 0) {
+            // Fix https://github.com/jonathanlermitage/tikione-c2e/issues/27
+            // La ToC du numéro 374 est mal formée : la div "Tests brefs" ne contient pas tous les éléments de la rubrique
+            tocCategory.title = ""
+        } else {
+            val title = clean(elt.getElementsByTag("h3")[0].text())
+            tocCategory.title = title
+        }
         elt.getElementsByTag("article").forEach { sheet ->
             tocCategory.items.add(TocItem(
                     sheet.text(),

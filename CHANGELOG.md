@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.3.12 (en cours de dev)
+
+* [#27](https://github.com/jonathanlermitage/tikione-c2e/issues/27) amélioration de la récupération des numéros, et correction pour le numéro 374.
+
 ### 1.3.11 (2017/12/12)
 
 * [#12](https://github.com/jonathanlermitage/tikione-c2e/issues/12) ajout d'un guide utilisateur `LISEZMOI.html`
