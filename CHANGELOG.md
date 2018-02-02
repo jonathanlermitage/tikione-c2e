@@ -1,5 +1,10 @@
 ## TikiOne C2E Change Log
 
+### 1.3.12 (2018/02/02)
+
+* [#21](https://github.com/jonathanlermitage/tikione-c2e/issues/21) ajout du paramètre `-fontsize:XXuu` pour spécifier une taille de police de base, où `XX` est un nombre et `uu` une unité, par exemple `-fontsize:20px` ou `-fontsize:2em`.
+* [#27](https://github.com/jonathanlermitage/tikione-c2e/issues/27) amélioration de la récupération des numéros, et correction pour le numéro 374.
+
 ### 1.3.11 (2017/12/12)
 
 * [#12](https://github.com/jonathanlermitage/tikione-c2e/issues/12) ajout d'un guide utilisateur `LISEZMOI.html`

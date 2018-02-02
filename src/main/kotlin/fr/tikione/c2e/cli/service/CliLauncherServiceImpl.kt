@@ -76,6 +76,13 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doAllMags = switchList.contains("-cpcall")
         val doAllMissing = switchList.contains("-cpcmissing")
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
+
+        var fontsize = "1em"
+        args.filter { arg -> arg.startsWith("-fontsize:") }
+                .map { arg -> arg.substring("-fontsize:".length) }
+                .forEach { fs -> fontsize = fs }
+        val customCss = "body { font-size: $fontsize; }"
+
         val cpcAuthService: CPCAuthService = kodein.instance()
         val cpcReaderService: CPCReaderService = kodein.instance()
 
@@ -118,7 +125,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
                 val file = File(makeMagFilename(magNumber, doIncludePictures, doResize))
                 val writerService: HtmlWriterService = kodein.instance()
-                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode)
+                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de ${Tools.PAUSE_BETWEEN_MAG_DL}s avant de telecharger le prochain numero")
                     TimeUnit.SECONDS.sleep(Tools.PAUSE_BETWEEN_MAG_DL)
