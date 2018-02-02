@@ -35,7 +35,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     }
 
     @Throws(IOException::class)
-    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean) {
+    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?) {
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
@@ -53,6 +53,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                 .replace("$\$timestamp$$", Date().toString())
                 .replace("$\$mag_number$$", magazine.number)
                 .replace("$\$favicon_base64$$", faviconBase64)
+                .replace("/*$\$css_custom$$*/", customCss ?: "font-size:1em;")
                 .replace("/*$\$css_day$$*/", cssDay)
                 .replace("/*$\$css_night$$*/", cssNight)
                 .replace("/*$\$js$$*/", js)
