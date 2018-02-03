@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.3.13 (en cours de dev)
+
+* le script de lancement Windows n'est plus limité à 9 paramètres.
+
 ### 1.3.12 (2018/02/02)
 
 * [#21](https://github.com/jonathanlermitage/tikione-c2e/issues/21) ajout du paramètre `-fontsize:XXuu` pour spécifier une taille de police de base, où `XX` est un nombre et `uu` une unité, par exemple `-fontsize:20px` ou `-fontsize:2em`.
