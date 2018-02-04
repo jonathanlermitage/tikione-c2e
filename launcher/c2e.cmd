@@ -19,4 +19,4 @@ set "PATH=%PATH%;C:\Program Files\Java\jre10\bin\"
 set "PATH=%PATH%;C:\Program Files\Java\jre\bin\"
 set "PATH=%PATH%;%OPATH%"
 
-java.exe -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar" %1 %2 %3 %4 %5 %6 %7 %8 %9
+java.exe -jar -Xms32m -Xmx512m -Dfile.encoding=UTF-8 "c2e.jar" %*

@@ -84,6 +84,7 @@ Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master
 ## Contributeurs
 
 * [guame](https://github.com/guame)
+* [willoucom](https://github.com/willoucom)
 
 Merci !
 
