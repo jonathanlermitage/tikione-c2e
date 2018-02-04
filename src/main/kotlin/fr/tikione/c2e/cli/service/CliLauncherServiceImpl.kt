@@ -77,6 +77,17 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doAllMissing = switchList.contains("-cpcmissing")
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
 
+        var directory = "."
+        args.filter { arg -> arg.startsWith("-directory:") }
+                .map { arg -> arg.substring("-directory:".length) }
+                .forEach { dd -> directory = dd }
+        try {
+            log.info("Le dossier de destination est {}", directory)
+            File(directory).mkdirs()
+        } catch (e: Exception) {
+            log.warn("impossible de creer le dossier de destination", e)
+        }
+
         var fontsize = "1em"
         args.filter { arg -> arg.startsWith("-fontsize:") }
                 .map { arg -> arg.substring("-fontsize:".length) }
@@ -97,7 +108,7 @@ class CliLauncherServiceImpl : CliLauncherService {
             }
             doAllMissing -> {
                 magNumbers.addAll(headers)
-                val existing = listDownloadedMags()
+                val existing = listDownloadedMags(directory)
                 if (existing.isNotEmpty()) {
                     log.info("les numeros deja presents ne seront pas telecharges : {}", existing)
                 }
@@ -123,7 +134,7 @@ class CliLauncherServiceImpl : CliLauncherService {
             for (i in magNumbers.indices) {
                 val magNumber = magNumbers[i]
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
-                val file = File(makeMagFilename(magNumber, doIncludePictures, doResize))
+                val file = File(makeMagFilename(directory, magNumber, doIncludePictures, doResize))
                 val writerService: HtmlWriterService = kodein.instance()
                 writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss)
                 if (i != magNumbers.size - 1) {
@@ -136,7 +147,7 @@ class CliLauncherServiceImpl : CliLauncherService {
 
         if (doIndex) {
             log.info("creation de l'index de tous les numeros disponibles")
-            val file = File("CPC-index.csv")
+            val file = File(directory+"/CPC-index.csv")
             val writerService: IndexWriterService = kodein.instance()
             writerService.write(auth, headers, file)
         }
@@ -144,11 +155,12 @@ class CliLauncherServiceImpl : CliLauncherService {
         log.info("termine !")
     }
 
-    private fun listDownloadedMags(): List<String> =
-            File(".").listFiles { _, name -> name.startsWith("CPC") && name.contains('-') && name.toUpperCase().endsWith(".HTML") }
-                    .map { file -> file.name.substring("CPC".length, file.name.indexOf('-')) }
-                    .sortedDescending()
+    private fun listDownloadedMags(directory: String="."): List<String> =
+        File(directory).listFiles { _, name -> name.startsWith("CPC") && name.contains('-') && name.toUpperCase().endsWith(".HTML") }
+            .map { file -> file.name.substring("CPC".length, file.name.indexOf('-')) }
+            .sortedDescending()
 
-    private fun makeMagFilename(magNumber: String, doIncludePictures: Boolean, doResize: String?): String =
-            "CPC" + magNumber + (if (doIncludePictures) "" else "-nopic") + (if (doResize == null) "" else "-resize$doResize") + ".html"
+    private fun makeMagFilename(directory: String=".", magNumber: String, doIncludePictures: Boolean, doResize: String?): String =
+        directory + "/CPC" + magNumber + (if (doIncludePictures) "" else "-nopic") + (if (doResize == null) "" else "-resize$doResize") + ".html"
+
 }
