@@ -3,6 +3,7 @@
 ### 1.3.13 (en cours de dev)
 
 * le script de lancement Windows n'est plus limité à 9 paramètres.
+* ajout du paramètre`-directory:mon_dossier` pour créer les fichiers dans le dossier spécifié.
 
 ### 1.3.12 (2018/02/02)
 
