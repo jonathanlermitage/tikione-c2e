@@ -26,7 +26,7 @@ Trois versions packagées existent :
   * `username` et `password` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires.
   * `-cpcXXX` télécharger le numéro XXX, par exemple `-cpc348`. Répétez ce paramètre pour télécharger plusieurs numéros, par exemple `-cpc348 -cpc349 -cpc350 -cpc351`.
   * `-cpcall` télécharger l'intégralité des numéros à votre disposition.
-  * `-cpcmising` télécharge uniquement les numéros manquants.
+  * `-cpcmissing` télécharge uniquement les numéros manquants.
   * `-nopic` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
   * `-list` savoir quels numéros sont accessibles au téléchargement.
   * `-debug` affiche le détail du téléchargement dans un format proche de JSON.
@@ -37,6 +37,7 @@ Trois versions packagées existent :
   * `-dark` active par défaut le mode nuit.
   * `-fontsize:XXuu` spécifie une taille de police de base, où `XX` est un nombre et `uu` une unité, par exemple `-fontsize:20px` ou `-fontsize:2em`.
   * `-up` télécharge toute nouvelle version de l'application (version ZIP minimale, sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée).
+  * `-directory:mon_dossier` Crée les fichiers dans le dossier spécifié.
   
 La police de caractères par défaut est `RobotoSlab-Light` (celle utilisée sur le site CanardPC). Pour utiliser une autre police, déposez un fichier TTF (par exemple `Arial.ttf`) dans le répertoire de application (à côté de `c2e.cmd` et `c2e.sh`) : elle sera automatiquement utilisée.
       
