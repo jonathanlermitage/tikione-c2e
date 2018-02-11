@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.3.13 (en cours de dev)
+### 1.3.13 (2018/02/11)
 
 * le script de lancement Windows n'est plus limité à 9 paramètres.
 * ajout du paramètre`-directory:mon_dossier` pour créer les fichiers dans le dossier spécifié.
