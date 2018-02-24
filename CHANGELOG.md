@@ -2,7 +2,7 @@
 
 ### 1.3.14 (dev en cours)
 
-* ajout du paramètre `-home` pour générer une page HTML listant tous les magazines téléchargés (présents dans le répertoire courant), avec un lien pour ouvrir chaque numéro. L'idée est de mettre cette page en favoris dans votre navigateur, ainsi vous n'aurez pas à chercher le bon fichier HTML à chaque fois que vous voudrez consulter un numéro.
+* ajout du paramètre `-home` pour générer une  d'accueil HTML `CPC-home.html` listant tous les magazines téléchargés (présents dans le répertoire courant), avec un lien pour ouvrir chaque numéro. L'idée est de mettre cette page en favoris dans votre navigateur, ainsi vous n'aurez pas à chercher le bon fichier HTML à chaque fois que vous voudrez consulter un numéro.
 
 ### 1.3.13 (2018/02/11)
 

@@ -3,6 +3,7 @@ package fr.tikione.c2e.cli.service
 import com.github.salomonbrys.kodein.instance
 import compat.Tools
 import fr.tikione.c2e.core.kodein
+import fr.tikione.c2e.core.service.home.LocalReaderService
 import fr.tikione.c2e.core.service.html.HtmlWriterService
 import fr.tikione.c2e.core.service.index.IndexWriterService
 import fr.tikione.c2e.core.service.web.CPCAuthService
@@ -76,6 +77,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doAllMags = switchList.contains("-cpcall")
         val doAllMissing = switchList.contains("-cpcmissing")
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
+        val doHome = switchList.contains("-home")
 
         var directory = "."
         args.filter { arg -> arg.startsWith("-directory:") }
@@ -150,6 +152,14 @@ class CliLauncherServiceImpl : CliLauncherService {
             val file = File(directory + "/CPC-index.csv")
             val writerService: IndexWriterService = kodein.instance()
             writerService.write(auth, headers, file)
+        }
+
+        if (doHome) {
+            log.info("creation de la page d'accueil CPC-home.html")
+            val file = File(directory + "/CPC-home.html")
+            val localReaderService: LocalReaderService = kodein.instance()
+            val writerService: HtmlWriterService = kodein.instance()
+            writerService.write(localReaderService.listDownloadedMagazines(File("./")), file)
         }
 
         log.info("termine !")

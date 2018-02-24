@@ -3,6 +3,7 @@ package fr.tikione.c2e.core.service.html
 import compat.Tools
 import compat.Tools.Companion.fileAsBase64
 import compat.Tools.Companion.readRemoteToBase64
+import fr.tikione.c2e.core.model.home.MagazineSummary
 import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
 import net.sf.jmimemagic.Magic
@@ -15,6 +16,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.*
 import java.net.URL
+import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -423,5 +425,34 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                 $elmCContent
             </$name>
             """.trimIndent()
+    }
+
+    override fun write(magazines: List<MagazineSummary>, file: File) {
+        val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
+        val fontRobotoBase64 = findFontAsBase64()
+        var magazineList = ""
+        val sortedMagazines = magazines.sortedWith(compareByDescending { it.number })
+        sortedMagazines.forEach { mag ->
+            val sizeUnit = when {
+                mag.humanSize.endsWith("Mo") -> "Mo"
+                else -> "Ko"
+            }
+            magazineList += """
+                <div class="magBox">
+                    <div class="magBox-number"><a href="${mag.file.name}">${mag.number}</a></div>
+                    <div class="magBox-details">
+                        <div class="magBox-options">${mag.options}</div>
+                        <div class="magBox-size$sizeUnit">${mag.humanSize}</div>
+                    </div>
+                </div>
+                """
+        }
+        val content = resourceAsStr("tmpl/home/home.html")
+                .replace("$\$favicon_base64$$", faviconBase64)
+                .replace("$\$robotoFont_base64$$", fontRobotoBase64)
+                .replace("/*$\$content$$*/", magazineList)
+        file.delete()
+        FileUtils.write(file, content, StandardCharsets.UTF_8)
+        log.info("page d'accueil cree : ${file.absolutePath}")
     }
 }

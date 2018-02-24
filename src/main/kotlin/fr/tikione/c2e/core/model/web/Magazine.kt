@@ -1,7 +1,7 @@
 package fr.tikione.c2e.core.model.web
 
 /**
- * CanardPC web.
+ * CanardPC web magazine.
  */
 class Magazine {
 
