@@ -22,26 +22,27 @@ Trois versions packagées existent :
 
 ### Windows
 
-* placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez `c2e.cmd username password paramètres...` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
-  * `username` et `password` sont votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires.
-  * `-cpcXXX` télécharger le numéro XXX, par exemple `-cpc348`. Répétez ce paramètre pour télécharger plusieurs numéros, par exemple `-cpc348 -cpc349 -cpc350 -cpc351`.
-  * `-cpcall` télécharger l'intégralité des numéros à votre disposition.
-  * `-cpcmissing` télécharge uniquement les numéros manquants.
-  * `-nopic` ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte).
-  * `-list` savoir quels numéros sont accessibles au téléchargement.
-  * `-debug` affiche le détail du téléchargement dans un format proche de JSON.
-  * `-resizeXX` redimensionne les images selon le ratio `XX` (ex: `-resize50` pour un ratio de 50%). Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows uniquement, mais doit fonctionner partout où ImageMagick est disponible.
-  * `-index` génère un sommaire CSV (`CPC-index.csv`) de tous les numéros disponibles au téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention, prévoir plusieurs dizaines de minutes pour ce traitement. Si le fichier `CPC-index.csv` existe déjà, il sera complété avec les numéros manquants.
-  * `-proxy:address:port` utilise le proxy HTTP(S) définit par l'adresse `address` (nom de domaine ou adresse IP) et le port `port`. Cette option est généralement utile si vous vous connectez depuis le réseau d'un entreprise qui impose un proxy pour accéder au web.
-  * `-sysproxy` utilise le proxy système.
-  * `-dark` active par défaut le mode nuit.
-  * `-fontsize:XXuu` spécifie une taille de police de base, où `XX` est un nombre et `uu` une unité, par exemple `-fontsize:20px` ou `-fontsize:2em`.
-  * `-up` télécharge toute nouvelle version de l'application (version ZIP minimale, sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée).
-  * `-directory:mon_dossier` crée les fichiers dans le dossier spécifié.
-  * `-home` génère une page d'accueil HTML `CPC-home.html` listant tous les magazines téléchargés (présents dans le répertoire courant), avec un lien pour ouvrir chaque numéro. L'idée est de mettre cette page en favoris dans votre navigateur, ainsi vous n'aurez pas à chercher le bon fichier HTML à chaque fois que vous voudrez consulter un numéro.
-  
-La police de caractères par défaut est `RobotoSlab-Light` (celle utilisée sur le site CanardPC). Pour utiliser une autre police, déposez un fichier TTF (par exemple `Arial.ttf`) dans le répertoire de application (à côté de `c2e.cmd` et `c2e.sh`) : elle sera automatiquement utilisée.
-      
+Placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez `c2e.cmd username password paramètres...` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
+
+| Paramètre | Description |
+| :-----: | :-----------
+| `username` et `password` | votre identifiant et mot de passe à l'abonnement CanardPC numérique, ces paramètres sont obligatoires. |
+| `-cpcXXX` | télécharger le numéro XXX, par exemple `-cpc348`. Répétez ce paramètre pour télécharger plusieurs numéros, par exemple `-cpc348 -cpc349 -cpc350 -cpc351`. |
+| `-cpcall` | télécharger l'intégralité des numéros à votre disposition. |
+| `-cpcmissing` | télécharger uniquement les numéros manquants. |
+| `-nopic` | ne pas téléchanger les images (un numéro contient 60~200Mo d'images, et ~500Ko de texte). |
+| `-list` | savoir quels numéros sont accessibles au téléchargement. |
+| `-debug` | afficher le détail du téléchargement dans un format proche de JSON. |
+| `-resizeXX` | redimensionner les images selon le ratio `XX` (ex: `-resize50` pour un ratio de 50%). Basé sur [ImageMagick](http://www.imagemagick.org), lequel doit être disponible dans le PATH ou packagé avec l'appli. Testé sous Windows uniquement, mais doit fonctionner partout où ImageMagick est disponible. |
+| `-index` | génèrer un sommaire CSV (`CPC-index.csv`) de tous les numéros disponibles au téléchargement, avec en détails la note, présence de DRM, poids au téléchargement, plateformes, etc. Attention, prévoir plusieurs dizaines de minutes pour ce traitement. Si le fichier `CPC-index.csv` existe déjà, il sera complété avec les numéros manquants. |
+| `-proxy:address:port` | utiliser le proxy HTTP(S) définit par l'adresse `address` (nom de domaine ou adresse IP) et le port `port`. Cette option est généralement utile si vous vous connectez depuis le réseau d'un entreprise qui impose un proxy pour accéder au web. |
+| `-sysproxy` | utiliser le proxy système. |
+| `-dark` | activer par défaut le mode nuit. |
+| `-fontsize:XXuu` | spécifier une taille de police de base, où `XX` est un nombre et `uu` une unité, par exemple `-fontsize:20px` ou `-fontsize:2em`. |
+| `-up` | télécharger toute nouvelle version de l'application (version ZIP minimale, sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée). |
+| `-directory:mon_dossier` | créer les fichiers dans le dossier spécifié. |
+| `-home` | génèrer une page d'accueil HTML `CPC-home.html` listant tous les magazines téléchargés (présents dans le répertoire courant), avec un lien pour ouvrir chaque numéro. L'idée est de mettre cette page en favoris dans votre navigateur, ainsi vous n'aurez pas à chercher le bon fichier HTML à chaque fois que vous voudrez consulter un numéro. |
+        
 Exemples :
 
 * télécharger le numéro 348, tapez `c2e.cmd username password -cpc348`.  
@@ -55,6 +56,8 @@ Exemples :
 * télécharger le numéro 348 au travers du proxy système, tapez `c2e.cmd username password -cpc348 -sysproxy`.  
     
 Le fichier est généré (ou écrasé) dans le répertoire courant (là où est le programme) et porte le nom `CPCxxx-opts.html` où `xxx` est le numéro et `-opts` rappelle certains paramètres (`-nopic`, `-resize`), par exemple `CPC348-nopic.html`.
+
+La police de caractères par défaut est `RobotoSlab-Light` (celle utilisée sur le site CanardPC). Pour utiliser une autre police, déposez un fichier TTF (par exemple `Arial.ttf`) dans le répertoire de application (à côté de `c2e.cmd` et `c2e.sh`) : elle sera automatiquement utilisée.
 
 ### MacOS, Linux, BSD
 
@@ -93,7 +96,7 @@ Merci !
 ## Guide de contribution
 
  * le projet reste sous [license MIT](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) et doit respecter la license des modules tiers (librairies, images).
- * le programme doit pouvoir fonctionner sous Windows et Linux, et si possible MacOS et BSD. A titre personnel, je teste sous Windows 10 et [Lubuntu 16.04.3 LTS](http://lubuntu.net).
+ * le programme doit pouvoir fonctionner sous Windows et Linux, et si possible MacOS et BSD. A titre personnel, je teste sous Windows 10 et Ubuntu 16.04 LTS.
  * consultez la [liste de tickets ouvert](https://github.com/jonathanlermitage/tikione-c2e/issues) : cela pourrait vous donner des idées. N'hésitez pas à ouvrir de nouveaux tickets, que ce soit pour signaler un bug, proposer une amélioration ou une nouvelle fonctionnalité. Cette étape est facultative, mais elle a le mérite de laisser une trace et invite à la discussion.
  * conserver une qualité de code : 
    * toute amélioration ou nouvelle fonctionnalité doit être un minimum testée.
@@ -122,21 +125,18 @@ Licence MIT. En d'autres termes, ce logiciel est libre de droits et gratuit, vou
 
 Je développe TikiOne C2E grâce à ces logiciels :
 
-|Kotlin|
-|:--|
-|[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_kotlin.png)](https://kotlinlang.org/)|
+|Kotlin|JetBrains IntelliJ IDEA|
+|:--|:--|
+|[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_kotlin.png)](https://kotlinlang.org/)|[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_intellij.png)](https://www.jetbrains.com/idea/)|
 
-|JetBrains IntelliJ IDEA|
-|:--|
-|[![IntelliJ](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_intellij.png)](https://www.jetbrains.com/idea/)|
 
 |Gradle|
 |:--|
 |[![Gradle](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_gradle.png)](https://gradle.org)|
 
-|Oracle JDK|
+|AZUL Zulu JDK|
 |:--|
-|[![JDK](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_java.png)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)|
+|[![JDK](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_azul.png)](https://www.azul.com/downloads/zulu/)|
 
 |meow ?|
 |:--|
