@@ -121,6 +121,29 @@ TikiOne C2E a pour objectif de contenter les canards laisés, en leur permettant
 
 Licence MIT. En d'autres termes, ce logiciel est libre de droits et gratuit, vous pouvez en faire ce que vous voulez.
 
+## Captures d'écran
+
+Page d'accueil HTML
+
+[![page d'accueil HTML](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot1_welcome.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot1_welcome.png)
+
+Sommaire
+
+[![sommaire](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot2_toc_light.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot2_toc_light.png)
+
+Sommaire, thème sombre 
+
+[![sommaire, thème sombre](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot3_toc_dark_.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot3_toc_dark_.png)
+
+Article
+
+[![article](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot4_item_light.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot4_item_light.png)
+
+Article, thème sombre 
+
+[![article, thème sombre](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot5_item_dark.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot5_item_dark.png)
+
+
 ## Outils
 
 Je développe TikiOne C2E grâce à ces logiciels :
