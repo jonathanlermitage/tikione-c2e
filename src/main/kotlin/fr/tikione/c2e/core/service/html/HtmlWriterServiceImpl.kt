@@ -428,17 +428,29 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     }
 
     override fun write(magazines: List<MagazineSummary>, file: File) {
+        if (magazines.size == 0) {
+            return
+        }
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
         val fontRobotoBase64 = findFontAsBase64()
         var magazineList = ""
         val sortedMagazines = magazines.sortedWith(compareByDescending { it.number })
+        var idx = 1
+        var prevNumber = sortedMagazines[0].number
         sortedMagazines.forEach { mag ->
+            if (mag.number != prevNumber) {
+                idx++
+                if (idx > 15) {
+                    idx = 1
+                }
+            }
+            prevNumber = mag.number
             val sizeUnit = when {
                 mag.humanSize.endsWith("Mo") -> "Mo"
                 else -> "Ko"
             }
             magazineList += """
-                <div class="magBox">
+                <div class="magBox mag$idx">
                     <div class="magBox-number"><a href="${mag.file.name}">${mag.number}</a></div>
                     <div class="magBox-details">
                         <div class="magBox-options">${mag.options}</div>
