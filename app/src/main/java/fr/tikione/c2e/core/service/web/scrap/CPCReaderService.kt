@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document
  * Tools to download CanardPC magazines.
  */
 interface CPCReaderService {
+    var downloadStatus : Float
 
     /**
      * List downloadable magazines: archives and current.

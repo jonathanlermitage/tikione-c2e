@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit
 class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
+    private var percentageInc : Float = 0.0f
+    override var downloadStatus: Float = 0.0f
 
     private val cpcScraperService: CPCScraperService = kodein.instance()
 
@@ -60,6 +62,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     }
 
     override fun downloadMagazine(auth: Auth, number: String): Magazine {
+        downloadStatus = 0.0f
         log.info("telechargement du numero {}...", number)
         val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
         val mag = Magazine()
@@ -67,6 +70,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         mag.title = doc.getElementById("numero-titre").text()
         mag.login = auth.login
         mag.edito = extractEdito(doc)
+        downloadStatus = 1.0f
         mag.toc = extractToc(auth, doc)
 
         // Décision de la rédac CanardCPC : ne pas intégrer ed picto du site CanardPC
@@ -91,6 +95,12 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     private fun extractToc(auth: Auth, doc: Document): ArrayList<TocCategory> {
         val container = doc.getElementById("block-numerosommaire")
         val columns = container.getElementsByClass("columns")
+
+        //get download progression percentage, based on the number of articles
+        var numberArticles: Int = 0
+        columns.forEach { elt -> numberArticles += elt.getElementsByTag("article").size }
+        percentageInc = numberArticles / 98.0f
+
         val tocCategories = columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
 
         // Fix https://github.com/jonathanlermitage/tikione-c2e/issues/27
@@ -123,6 +133,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
                     sheet.text(),
                     CPC_BASE_URL + attr(sheet.getElementsByTag("a"), "href"),
                     extractArticles(auth, CPC_BASE_URL + attr(sheet.getElementsByTag("a"), "href"))))
+            downloadStatus += percentageInc
         }
         return tocCategory
     }
