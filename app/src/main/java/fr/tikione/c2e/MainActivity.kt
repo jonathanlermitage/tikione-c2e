@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +34,9 @@ class MainActivity : AppCompatActivity() {
     private fun downloadMag() {
         progressBar.visibility = View.VISIBLE
         try {
-            val dlTask = DownloadTask(this.assets, "***", "***", "348", false)
+            val dlTask = DownloadTask(this.assets, editTextLogin.text.toString(),
+                    editTextPassword.text.toString(),
+                    editTextMagNumber.text.toString(), checkboxIncludePictures.isChecked)
             dlTask.execute()
             val res = dlTask.get()
 
