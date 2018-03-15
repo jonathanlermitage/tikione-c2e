@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.Toast
+import fr.tikione.c2e.AccountManager.AuthUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
@@ -29,13 +30,37 @@ class MainActivity : AppCompatActivity() {
 
         progressBar = findViewById<View>(R.id.progressbar) as ProgressBar
         progressBar.visibility = View.GONE
+
+        setLoginUI()
+    }
+
+    private fun setLoginUI()
+    {
+        if (AuthUtils.isAPIConnected(baseContext)) {
+            editTextLogin.visibility = View.GONE
+            editTextPassword.visibility = View.GONE
+        }
+        else
+            buttonLogout.visibility = View.GONE
     }
 
     private fun downloadMag() {
         progressBar.visibility = View.VISIBLE
         try {
-            val dlTask = DownloadTask(this.assets, editTextLogin.text.toString(),
-                    editTextPassword.text.toString(),
+            var saveCreds = false
+            var username = "";
+            var password = "";
+            if (AuthUtils.isAPIConnected(baseContext)) {
+                username = AuthUtils.getUsername(baseContext)
+                password = AuthUtils.getToken(baseContext)
+                saveCreds = false
+            } else {
+                saveCreds = saveCredentialsCheckbox.isChecked
+                username = editTextLogin.text.toString()
+                password = editTextPassword.text.toString()
+            }
+
+            val dlTask = DownloadTask(this.assets, username, password,
                     editTextMagNumber.text.toString(), checkboxIncludePictures.isChecked)
             dlTask.execute()
             val res = dlTask.get()
@@ -47,6 +72,11 @@ class MainActivity : AppCompatActivity() {
 
             //2
             //MediaScannerConnection.scanFile(this, arrayOf(res), null) { _, _ -> }
+
+            if (saveCreds) {
+                AuthUtils.addAccount(baseContext, username, password)
+                setLoginUI()
+            }
 
             showSuccess("Le téléchargement est un succès ($res) / exists:" + File(res).exists())
         } catch (e: Exception) {

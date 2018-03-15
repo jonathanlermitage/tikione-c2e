@@ -2,10 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.tikione.c2e">
 
+
     <uses-permission android:name="android.permission.INTERNET" /> <!-- download magazines -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- store magazines -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- store magazines -->
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- notify downloads end -->
+
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" /> <!-- save credentials -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +20,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- save credentials -->
+        <service
+            android:name=".AccountManager.AuthenticatorService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

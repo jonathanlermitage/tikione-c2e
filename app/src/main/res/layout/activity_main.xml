@@ -47,6 +47,15 @@
             android:text="@string/images_on"
             android:textSize="18sp" />
 
+        <CheckBox
+            android:id="@+id/saveCredentialsCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="false"
+            android:text="@string/save_credentials"
+            android:textSize="18sp" />
+
         <Button
             android:id="@+id/buttonDownload"
             android:layout_width="match_parent"
@@ -64,7 +73,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
-            android:text="@string/notice" />
+            android:text="@string/notice"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/logout" />
 
         <android.support.v4.widget.Space
             android:layout_width="wrap_content"

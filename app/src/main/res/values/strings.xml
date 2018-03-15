@@ -8,8 +8,16 @@
     <string name="button_dl">Télécharger le numéro</string>
 
     <string name="password_hint">mot de passe</string>
-    <string name="magnumber_hint">numéo du magazine (ex: 348)</string>
+    <string name="magnumber_hint">numéro du magazine (ex: 375)</string>
     <string name="login_hint">  pseudo CanardPC</string>
+
+    <string name="account_type">CanardPC</string>
+    <string name="save_credentials">enregistrer les identifiants</string>
+    <string name="logout">Déconnexion</string>
+    <string name="logout_confirm">voulez vous supprimer vos identifiants CanardPC?</string>
+
+    <string name="yes">oui</string>
+    <string name="no">non</string>
 
     <string name="notice">Le téléchargement du magazine se fera dans votre dossier de téléchargements.
         \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.
