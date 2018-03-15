@@ -22,7 +22,7 @@ Trois versions packagées existent :
 
 ### Windows
 
-Placez-vous dans le répertoire de l'application et lancez une console (Maj + clic droit, "Ouvrir un invité de commande ici"). Tapez `c2e.cmd username password paramètres...` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
+Placez-vous dans le répertoire de l'application et lancez une console (<kbd>Maj</kbd> + <kbd>clic droit</kbd>, <kbd>Ouvrir un invité de commande ici</kbd>). Tapez `c2e.cmd username password paramètres...` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
 
 | Paramètre | Description |
 | :-----: | :-----------
@@ -101,7 +101,7 @@ Merci !
  * conserver une qualité de code : 
    * toute amélioration ou nouvelle fonctionnalité doit être un minimum testée.
    * on développe en anglais (code et javadoc), mais les fichiers Markdown (`.md`) restent en français.
-   * le code est formaté avec les règles par défaut d'[IntelliJ IDEA](https://www.jetbrains.com/idea/) (`Ctrl + Alt + L` : reformate de code, `Ctrl + Alt + O` : réorganise les imports).
+   * le code est formaté avec les règles par défaut d'[IntelliJ IDEA](https://www.jetbrains.com/idea/) (<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd> : reformate de code, <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>O</kbd> : réorganise les imports).
    * nommez correctement vos commits : indiquez ce que vous avez voulu faire en quelques mots.
    * réduisez le nombre de commits au minimum via un `squash`, et faites un `rebase` avant de soumettre une Pull Request : l'historique Git doit rester cohérent.
  * n'hésitez pas à me contacter par email à *jonathan.lermitage@gmail.com*, ou ouvez un [ticket](https://github.com/jonathanlermitage/tikione-c2e/issues).
