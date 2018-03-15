@@ -38,6 +38,27 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         return magNumers
     }
 
+    override fun extractAuthorsPicture(doc: Document): Map<String, AuthorPicture> {
+        val authorsAndPic = HashMap<String, AuthorPicture>()
+        try {
+            doc.getElementsByClass("lequipe")[0].getElementsByTag("td").forEach { elt ->
+                val realName: String = text(elt.getElementsByTag("h3"))!!
+                if (realName.isNotEmpty() && !authorsAndPic.containsKey(realName.toUpperCase())) {
+                    val picture = Tools.readRemoteToBase64(CPC_BASE_URL + elt.getElementsByTag("img").attr("src"))
+                    authorsAndPic.put(realName.toUpperCase(), AuthorPicture(realName, picture))
+
+                    // Some authors have different names in About-page and articles: register both
+                    if (realName.equals("Louis-Ferdinand Sébum", true)) {
+                        authorsAndPic.put("L-F. Sébum".toUpperCase(), AuthorPicture(realName, picture))
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            log.warn("impossible de recuperer les pictos des redacteurs, poursuite du telechargement", e)
+        }
+        return authorsAndPic
+    }
+
     override fun downloadMagazine(auth: Auth, number: String): Magazine {
         log.info("telechargement du numero {}...", number)
         val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
@@ -47,6 +68,10 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         mag.login = auth.login
         mag.edito = extractEdito(doc)
         mag.toc = extractToc(auth, doc)
+
+        // Décision de la rédac CanardCPC : ne pas intégrer ed picto du site CanardPC
+        mag.authorsPicture = Collections.emptyMap() //extractAuthorsPicture(queryUrl(auth, CPC_AUTHORS_URL))
+
         return mag
     }
 
@@ -66,13 +91,33 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     private fun extractToc(auth: Auth, doc: Document): ArrayList<TocCategory> {
         val container = doc.getElementById("block-numerosommaire")
         val columns = container.getElementsByClass("columns")
-        return columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
+        val tocCategories = columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
+
+        // Fix https://github.com/jonathanlermitage/tikione-c2e/issues/27
+        val fixedTocCategories = ArrayList<TocCategory>()
+        for (tocCategory in tocCategories) {
+            if (tocCategory.title.isNullOrEmpty() && !fixedTocCategories.isEmpty()) {
+                fixedTocCategories.get(fixedTocCategories.size - 1).items.addAll(tocCategory.items)
+            } else {
+                fixedTocCategories.add(tocCategory)
+            }
+        }
+
+        return fixedTocCategories
+
     }
 
     private fun buildTocItem(auth: Auth, elt: Element): TocCategory {
         val tocCategory = TocCategory()
-        val title = clean(elt.getElementsByTag("h3")[0].text())
-        tocCategory.title = title
+        val titleElt = elt.getElementsByTag("h3")
+        if (titleElt.size == 0) {
+            // Fix https://github.com/jonathanlermitage/tikione-c2e/issues/27
+            // La ToC du numéro 374 est mal formée : la div "Tests brefs" ne contient pas tous les éléments de la rubrique
+            tocCategory.title = ""
+        } else {
+            val title = clean(elt.getElementsByTag("h3")[0].text())
+            tocCategory.title = title
+        }
         elt.getElementsByTag("article").forEach { sheet ->
             tocCategory.items.add(TocItem(
                     sheet.text(),

@@ -5,6 +5,8 @@ import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
 import compat.AssetService
 import compat.AssetServiceImpl
+import fr.tikione.c2e.core.service.home.LocalReaderService
+import fr.tikione.c2e.core.service.home.LocalReaderServiceImpl
 import fr.tikione.c2e.core.service.html.HtmlWriterService
 import fr.tikione.c2e.core.service.html.HtmlWriterServiceImpl
 import fr.tikione.c2e.core.service.index.IndexReaderService
@@ -26,4 +28,5 @@ val kodein = Kodein {
     bind<HtmlWriterService>() with singleton { HtmlWriterServiceImpl() }
     bind<IndexWriterService>() with singleton { IndexWriterServiceImpl() }
     bind<IndexReaderService>() with singleton { IndexReaderServiceImpl() }
+    bind<LocalReaderService>() with singleton { LocalReaderServiceImpl() }
 }

@@ -32,7 +32,7 @@ class DownloadTask(private var asset: AssetManager, private var username: String
         val output = File(dlFolder, "cpc" + magNumber + (if (incPictures) "" else "-nopic") + ".html")
         val auth = cpcAuthService.authenticate(username, password)
         val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
-        writerService.write(magazine, output, incPictures, null, false)
+        writerService.write(magazine, output, incPictures, null, false, "")
         return output.absolutePath
     }
 }

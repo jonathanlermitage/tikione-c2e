@@ -5,6 +5,7 @@ import android.util.Base64
 import org.apache.commons.io.IOUtils
 import java.io.File
 import java.io.IOException
+import java.net.URL
 import java.nio.charset.StandardCharsets
 
 /**
@@ -33,6 +34,12 @@ class Tools {
         @JvmStatic
         fun resourceAsStr(path: String, asset: AssetManager?): String =
                 IOUtils.toString(asset?.open(path), StandardCharsets.UTF_8)
+
+        @Throws(IOException::class)
+        @JvmStatic
+        fun readRemoteToBase64(url: String?): String {
+            return Base64.encodeToString(IOUtils.toByteArray(URL(url)), Base64.DEFAULT)
+        }
 
         @Suppress("unused", "UNUSED_PARAMETER")
         @JvmStatic
