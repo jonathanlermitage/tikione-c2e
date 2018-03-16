@@ -27,8 +27,10 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     private fun findFontAsBase64(): String {
-        val ttfs = File(".").listFiles { _, name -> name.toUpperCase().endsWith(".TTF") }
-        return if (ttfs.isEmpty()) {
+        val ttfs = File(".").listFiles { _, name ->
+            name.toUpperCase().endsWith(".TTF")
+        }
+        return if (ttfs == null || ttfs.isEmpty()) {
             resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
         } else {
             log.info("utilisation de la police de caracteres {}", ttfs[0].absolutePath)

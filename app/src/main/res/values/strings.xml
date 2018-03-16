@@ -2,6 +2,7 @@
     <string name="app_name">CPC hors-ligne</string>
     <string name="title_activity_welcome">CanardPC hors-ligne</string>
     <string name="title">CanardPC hors-ligne</string>
+    <string name="folder_name">CPC-hors-ligne</string>
 
     <string name="images_off">Ne pas inclure les images</string>
     <string name="images_on">Inclure les images</string>
@@ -18,6 +19,19 @@
 
     <string name="yes">oui</string>
     <string name="no">non</string>
+
+    <string name="notif_title">Téléchargement de CanardPC n°</string>
+    <string name="notif_downloading">Téléchargement en cours</string>
+    <string name="notif_image_download">Téléchargement des images</string>
+    <string name="notif_writing">Enregistrement du numéro</string>
+    <string name="notif_ended">téléchargement terminé</string>
+    <string name="read">lire</string>
+
+    <string name="notif_new_mag">Un nouveau canardPC est disponible!</string>
+    <string name="notif_new_article">Un nouvel article de canardPC est disponible!</string>
+    <string name="notif_click_to_download">Appuyez pour le télécharger</string>
+
+    <string name="invalid_permissions">veuillez accepter ces permissions pour permettre le téléchargement</string>
 
     <string name="notice">Le téléchargement du magazine se fera dans votre dossier de téléchargements.
         \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.

@@ -28,8 +28,15 @@
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
-            <meta-data android:name="android.accounts.AccountAuthenticator"
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- download mag -->
+        <service
+            android:name=".DownloadTask"
+            android:enabled="true">
         </service>
 
         <activity android:name=".MainActivity">

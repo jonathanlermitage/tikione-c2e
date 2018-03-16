@@ -64,10 +64,13 @@
             android:text="@string/button_dl" />
 
         <ProgressBar
-            android:id="@+id/progressbar"
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="33sp"
-            android:layout_margin="5sp" />
+            android:layout_margin="5sp"
+            android:max="100"
+            android:min="0" />
 
         <TextView
             android:layout_width="match_parent"
