@@ -1,13 +1,12 @@
 package fr.tikione.c2e.core.service.html
 
 import compat.Tools
+import compat.Tools.Companion.byteArrayToBase64
 import compat.Tools.Companion.fileAsBase64
 import compat.Tools.Companion.readRemoteToBase64
 import fr.tikione.c2e.core.model.home.MagazineSummary
 import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
-import net.sf.jmimemagic.Magic
-import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FileUtils.ONE_KB
 import org.apache.commons.io.FileUtils.ONE_MB
@@ -267,10 +266,26 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             for (picture in article.pictures) {
                 if (picture.url != null && !picture.url!!.isEmpty()) {
                     log.info("recuperation de l'image {}", picture.url as String)
-                    var picBytes = IOUtils.toByteArray(URL(picture.url!!))
+
+                    var picBytes: ByteArray = ByteArray(0)
+                    var picDld: Boolean = false;
+                    while (!picDld) {
+                        try {
+                            picBytes = IOUtils.toByteArray(URL(picture.url!!))
+                            picDld = true;
+                        } catch (e: IOException) {
+                            TimeUnit.MILLISECONDS.sleep(1000)
+                        }
+                    }
                     TimeUnit.MILLISECONDS.sleep(250) // be nice with CanardPC website
-                    val magicmatch = Magic.getMagicMatch(picBytes)
-                    var ext = magicmatch.extension
+                    var ext = "jpg"
+                    /*
+                    if (!isAndroid())
+                    {
+                        val magicmatch = Magic.getMagicMatch(picBytes)
+                        ext = magicmatch.extension
+                    }
+                    */
 
                     if (resize != null && !resize.isBlank()) {
                         val tmpSrc = "c2e.src.tmp.$ext"
@@ -289,8 +304,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                         tmpDestFile.delete()
                     }
 
-                    val picB64 = Base64.encodeBase64String(picBytes)
-                    val pictureId = Base64.encodeBase64String(picture.url!!.toByteArray())
+                    val picB64 = byteArrayToBase64(picBytes)
+                    val pictureId = byteArrayToBase64(picture.url!!.toByteArray())
                             .replace("=".toRegex(), "")
                             .replace(",".toRegex(), "")
                     val pictureBoxId = pictureId + "box"

@@ -181,7 +181,7 @@ class DownloadTask() : IntentService("DownloadTask") {
         handler.removeCallbacksAndMessages(null)
 
         val intent = Intent(DOWNLOAD_ENDED)
-        if (!errorString.isNullOrBlank())
+        if (!errorString.isBlank())
             intent.putExtra("error", errorString)
         sendBroadcast(intent)
     }

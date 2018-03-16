@@ -41,9 +41,19 @@ class Tools {
             return Base64.encodeToString(IOUtils.toByteArray(URL(url)), Base64.DEFAULT)
         }
 
+        @Throws(IOException::class)
+        @JvmStatic
+        fun byteArrayToBase64(byteArray: ByteArray): String {
+            return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+
+
         @Suppress("unused", "UNUSED_PARAMETER")
         @JvmStatic
         fun resizePicture(src: String, dest: String, resize: String): Int = 0
+
+        @JvmStatic
+        fun isAndroid(): Boolean = (System.getProperty("java.vendor") == "The Android Project")
 
         @JvmStatic
         fun setProxy(host: String, port: String) {

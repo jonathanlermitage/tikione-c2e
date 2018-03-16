@@ -40,9 +40,7 @@ dependencies {
     })
 
     compile 'org.jsoup:jsoup:1.11.2'
-    compile 'net.sf.jmimemagic:jmimemagic:0.1.5'
     compile 'commons-io:commons-io:2.6'
-    compile 'commons-codec:commons-codec:1.11'
     compile "com.github.salomonbrys.kodein:kodein:4.1.0"
 }
 
