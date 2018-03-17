@@ -1,6 +1,7 @@
 package fr.tikione.c2e
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -22,17 +23,15 @@ class MainActivity : AppCompatActivity() {
 
     private var receiver: DataUpdateReceiver? = null
     private val PERMISSION_REQUEST_STORAGE: Int = 72
-
+    private var dlStarted: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         title = getString(R.string.title)
 
-        buttonDownload.setOnClickListener({ downloadMag() })
-
         progressBar.visibility = View.GONE
-        progressBar.visibility = View.GONE
+        buttonCancelDownload.visibility = View.GONE
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkPermissions()
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 != PackageManager.PERMISSION_GRANTED)
             array.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (!array.isEmpty())
-           requestPermissions(array.toTypedArray(), PERMISSION_REQUEST_STORAGE)
+            requestPermissions(array.toTypedArray(), PERMISSION_REQUEST_STORAGE)
         //TODO: verify if permissions are checked
     }
 
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             buttonLogout.visibility = View.GONE
     }
 
-    private fun downloadMag() {
+    fun downloadMag(v: View) {
         progressBar.visibility = View.VISIBLE
         try {
             var saveCreds = false
@@ -77,14 +76,17 @@ class MainActivity : AppCompatActivity() {
                 password = editTextPassword.text.toString()
             }
 
+            dlStarted = true
+            buttonDownload.visibility = View.GONE
+            buttonCancelDownload.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
-            val intent = Intent(this, DownloadTask::class.java)
+            val dlIntent = Intent(this, DownloadTask::class.java)
                     .putExtra("username", username)
                     .putExtra("password", password)
                     .putExtra("magNumber", editTextMagNumber.text.toString())
                     .putExtra("incPictures", checkboxIncludePictures.isChecked)
-            startService(intent)
+            startService(dlIntent)
 
             //2
             //MediaScannerConnection.scanFile(this, arrayOf(res), null) { _, _ -> }
@@ -143,23 +145,29 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(receiver, intentFilter)
     }
 
+    private fun onDlEnded(intent: Intent) {
+        dlStarted = false
+        buttonDownload.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        buttonCancelDownload.visibility = View.GONE
+        if (intent.hasExtra("error")) {
+            val error = intent.getStringExtra("error")
+            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && error == getString(R.string.invalid_permissions))
+                checkPermissions()
+        } else {
+            Toast.makeText(baseContext, R.string.notif_ended, Toast.LENGTH_LONG).show()
+            //val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+            //intent.data = Uri.fromFile(File(res))
+            //sendBroadcast(intent)
+        }
+    }
+
     private inner class DataUpdateReceiver : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == DownloadTask.DOWNLOAD_ENDED) {
-                progressBar.visibility = View.GONE
-                if (intent.hasExtra("error")) {
-                    val error = intent.getStringExtra("error")
-                    Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && error == getString(R.string.invalid_permissions))
-                        checkPermissions()
-                } else {
-                    Toast.makeText(context, R.string.notif_ended, Toast.LENGTH_LONG).show()
-                    //val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                    //intent.data = Uri.fromFile(File(res))
-                    //sendBroadcast(intent)
-                }
-            }
+            if (intent.action == DownloadTask.DOWNLOAD_ENDED)
+                onDlEnded(intent)
             if (intent.action == DownloadTask.PROGRESSION_UPDATE) {
                 if (progressBar.isIndeterminate)
                     progressBar.isIndeterminate = false

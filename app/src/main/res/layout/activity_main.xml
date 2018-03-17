@@ -61,7 +61,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:onClick="downloadMag"
             android:text="@string/button_dl" />
+
+        <Button
+            android:id="@+id/buttonCancelDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="stopService"
+            android:text="@string/stop_dl" />
 
         <ProgressBar
             android:id="@+id/progressBar"

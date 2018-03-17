@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.AssetManager
 import android.os.Build
 import android.os.Environment
 import android.os.Handler
@@ -21,10 +20,6 @@ import fr.tikione.c2e.core.service.web.CPCAuthService
 import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
 import java.io.File
 import java.io.IOException
-import android.support.v4.app.NotificationCompat.getExtras
-import android.os.Bundle
-
-
 
 
 class DownloadTask() : IntentService("DownloadTask") {
@@ -65,7 +60,6 @@ class DownloadTask() : IntentService("DownloadTask") {
             notifBuilder = NotificationCompat.Builder(baseContext, CHANNEL_ID)
 
             notifBuilder.setContentTitle(getString(R.string.notif_title) + magNumber)
-                    .setContentText(getString(R.string.notif_downloading))
                     .setSmallIcon(R.drawable.ic_launcher_background)
                     .setPriority(NotificationCompat.PRIORITY_LOW);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -74,8 +68,7 @@ class DownloadTask() : IntentService("DownloadTask") {
             downloadMag()
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
-        }
-        catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -101,9 +94,7 @@ class DownloadTask() : IntentService("DownloadTask") {
                 output.parentFile.mkdirs()
                 output.createNewFile()
             }
-        }
-        catch (e : Exception)
-        {
+        } catch (e: Exception) {
             errorString = getString(R.string.invalid_permissions);
             updateDlStatus(-1.0f)
             return;
