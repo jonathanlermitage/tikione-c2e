@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element
 import org.jsoup.safety.Whitelist
 import org.jsoup.select.Elements
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 abstract class AbstractReader {
 
@@ -25,10 +26,23 @@ abstract class AbstractReader {
 
     /** Get a remote document.  */
     @Throws(IOException::class)
-    fun queryUrl(auth: Auth, url: String): Document = Jsoup.connect(url)
-            .cookies(auth.cookies)
-            .userAgent(UA)
-            .execute().parse()
+    fun queryUrl(auth: Auth, url: String): Document
+    {
+        var doc : Document? = null
+        var arcDld: Boolean = false;
+        while (!arcDld) {
+            try {
+                doc = Jsoup.connect(url)
+                        .cookies(auth.cookies)
+                        .userAgent(UA)
+                        .execute().parse()
+                arcDld = true;
+            } catch (e: Exception) {
+                TimeUnit.MILLISECONDS.sleep(1000)
+            }
+        }
+        return doc!!
+    }
 
     fun text(elt: Element?): String? = if (elt == null) null else clean(elt.text())
 
