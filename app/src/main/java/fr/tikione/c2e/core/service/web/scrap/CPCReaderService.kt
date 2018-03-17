@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document
  */
 interface CPCReaderService {
     var downloadStatus : Float
+    var cancelDl: Boolean
 
     /**
      * List downloadable magazines: archives and current.

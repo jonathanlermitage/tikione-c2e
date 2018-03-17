@@ -2,10 +2,10 @@ package fr.tikione.c2e.core.service.web.scrap
 
 import com.github.salomonbrys.kodein.instance
 import compat.Tools
+import compat.EndServiceException
 import fr.tikione.c2e.core.kodein
 import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.web.AbstractReader
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.slf4j.Logger
@@ -18,14 +18,39 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
     private var percentageInc : Float = 0.0f
     override var downloadStatus: Float = 0.0f
+    override var cancelDl: Boolean = false
 
     private val cpcScraperService: CPCScraperService = kodein.instance()
 
+    @Throws(EndServiceException::class)
+    fun queryUrlWrapper(auth: Auth, url: String): Document {
+        var doc: Document? = null
+        var arcDld: Boolean = false;
+        while (!arcDld) {
+            try {
+                if (cancelDl)
+                    throw EndServiceException()
+                doc = queryUrl(auth, url)
+                arcDld = true;
+            } catch (e: EndServiceException) {
+                throw e
+            } catch (e: Exception) {
+                TimeUnit.MILLISECONDS.sleep(1000)
+            }
+        }
+        return doc!!
+
+    }
+
     override fun listDownloadableMagazines(auth: Auth): ArrayList<String> {
-        val doc = Jsoup.connect(CPC_BASE_URL)
+
+        val doc = queryUrlWrapper(auth, CPC_BASE_URL)
+        /*
+        doc = Jsoup.connect(CPC_BASE_URL)
                 .cookies(auth.cookies)
                 .userAgent(AbstractReader.UA)
                 .get()
+        */
         val archives = doc.getElementsByClass("archive")
         val magNumers = ArrayList<String>()
         archives.forEach { element ->
@@ -64,7 +89,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     override fun downloadMagazine(auth: Auth, number: String): Magazine {
         downloadStatus = 0.0f
         log.info("telechargement du numero {}...", number)
-        val doc = queryUrl(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
+        val doc = queryUrlWrapper(auth, CPC_MAG_NUMBER_BASE_URL.replace("_NUM_", number))
         val mag = Magazine()
         mag.number = number
         mag.title = doc.getElementById("numero-titre").text()
@@ -74,7 +99,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         mag.toc = extractToc(auth, doc)
 
         // Décision de la rédac CanardCPC : ne pas intégrer ed picto du site CanardPC
-        mag.authorsPicture = Collections.emptyMap() //extractAuthorsPicture(queryUrl(auth, CPC_AUTHORS_URL))
+        mag.authorsPicture = Collections.emptyMap() //extractAuthorsPicture(queryUrlWrapper(auth, CPC_AUTHORS_URL))
 
         return mag
     }
@@ -141,7 +166,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
     private fun extractArticles(auth: Auth, url: String): List<Article>? {
         log.info("recuperation de l'article {}", url)
         TimeUnit.MILLISECONDS.sleep(500) // be nice with CanardPC website
-        val doc = queryUrl(auth, url)
+        val doc = queryUrlWrapper(auth, url)
         val articles = cpcScraperService.extractBestArticles(doc)
         if (Tools.debug) {
             articles.forEach { article -> log.debug(article.toString()) }

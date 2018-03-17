@@ -33,6 +33,10 @@
 
     <string name="invalid_permissions">veuillez accepter ces permissions pour permettre le téléchargement</string>
 
+    <string name="stop_dl">annuler</string>
+    <string name="stop_dl_question">Voulez vous annuler le téléchargement?</string>
+    <string name="stop_dl_done">Téléchargement annulé</string>
+
     <string name="notice">Le téléchargement du magazine se fera dans votre dossier de téléchargements.
         \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.
         \nSi vous choisissez de ne pas inclure les images, le nom du fichier sera dy type cpcXXX-nopic.html

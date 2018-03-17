@@ -101,6 +101,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun stopService(v : View) {
+        if (!dlStarted)
+            return
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setMessage(getString(R.string.stop_dl_question))
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    stopService(Intent(this, DownloadTask::class.java))
+                    dlStarted = false
+                    Toast.makeText(this@MainActivity, getString(R.string.stop_dl_done), Toast.LENGTH_LONG).show()
+                }
+                .setNegativeButton(getString(R.string.no), null)
+        builder.create().show()
+    }
+
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     private fun showSuccess(msg: String) {
         val builder = AlertDialog.Builder(this@MainActivity)

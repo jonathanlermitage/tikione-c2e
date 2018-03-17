@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import com.github.salomonbrys.kodein.instance
 import compat.AssetService
+import compat.EndServiceException
 import fr.tikione.c2e.core.kodein
 import fr.tikione.c2e.core.model.web.Auth
 import fr.tikione.c2e.core.service.html.HtmlWriterService
@@ -21,8 +22,7 @@ import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
 import java.io.File
 import java.io.IOException
 
-
-class DownloadTask() : IntentService("DownloadTask") {
+class DownloadTask : IntentService("DownloadTask") {
 
     companion object {
         const val PROGRESSION_UPDATE = "download_progressing"
@@ -44,6 +44,10 @@ class DownloadTask() : IntentService("DownloadTask") {
     private lateinit var magNumber: String
     private var incPictures: Boolean = false
 
+    val cpcReaderService: CPCReaderService = kodein.instance()
+    val writerService: HtmlWriterService = kodein.instance()
+
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent!!.extras
 
@@ -55,6 +59,7 @@ class DownloadTask() : IntentService("DownloadTask") {
     }
 
     override fun onHandleIntent(intent: Intent?) {
+        val output: File? = getFile() ?: return
         try {
             notificationManager = NotificationManagerCompat.from(baseContext)
             notifBuilder = NotificationCompat.Builder(baseContext, CHANNEL_ID)
@@ -65,42 +70,28 @@ class DownloadTask() : IntentService("DownloadTask") {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 setOreoNotif()
 
-            downloadMag()
+            downloadMag(output!!)
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
-        } catch (e: Exception) {
+        } catch (e: EndServiceException) {
+            output!!.delete()
+            notificationManager.cancel(notificationId)
+        }
+        catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
 
-    private fun downloadMag() {
+    private fun downloadMag(output: File) {
         val assetService: AssetService = kodein.instance()
         assetService.setAssetManager(assets)
         val cpcAuthService: CPCAuthService = kodein.instance()
-        val cpcReaderService: CPCReaderService = kodein.instance()
-        val writerService: HtmlWriterService = kodein.instance()
         var dlArticlesEnded = false
 
-        var output = File("")
-        try {
-            val dlFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
-                    + File.separator + getString(R.string.folder_name))
-            if (!dlFolder.exists())
-                dlFolder.mkdirs()
-            val filename = "cpc" + magNumber + (if (incPictures) "" else "-nopic") + ".html"
-            output = File(dlFolder, filename)
-            if (!output.exists()) {
-                output.parentFile.mkdirs()
-                output.createNewFile()
-            }
-        } catch (e: Exception) {
-            errorString = getString(R.string.invalid_permissions);
-            updateDlStatus(-1.0f)
-            return;
-        }
 
-        var auth: Auth
+
+        val auth: Auth
         try {
             auth = cpcAuthService.authenticate(username, password)
         } catch (e: IOException) {
@@ -131,11 +122,33 @@ class DownloadTask() : IntentService("DownloadTask") {
 
         val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
         dlArticlesEnded = true;
-        writerService.write(magazine, output, incPictures, null, false, "")
+        writerService.write(magazine, output!!, incPictures, null, false, "")
         handler.removeCallbacksAndMessages(null)
         updateDlStatus(100.0f)
-        return
     }
+
+    private fun getFile() : File?
+    {
+        var output = File("")
+        try {
+            val dlFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
+                    + File.separator + getString(R.string.folder_name))
+            if (!dlFolder.exists())
+                dlFolder.mkdirs()
+            val filename = "cpc" + magNumber + (if (incPictures) "" else "-nopic") + ".html"
+            output = File(dlFolder, filename)
+            if (!output.exists()) {
+                output.parentFile.mkdirs()
+                output.createNewFile()
+            }
+        } catch (e: Exception) {
+            errorString = getString(R.string.invalid_permissions);
+            updateDlStatus(-1.0f)
+            return null;
+        }
+        return output
+    }
+
 
     private fun updateDlStatus(ndlStat: Float) {
         downloadStatus = ndlStat
@@ -182,6 +195,12 @@ class DownloadTask() : IntentService("DownloadTask") {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
+
+        if (downloadStatus != 100.0f && errorString.isEmpty())
+        {
+            cpcReaderService.cancelDl = true
+            writerService.cancelDl = true
+        }
 
         val intent = Intent(DOWNLOAD_ENDED)
         if (!errorString.isBlank())

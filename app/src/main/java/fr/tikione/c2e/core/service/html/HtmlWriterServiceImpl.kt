@@ -4,6 +4,7 @@ import compat.Tools
 import compat.Tools.Companion.byteArrayToBase64
 import compat.Tools.Companion.fileAsBase64
 import compat.Tools.Companion.readRemoteToBase64
+import compat.EndServiceException
 import fr.tikione.c2e.core.model.home.MagazineSummary
 import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
@@ -26,7 +27,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
     override var downloadStatus: Float = 10.0f
     private var percentageInc: Float = 0.0f
-
+    override var cancelDl: Boolean = false
 
     private fun findFontAsBase64(): String {
         val ttfs = File(".").listFiles { _, name ->
@@ -60,7 +61,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         percentageInc = 90.0f / numberPictures
     }
 
-    @Throws(IOException::class)
+    @Throws(IOException::class, EndServiceException::class)
     override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?) {
         file.delete()
         if (file.exists()) {
@@ -126,7 +127,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             w.write("<br/><br/><br/></div>\n")
             w.write("<div id='articles'>\n")
 
-
+            if (cancelDl)
+                throw EndServiceException()
             writeEdito(w, magazine.edito)
 
             // articles
@@ -285,6 +287,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         }
     }
 
+    @Throws(EndServiceException::class)
     private fun writeArticlePictures(w: Writer, article: Article, resize: String?) {
         val hasPictures = article.pictures.any { picture -> picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty() }
         if (hasPictures) {
@@ -298,6 +301,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                     var picDld: Boolean = false;
                     while (!picDld) {
                         try {
+                            if (cancelDl)
+                                throw EndServiceException()
                             picBytes = IOUtils.toByteArray(URL(picture.url!!))
                             picDld = true;
                         } catch (e: IOException) {

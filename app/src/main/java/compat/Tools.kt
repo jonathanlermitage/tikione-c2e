@@ -69,3 +69,5 @@ class Tools {
         }
     }
 }
+
+class EndServiceException: Exception()
