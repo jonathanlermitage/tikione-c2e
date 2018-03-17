@@ -123,21 +123,36 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
+        if (dlStarted && !isMyServiceRunning(DownloadTask::class.java))
+            onDlEnded(Intent())
         if (receiver == null)
             createReceiver()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         if (receiver != null) {
             unregisterReceiver(receiver)
             receiver = null
         }
     }
 
-    fun createReceiver() {
+
+    //is deprecated since API 26, but don't find any other easy way.
+    //maybe by verifying if the file to download was created?
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun createReceiver() {
         receiver = DataUpdateReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction(DownloadTask.DOWNLOAD_ENDED)
