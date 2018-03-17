@@ -24,6 +24,9 @@ import kotlin.collections.LinkedHashMap
 class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
+    override var downloadStatus: Float = 10.0f
+    private var percentageInc: Float = 0.0f
+
 
     private fun findFontAsBase64(): String {
         val ttfs = File(".").listFiles { _, name ->
@@ -35,6 +38,26 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             log.info("utilisation de la police de caracteres {}", ttfs[0].absolutePath)
             fileAsBase64(ttfs[0], assetService.getAssetManager())
         }
+    }
+
+    fun countPictures(toc: ArrayList<TocCategory>) {
+        var numberPictures: Int = 0
+
+        for (category in toc) {
+            for (tocItem in category.items) {
+                tocItem.articles!!.forEach { article ->
+                    val hasPictures = article.pictures.any { picture -> picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty() }
+                    if (hasPictures) {
+                        for (picture in article.pictures) {
+                            if (picture.url != null && !picture.url!!.isEmpty()) {
+                                numberPictures++
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        percentageInc = 90.0f / numberPictures
     }
 
     @Throws(IOException::class)
@@ -63,6 +86,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         val footer = resourceAsStr("tmpl/html-export/footer.html")
                 .replace("/*$\$force_dark_mode$$*/", forceDarkModeJs)
 
+        if (incluePictures)
+            countPictures(magazine.toc)
         BufferedWriter(FileWriter(file)).use { w ->
             w.write(header)
 
@@ -115,6 +140,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
                             + "</a></div>\n\n")
+
+
                     tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize, magazine.authorsPicture) }
                 }
             }
@@ -317,6 +344,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                         w.write("<span class='article-picture-legend'>" + picture.legend + "</span>")
                     }
                     w.write("</div>\n")
+                    downloadStatus += percentageInc
                 }
             }
             w.write("</div>\n")

@@ -7,6 +7,7 @@ import java.io.File
 import java.io.IOException
 
 interface HtmlWriterService {
+    var downloadStatus: Float
 
     /**
      * Write a magazine to a new single HTML file.

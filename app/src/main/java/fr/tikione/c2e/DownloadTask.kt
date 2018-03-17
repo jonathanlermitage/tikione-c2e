@@ -75,6 +75,9 @@ class DownloadTask() : IntentService("DownloadTask") {
         } catch (e: InterruptedException) {
             Thread.currentThread().interrupt()
         }
+        catch (e : Exception) {
+            e.printStackTrace()
+        }
     }
 
 
@@ -84,6 +87,7 @@ class DownloadTask() : IntentService("DownloadTask") {
         val cpcAuthService: CPCAuthService = kodein.instance()
         val cpcReaderService: CPCReaderService = kodein.instance()
         val writerService: HtmlWriterService = kodein.instance()
+        var dlArticlesEnded = false
 
         var output = File("")
         try {
@@ -116,7 +120,18 @@ class DownloadTask() : IntentService("DownloadTask") {
 
         handler.postDelayed(object : Runnable {
             override fun run() {
-                val tmpStatus = cpcReaderService.downloadStatus
+                if (downloadStatus == 100.0f)
+                    return
+                var tmpStatus: Float;
+                if (incPictures && dlArticlesEnded) {
+                    tmpStatus = writerService.downloadStatus
+                } else {
+                    tmpStatus = cpcReaderService.downloadStatus
+                    if (incPictures)
+                        tmpStatus /= 10
+                    else if (tmpStatus > 1)
+                        tmpStatus--
+                }
                 if (tmpStatus != downloadStatus)
                     updateDlStatus(tmpStatus)
                 handler.postDelayed(this, 3000)
@@ -124,9 +139,9 @@ class DownloadTask() : IntentService("DownloadTask") {
         }, 3000)
 
         val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
-        handler.removeCallbacksAndMessages(null)
-        updateDlStatus(99.0f)
+        dlArticlesEnded = true;
         writerService.write(magazine, output, incPictures, null, false, "")
+        handler.removeCallbacksAndMessages(null)
         updateDlStatus(100.0f)
         return
     }
@@ -134,8 +149,7 @@ class DownloadTask() : IntentService("DownloadTask") {
     private fun updateDlStatus(ndlStat: Float) {
         downloadStatus = ndlStat
 
-        if (downloadStatus < 0)
-        {
+        if (downloadStatus < 0) {
             notifBuilder.setContentText(errorString)
             notifBuilder.setProgress(0, 0, false);
             notificationManager.notify(notificationId, notifBuilder.build())
@@ -144,8 +158,6 @@ class DownloadTask() : IntentService("DownloadTask") {
 
         sendBroadcast(Intent(PROGRESSION_UPDATE).putExtra("progress", downloadStatus))
         notifBuilder.setProgress(100, downloadStatus.toInt(), false)
-        if (downloadStatus == 99.0f)
-            notifBuilder.setContentText(getString(R.string.notif_writing))
         if (downloadStatus == 100.0f) {
             notifBuilder.setContentText(getString(R.string.notif_ended))
             notifBuilder.setProgress(0, 0, false);

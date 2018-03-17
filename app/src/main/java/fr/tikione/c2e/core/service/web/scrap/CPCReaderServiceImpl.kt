@@ -99,7 +99,7 @@ class CPCReaderServiceImpl : AbstractReader(), CPCReaderService {
         //get download progression percentage, based on the number of articles
         var numberArticles: Int = 0
         columns.forEach { elt -> numberArticles += elt.getElementsByTag("article").size }
-        percentageInc = numberArticles / 98.0f
+        percentageInc = 100.0f / numberArticles
 
         val tocCategories = columns.mapTo(ArrayList()) { buildTocItem(auth, it) }
 
