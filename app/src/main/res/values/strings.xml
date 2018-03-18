@@ -10,7 +10,10 @@
 
     <string name="password_hint">mot de passe</string>
     <string name="magnumber_hint">numéro du magazine (ex: 375)</string>
-    <string name="login_hint">  pseudo CanardPC</string>
+    <string name="login_hint">pseudo CanardPC</string>
+    <string name="login_connect">Se connecter</string>
+    <string name="login_connect_waiting">Connexion…</string>
+    <string name="login_incorrect_credentials">pseudo ou mot de passe incorrect</string>
 
     <string name="account_type">CanardPC</string>
     <string name="save_credentials">enregistrer les identifiants</string>

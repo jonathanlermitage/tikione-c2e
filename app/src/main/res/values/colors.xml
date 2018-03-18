@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#ff0c0c</color>
+    <color name="colorPrimaryDark">#ff0c0c</color>
+    <color name="colorAccent">#ff0c0c</color>
+    <color name="CPCMainColor">#ff0c0c</color>
+    <color name="CPCMainColorDark">#d50000</color>
+    <color name="CPCMainColorTransparent">#4eff0c0c</color>
+    <color name="CPCSecondColor">#aa00cd</color>
+    <color name="background_material_lighter">#fafafa</color>
+    <color name="lighter_gray">#e3e3e3</color>
+    <color name="lighterter_gray">#f4f4f4</color>
+    <color name="transparent_grey">#50616161</color>
 </resources>

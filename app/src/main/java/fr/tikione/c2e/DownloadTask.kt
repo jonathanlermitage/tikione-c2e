@@ -66,6 +66,7 @@ class DownloadTask : IntentService("DownloadTask") {
 
             notifBuilder.setContentTitle(getString(R.string.notif_title) + magNumber)
                     .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setColor(getColor(R.color.CPCMainColor))
                     .setPriority(NotificationCompat.PRIORITY_LOW);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 setOreoNotif()
