@@ -70,6 +70,7 @@ class DownloadTask : IntentService("DownloadTask") {
                     .setPriority(NotificationCompat.PRIORITY_LOW);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 setOreoNotif()
+            startForeground(notificationId, notifBuilder.build());
 
             downloadMag(output!!)
         } catch (e: InterruptedException) {
@@ -196,6 +197,7 @@ class DownloadTask : IntentService("DownloadTask") {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
+        stopForeground(false)
 
         if (downloadStatus != 100.0f && errorString.isEmpty())
         {
