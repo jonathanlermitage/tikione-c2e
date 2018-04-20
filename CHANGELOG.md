@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.3.15 (2018/04/20)
+
+* colorisation de la page d'accueil HTML `CPC-home.html`: chaque numéro a une couleur différente.
+
 ### 1.3.14 (2018/02/24)
 
 * ajout du paramètre `-home` pour générer une page d'accueil HTML `CPC-home.html` listant tous les magazines téléchargés (présents dans le répertoire courant), avec un lien pour ouvrir chaque numéro. L'idée est de mettre cette page en favoris dans votre navigateur, ainsi vous n'aurez pas à chercher le bon fichier HTML à chaque fois que vous voudrez consulter un numéro.
