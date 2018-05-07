@@ -1,4 +1,4 @@
-[![GitHub release](https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![license](https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) [![Github All Releases](https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases)
+[![GitHub release](https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![license](https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) [![Github All Releases](https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tikione-c2e)
 
 # TikiOne C2E
 
