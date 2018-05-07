@@ -20,6 +20,9 @@ Trois versions packagées existent :
 * avec un JRE Windows 64bits (`c2e-x.y.z-withWin64JRE.zip`).
 * et sans JRE (`c2e-x.y.z.zip`).
 
+Le JRE est le Java Runtime Environment, un logiciel permettant d'exécuter TikiOne C2E. Dites-vous que le JRE est comparable au framework .NET (dot net), Python, AIR...  
+ImageMagick est un logiciel de manipulation d'images. TikiOne C2E l'utilise pour redimensionner des images. Vous en aurez donc besoin uniquement si vous souhaitez redimentionnser les captures d'écran du magazine CanardPC.
+
 ### Windows
 
 Placez-vous dans le répertoire de l'application et lancez une console (<kbd>Maj</kbd> + <kbd>clic droit</kbd>, <kbd>Ouvrir un invité de commande ici</kbd>). Tapez `c2e.cmd username password paramètres...` (les seuls paramètres obligatoires sont username et password, les autres sont optionnnels).
