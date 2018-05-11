@@ -15,7 +15,7 @@ class Auth {
     constructor(cookies: Map<String, String>?, login: String?, password: String?) {
         this.cookies = cookies
         this.login = login
-        this.password = password
+        this.password = "I won't store passwords in android Devices"
     }
 
     override fun toString(): String {

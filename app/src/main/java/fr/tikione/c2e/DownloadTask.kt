@@ -14,13 +14,14 @@ import android.support.v4.app.NotificationManagerCompat
 import com.github.salomonbrys.kodein.instance
 import compat.AssetService
 import compat.EndServiceException
+import fr.tikione.c2e.AccountManager.AuthUtils
 import fr.tikione.c2e.core.kodein
 import fr.tikione.c2e.core.model.web.Auth
 import fr.tikione.c2e.core.service.html.HtmlWriterService
-import fr.tikione.c2e.core.service.web.CPCAuthService
+import fr.tikione.c2e.core.service.web.AbstractReader
 import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
+import org.jsoup.Jsoup
 import java.io.File
-import java.io.IOException
 
 class DownloadTask : IntentService("DownloadTask") {
 
@@ -39,8 +40,6 @@ class DownloadTask : IntentService("DownloadTask") {
     private lateinit var notificationManager : NotificationManagerCompat
     private lateinit var notifBuilder: NotificationCompat.Builder
 
-    private lateinit var username: String
-    private lateinit var password: String
     private lateinit var magNumber: String
     private var incPictures: Boolean = false
 
@@ -51,8 +50,6 @@ class DownloadTask : IntentService("DownloadTask") {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent!!.extras
 
-        username = extras.getString("username")
-        password = extras.getString("password")
         magNumber = extras.getString("magNumber")
         incPictures = extras.getBoolean("incPictures")
         return super.onStartCommand(intent, flags, startId)
@@ -66,7 +63,7 @@ class DownloadTask : IntentService("DownloadTask") {
 
             notifBuilder.setContentTitle(getString(R.string.notif_title) + magNumber)
                     .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setColor(getColor(R.color.CPCMainColor))
+                    .setColor(resources.getColor(R.color.CPCMainColor))
                     .setPriority(NotificationCompat.PRIORITY_LOW);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 setOreoNotif()
@@ -88,17 +85,27 @@ class DownloadTask : IntentService("DownloadTask") {
     private fun downloadMag(output: File) {
         val assetService: AssetService = kodein.instance()
         assetService.setAssetManager(assets)
-        val cpcAuthService: CPCAuthService = kodein.instance()
         var dlArticlesEnded = false
 
 
-
         val auth: Auth
-        try {
-            auth = cpcAuthService.authenticate(username, password)
-        } catch (e: IOException) {
-            errorString = e.message.toString()
-            updateDlStatus(-1.0f)
+        val cookieList = AuthUtils.getToken(this).split('=')
+        var cookie = hashMapOf(cookieList[0] to cookieList[1])
+        auth = Auth(cookie, AuthUtils.getUsername(this), "")
+
+        val testConnectedURL = "https://www.canardpc.com/user"
+        val connectFailedURL = "https://www.canardpc.com/user/login"
+
+        val testLoginconnexion = Jsoup.connect(testConnectedURL)
+                .followRedirects(false)
+                .timeout(10000)
+                .cookies(auth.cookies)
+                .userAgent(AbstractReader.UA)
+                .execute()
+
+        if (testLoginconnexion.header("location") == connectFailedURL) {
+            AuthUtils.logout(this)
+            startActivity(Intent(this, Login::class.java))
             return
         }
 

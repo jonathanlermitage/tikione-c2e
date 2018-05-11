@@ -27,9 +27,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //todo: check if the user has at least 1 magazine saved, in this case login is not forced
+        if (!AuthUtils.isAPIConnected(this))
+            startActivity(Intent(this, Login::class.java))
+
         setContentView(R.layout.activity_main)
         title = getString(R.string.title)
-
         progressBar.visibility = View.GONE
         buttonCancelDownload.visibility = View.GONE
 
@@ -60,30 +64,22 @@ class MainActivity : AppCompatActivity() {
             buttonLogout.visibility = View.GONE
     }
 
+    fun logout(v: View) {
+        AuthUtils.logout(this)
+    }
+
     fun downloadMag(v: View) {
+        if (!AuthUtils.isAPIConnected(this))
+            startActivity(Intent(this, Login::class.java))
+
         progressBar.visibility = View.VISIBLE
         try {
-            var saveCreds = false
-            var username = "";
-            var password = "";
-            if (AuthUtils.isAPIConnected(baseContext)) {
-                username = AuthUtils.getUsername(baseContext)
-                password = AuthUtils.getToken(baseContext)
-                saveCreds = false
-            } else {
-                saveCreds = saveCredentialsCheckbox.isChecked
-                username = editTextLogin.text.toString()
-                password = editTextPassword.text.toString()
-            }
-
             dlStarted = true
             buttonDownload.visibility = View.GONE
             buttonCancelDownload.visibility = View.VISIBLE
             progressBar.visibility = View.VISIBLE
 
             val dlIntent = Intent(this, DownloadTask::class.java)
-                    .putExtra("username", username)
-                    .putExtra("password", password)
                     .putExtra("magNumber", editTextMagNumber.text.toString())
                     .putExtra("incPictures", checkboxIncludePictures.isChecked)
             startService(dlIntent)

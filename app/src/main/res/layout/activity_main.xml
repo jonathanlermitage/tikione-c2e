@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/login_hint"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -29,7 +30,18 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/password_hint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/saveCredentialsCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checked="false"
+            android:text="@string/save_credentials"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/editTextMagNumber"
@@ -46,15 +58,6 @@
             android:layout_marginTop="10dp"
             android:checked="true"
             android:text="@string/images_on"
-            android:textSize="18sp" />
-
-        <CheckBox
-            android:id="@+id/saveCredentialsCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:checked="false"
-            android:text="@string/save_credentials"
             android:textSize="18sp" />
 
         <Button
@@ -97,6 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:onClick="logout"
             android:text="@string/logout" />
 
         <android.support.v4.widget.Space
