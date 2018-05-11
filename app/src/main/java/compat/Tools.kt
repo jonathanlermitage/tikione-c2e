@@ -16,7 +16,7 @@ class Tools {
 
     companion object {
 
-        val VERSION = "android-1.0.0_c2ecore-1.3.10"
+        const val VERSION = "android-1.0.0_c2ecore-1.3.10"
         var debug = false
 
         @Suppress("UNUSED_PARAMETER")
