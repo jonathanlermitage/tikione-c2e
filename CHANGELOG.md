@@ -6,6 +6,7 @@
 * (todo) ajout du paramètre `-highcontrast` pour augmenter le contraste des pages générées, ceci afin d'améliorer le confort de lecture.
 * (todo) ajout du paramètre `-lineheight:XXuu` pour spécifier, et généralement augmenter, l'espace vertical entre chaque ligne (où `XX` est un nombre et `uu` une unité, par exemple `-lineheight:1.5em`), ceci afin d'améliorer le confort de lecture.
 * (todo) paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
+* lien de donation PayPal mis à jour: le don se fait maintenant en Euro plutôt qu'en Dollar, et ne passe plus par une redirection Sourceforge.net.
 
 ### 1.3.15 (2018/04/20)
 
