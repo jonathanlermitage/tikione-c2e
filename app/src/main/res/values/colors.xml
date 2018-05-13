@@ -8,6 +8,7 @@
     <color name="CPCMainColorTransparent">#4eff0c0c</color>
     <color name="CPCSecondColor">#aa00cd</color>
     <color name="background_material_lighter">#fafafa</color>
+    <color name="transparent_black">#74000000</color>
     <color name="lighter_gray">#e3e3e3</color>
     <color name="lighterter_gray">#f4f4f4</color>
     <color name="transparent_grey">#50616161</color>
