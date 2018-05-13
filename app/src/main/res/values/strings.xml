@@ -44,4 +44,12 @@
         \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.
         \nSi vous choisissez de ne pas inclure les images, le nom du fichier sera dy type cpcXXX-nopic.html
         (pour information, le total des images représente généralement entre 50Mo et 250Mo, le reste du magazine 1Mo).</string>
+
+    <string name="no_network">Problème de réseau</string>
+    <string name="no_wifi_home">Erreur de réseau.\n
+        Veuillez vérifier vos paramètres internet</string>
+    <string name="network_settings">Paramètres réseau</string>
+
+
+
 </resources>
