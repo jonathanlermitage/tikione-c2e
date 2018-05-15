@@ -36,7 +36,7 @@ object NetworkUtils {
         Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_LONG).show()
     }
 
-    fun checkNetworkError(context: Context, error: VolleyError, errorListener: Response.ErrorListener?) {
+    fun checkNetworkError(context: Context, error: VolleyError, url: String, errorListener: Response.ErrorListener?) {
         if (error is NetworkError || error is TimeoutError) {
             showConnectionErrorToast(context)
             return;
@@ -47,7 +47,8 @@ object NetworkUtils {
                 val resp = error.networkResponse
                 val data = String(resp.data)
                 Log.wtf("NETWORK", "code = " + resp.statusCode +
-                        "\n data=" + data)
+                        "\n url= " + url +
+                        "\n data=" + data.substring(0, Math.min(data.length, 40)) + "...")
             }
         }
 
@@ -88,7 +89,7 @@ object NetworkUtils {
                         listener.onResponse(BitmapDrawable(context.resources, bitmap))
                     }, 0, 0, null, Bitmap.Config.RGB_565,
                     Response.ErrorListener { error ->
-                        checkNetworkError(context, error, errorListener)
+                        checkNetworkError(context, error, url, errorListener)
                     })
 
 
@@ -99,7 +100,7 @@ object NetworkUtils {
                 listener?.onResponse(Jsoup.parse(response.toString()))
             },
             Response.ErrorListener { error ->
-                checkNetworkError(context, error, errorListener)
+                checkNetworkError(context, error, url, errorListener)
             }) {
 
         var statusCode :Int = 0;
