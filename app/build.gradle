@@ -45,6 +45,7 @@ dependencies {
     implementation "com.github.salomonbrys.kodein:kodein:4.1.0"
 
     implementation 'com.android.volley:volley:1.1.0' // async network Lib
+    implementation 'jp.wasabeef:blurry:2.1.1' //blur background image
 }
 
 configurations {
