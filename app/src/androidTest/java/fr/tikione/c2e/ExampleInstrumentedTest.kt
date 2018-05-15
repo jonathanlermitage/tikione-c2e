@@ -2,15 +2,14 @@ package fr.tikione.c2e
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
-import android.util.Log
+import com.android.volley.Response
+import fr.tikione.c2e.Utils.Network.NetworkUtils
 import fr.tikione.c2e.Utils.TmpUtils
-
+import org.jsoup.nodes.Document
 import org.junit.Test
 import org.junit.runner.RunWith
-
 import org.junit.Assert.*
 import java.io.FileNotFoundException
-import java.io.IOError
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -46,5 +45,22 @@ class ExampleInstrumentedTest {
         val map2 = TmpUtils.readObjectFile<HashMap<Int, String>>(filename, appContext)
         assertEquals("test", map2[380])
         assertEquals("170", map2[170])
+    }
+
+    @Test
+    fun checkNonExistingCPCPage()
+    {
+        val appContext = InstrumentationRegistry.getTargetContext()
+
+        //did you know? Canard PC numéro 999 existe! au moins sur le site...
+        NetworkUtils.HTMLrequest(appContext, com.android.volley.Request.Method.GET, "https://www.canardpc.com/numero/1234",
+                Response.Listener<Document> { response ->
+                    assertEquals("this code should'nt be reached!","")
+                },
+                Response.ErrorListener { error ->
+                    if (error.networkResponse != null)
+                    assertEquals(404, error.networkResponse.statusCode)
+                })
+        Thread.sleep(8000)
     }
 }

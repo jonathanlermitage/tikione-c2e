@@ -43,6 +43,8 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.2'
     implementation'commons-io:commons-io:2.6'
     implementation "com.github.salomonbrys.kodein:kodein:4.1.0"
+
+    implementation 'com.android.volley:volley:1.1.0' // async network Lib
 }
 
 configurations {
