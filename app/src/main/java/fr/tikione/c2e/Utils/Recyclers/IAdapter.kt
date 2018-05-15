@@ -64,6 +64,11 @@ open class Adapter<T: Any>(private  val context : Context,
         notifyItemInserted(data.size -1)
     }
 
+    fun addElemAtStart(ndata :T){
+        data.add(0, ndata)
+        notifyItemInserted(0)
+    }
+
     override fun getItemCount(): Int = data.size
 
     companion object {
