@@ -1,5 +1,8 @@
 package fr.tikione.c2e
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 /**
  * Created by tuxlu on 12/11/17.
  */
@@ -49,5 +52,16 @@ data class DateCustom(var year: Int,
                 month += increaseVal
             } //no mag in August
         }
+    }
+      fun dateToString(): String {
+            val day = if (this.firstWeek) "1er" else "15"
+            val cal = Calendar.getInstance()
+            cal.set(Calendar.YEAR, this.year)
+            cal.set(Calendar.MONTH, this.month - 1)
+            cal.set(Calendar.DAY_OF_MONTH, 1)
+
+            val format = SimpleDateFormat(" MMM yyyy", Locale.FRENCH)
+            val text = format.format(cal.time).replaceFirst(".", "")
+            return (day + text)
     }
 }

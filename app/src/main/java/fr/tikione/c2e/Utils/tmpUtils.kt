@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Environment
 import fr.tikione.c2e.DateCustom
 import fr.tikione.c2e.R
-import java.io.File
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,23 +13,32 @@ class TmpUtils {
 
     companion object {
 
-        fun getFilesPath(context: Context) : File
-        {
+        fun getFilesPath(context: Context) : File {
             //return context.filesDir
             return File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
                     + File.separator + context.getString(R.string.folder_name))
         }
 
-        fun dateToString(date: DateCustom): String {
-            val day = if (date.firstWeek) "1er" else "15"
-            val cal = Calendar.getInstance()
-            cal.set(Calendar.YEAR, date.year)
-            cal.set(Calendar.MONTH, date.month - 1)
-            cal.set(Calendar.DAY_OF_MONTH, 1)
+        fun <T> readObjectFile(filename: String, context: Context): T {
+            val file = File(context.filesDir, filename)
+            if (!(file.isFile && file.canRead()))
+                throw FileNotFoundException()
 
-            val format = SimpleDateFormat(" MMM yyyy", Locale.FRENCH)
-            val text = format.format(cal.time).replaceFirst(".", "")
-            return (day + text)
+            val stream = FileInputStream(file)
+            val ois = ObjectInputStream(stream)
+            val res: T =  (ois.readObject() as T)
+            ois.close()
+            return res
+        }
+
+        fun <T> writeObjectFile(obj: T, filename: String, context: Context)
+        {
+            val file = File(context.filesDir, filename)
+            val stream = FileOutputStream(file)
+            val out = ObjectOutputStream(stream)
+            out.writeObject(obj);
+            out.flush()
+            out.close()
         }
 
     }
