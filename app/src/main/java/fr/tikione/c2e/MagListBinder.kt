@@ -32,10 +32,12 @@ open class MagListBinder : ViewHolderBinder<MagasineInfo> {
 
     var imageUrlMap = HashMap<Int, String>()
     val imageUrlMapFilename = "imageUrlMap.hmap"
-
+    private var useBlurry: Boolean? = null
 
     override fun bind(holder: Adapter.ViewHolder<MagasineInfo>, item: MagasineInfo) {
 
+        if (useBlurry == null)
+            useBlurry = holder.v.context.getSharedPreferences("app", AppCompatActivity.MODE_PRIVATE).getBoolean("useBlurry", true)
         holder.setIsRecyclable(false)
         val context = holder.v.context
 
@@ -87,11 +89,15 @@ open class MagListBinder : ViewHolderBinder<MagasineInfo> {
         imageView.setImageBitmap(drawable)
         imageView.visibility = View.VISIBLE
 
-        try {
-            Blurry.with(holder.v.context).radius(15).async()
-                    .capture(imageView)
-                    .into(holder.v.findViewById(R.id.backgroundBlurImage));
-        } catch (e: Exception) {}
+        if (useBlurry!!) {
+            try {
+                Blurry.with(holder.v.context).radius(15).async()
+                        .from(drawable)
+                        .into(holder.v.findViewById(R.id.backgroundBlurImage));
+            } catch (e: Exception) {
+                Log.wtf(javaClass.simpleName, e.message)
+            }
+        }
 
         if (!isDownloaded) {
             val matrix = ColorMatrix();
