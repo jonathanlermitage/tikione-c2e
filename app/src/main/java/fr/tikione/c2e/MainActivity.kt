@@ -2,10 +2,7 @@ package fr.tikione.c2e
 
 import android.Manifest
 import android.app.ActivityManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -18,12 +15,12 @@ import android.widget.Toast
 import fr.tikione.c2e.AccountManager.AuthUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
     private var receiver: DataUpdateReceiver? = null
     private val PERMISSION_REQUEST_STORAGE: Int = 72
-    private var dlStarted: Boolean = false
+    var dlStarted: Boolean = false
+    private var numberDl: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +31,13 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
         title = getString(R.string.title)
-        progressBar.visibility = View.GONE
-        buttonCancelDownload.visibility = View.GONE
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkPermissions()
-        setLoginUI()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun checkPermissions() {
+    private fun checkPermissions(): Boolean {
         val array = arrayListOf<String>()
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
@@ -53,51 +47,41 @@ class MainActivity : AppCompatActivity() {
             array.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (!array.isEmpty())
             requestPermissions(array.toTypedArray(), PERMISSION_REQUEST_STORAGE)
-        //TODO: verify if permissions are checked
-    }
-
-    private fun setLoginUI() {
-        if (AuthUtils.isAPIConnected(baseContext)) {
-            editTextLogin.visibility = View.GONE
-            editTextPassword.visibility = View.GONE
-        } else
-            buttonLogout.visibility = View.GONE
+        return array.isEmpty()
     }
 
     fun logout(v: View) {
         AuthUtils.logout(this)
     }
 
-    fun downloadMag(v: View) {
+    fun downloadMag(number: Int, incPicture: Boolean) {
         if (!AuthUtils.isAPIConnected(this))
             startActivity(Intent(this, Login::class.java))
 
-        progressBar.visibility = View.VISIBLE
+        if (dlStarted)
+            return Toast.makeText(this@MainActivity, getString(R.string.dl_already_pending), Toast.LENGTH_LONG).show()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkPermissions())
+            return
+
         try {
             dlStarted = true
-            buttonDownload.visibility = View.GONE
-            buttonCancelDownload.visibility = View.VISIBLE
-            progressBar.visibility = View.VISIBLE
+            numberDl = number
+            progressLayout.visibility = View.VISIBLE
+            progressInfoTextview.text = getString(R.string.downloading_number, number)
 
             val dlIntent = Intent(this, DownloadTask::class.java)
-                    .putExtra("magNumber", editTextMagNumber.text.toString())
-                    .putExtra("incPictures", checkboxIncludePictures.isChecked)
+                    .putExtra("magNumber", number.toString())
+                    .putExtra("incPictures", incPicture)
             startService(dlIntent)
 
-            //2
-            //MediaScannerConnection.scanFile(this, arrayOf(res), null) { _, _ -> }
-
-            //if (saveCreds) {
-            //AuthUtils.addAccount(baseContext, username, password)
-            //setLoginUI()
-            //}
         } catch (e: Exception) {
             e.printStackTrace()
             showError("Impossible de se connecter à CanardPC ($e)")
         }
     }
 
-    fun stopService(v : View) {
+    fun stopService(v: View) {
         if (!dlStarted)
             return
         val builder = AlertDialog.Builder(this@MainActivity)
@@ -135,8 +119,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        dlStarted = getSharedPreferences("app", MODE_PRIVATE).getBoolean("dlStarted", false)
+        numberDl = getSharedPreferences("app", MODE_PRIVATE).getInt("numberDl", 0)
         if (dlStarted && !isMyServiceRunning(DownloadTask::class.java))
             onDlEnded(Intent())
+        if (dlStarted) {
+            progressLayout.visibility = View.VISIBLE
+            progressInfoTextview.text = getString(R.string.downloading_number, numberDl)
+        }
         if (receiver == null)
             createReceiver()
     }
@@ -146,6 +136,8 @@ class MainActivity : AppCompatActivity() {
         if (receiver != null) {
             unregisterReceiver(receiver)
             receiver = null
+            getSharedPreferences("app", MODE_PRIVATE)!!.edit().putBoolean("dlStarted", dlStarted).apply()
+            getSharedPreferences("app", MODE_PRIVATE)!!.edit().putInt("numberDl", numberDl).apply()
         }
     }
 
@@ -172,19 +164,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun onDlEnded(intent: Intent) {
         dlStarted = false
-        buttonDownload.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
-        buttonCancelDownload.visibility = View.GONE
+        progressLayout.visibility = View.GONE
         if (intent.hasExtra("error")) {
             val error = intent.getStringExtra("error")
             Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && error == getString(R.string.invalid_permissions))
                 checkPermissions()
-        } else {
+        } else if (!intent.hasExtra("interrupted")) {
             Toast.makeText(baseContext, R.string.notif_ended, Toast.LENGTH_LONG).show()
-            //val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-            //intent.data = Uri.fromFile(File(res))
-            //sendBroadcast(intent)
         }
     }
 
