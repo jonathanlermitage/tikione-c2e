@@ -30,6 +30,9 @@
     <string name="yes">oui</string>
     <string name="no">non</string>
 
+    <string name="error">erreur</string>
+    <string name="ok">ok</string>
+
     <string name="notif_title">Téléchargement de CanardPC n°</string>
     <string name="notif_downloading">Téléchargement en cours</string>
     <string name="notif_image_download">Téléchargement des images</string>

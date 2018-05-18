@@ -156,17 +156,10 @@ open class MagListBinder : ViewHolderBinder<MagasineInfo> {
             }
 
             if (data[holder.adapterPosition].downloaded) {
-                val file = File(TmpUtils.getFilesPath(holder.v.context).absolutePath +
-                        File.separator + mag.number.toString() + File.separator + "mag.html")
-                if (!file.exists() || !file.canRead() || !file.isFile) {
+                if (! TmpUtils.openMag(mag.number, act)) {
                     createDlDialog(mag, act)
                     return@OnClickListener
                 }
-                val browserIntent = Intent(Intent.ACTION_VIEW);
-                browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-                browserIntent.data = FileProvider.getUriForFile(context, "fr.tikione.fileprovider", file)
-                browserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                act.startActivity(browserIntent)
             } else
                 createDlDialog(mag, act)
         }

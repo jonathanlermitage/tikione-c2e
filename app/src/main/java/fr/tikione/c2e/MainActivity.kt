@@ -1,24 +1,22 @@
 package fr.tikione.c2e
 
-import android.Manifest
 import android.app.ActivityManager
 import android.content.*
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.v4.content.ContextCompat
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import fr.tikione.c2e.AccountManager.AuthUtils
+import fr.tikione.c2e.Utils.TmpUtils
+import fr.tikione.c2e.Utils.TmpUtils.Companion.showError
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private var receiver: DataUpdateReceiver? = null
-    private val PERMISSION_REQUEST_STORAGE: Int = 72
     var dlStarted: Boolean = false
     private var numberDl: Int = 0
 
@@ -33,21 +31,7 @@ class MainActivity : AppCompatActivity() {
         title = getString(R.string.title)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            checkPermissions()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun checkPermissions(): Boolean {
-        val array = arrayListOf<String>()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            array.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-            array.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (!array.isEmpty())
-            requestPermissions(array.toTypedArray(), PERMISSION_REQUEST_STORAGE)
-        return array.isEmpty()
+            TmpUtils.checkPermissions(this)
     }
 
     fun logout(v: View) {
@@ -61,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         if (dlStarted)
             return Toast.makeText(this@MainActivity, getString(R.string.dl_already_pending), Toast.LENGTH_LONG).show()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkPermissions())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ! TmpUtils.checkPermissions(this))
             return
 
         try {
@@ -77,7 +61,9 @@ class MainActivity : AppCompatActivity() {
 
         } catch (e: Exception) {
             e.printStackTrace()
-            showError("Impossible de se connecter à CanardPC ($e)")
+            progressLayout.visibility = View.INVISIBLE
+            dlStarted = false
+            showError("Impossible de se connecter à CanardPC ($e)", this)
         }
     }
 
@@ -95,32 +81,11 @@ class MainActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-    private fun showSuccess(msg: String) {
-        val builder = AlertDialog.Builder(this@MainActivity)
-        builder
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setTitle("Terminé")
-                .setMessage(msg)
-                .setPositiveButton("Terminé") { dialog, which -> Toast.makeText(this@MainActivity, "OK", Toast.LENGTH_LONG).show() }
-        builder.create().show()
-    }
-
-    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-    private fun showError(msg: String) {
-        val builder = AlertDialog.Builder(this@MainActivity)
-        builder
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Erreur")
-                .setMessage(msg)
-                .setPositiveButton("Erreur") { dialog, which -> Toast.makeText(this@MainActivity, "OK", Toast.LENGTH_LONG).show() }
-        builder.create().show()
-    }
-
     override fun onStart() {
         super.onStart()
         dlStarted = getSharedPreferences("app", MODE_PRIVATE).getBoolean("dlStarted", false)
         numberDl = getSharedPreferences("app", MODE_PRIVATE).getInt("numberDl", 0)
+
         if (dlStarted && !isMyServiceRunning(DownloadTask::class.java))
             onDlEnded(Intent())
         if (dlStarted) {
