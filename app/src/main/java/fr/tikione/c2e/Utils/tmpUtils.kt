@@ -7,6 +7,10 @@ import fr.tikione.c2e.R
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.support.v4.content.FileProvider
+
+
+class GenericFileProvider : FileProvider()
 
 class TmpUtils {
 
