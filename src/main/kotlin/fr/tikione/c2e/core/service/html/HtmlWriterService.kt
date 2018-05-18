@@ -16,15 +16,17 @@ interface HtmlWriterService {
      * @param resize resize screenshots (percents). Use null to disable resize.
      * @param dark activate dark-mode by default.
      * @param customCss custom CSS.
+     * @param dysfont use font for dyslexic users.
      */
     @Throws(IOException::class)
-    fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?)
+    fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?, dysfont: Boolean)
 
     /**
      * Write a home page that enumerates downloaded magazines.
      * @param magazines magazines.
      * @param file HTML file.
+     * @param dysfont use font for dyslexic users.
      */
     @Throws(IOException::class)
-    fun write(magazines: List<MagazineSummary>, file: File)
+    fun write(magazines: List<MagazineSummary>, file: File, dysfont: Boolean)
 }

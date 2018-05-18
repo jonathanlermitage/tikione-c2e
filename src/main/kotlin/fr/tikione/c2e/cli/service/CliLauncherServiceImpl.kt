@@ -78,6 +78,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doAllMissing = switchList.contains("-cpcmissing")
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
         val doHome = switchList.contains("-home")
+        val doDysfont = switchList.contains("-dysfont")
 
         var directory = "."
         args.filter { arg -> arg.startsWith("-directory:") }
@@ -138,7 +139,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
                 val file = File(makeMagFilename(directory, magNumber, doIncludePictures, doResize))
                 val writerService: HtmlWriterService = kodein.instance()
-                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss)
+                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss, doDysfont)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de ${Tools.PAUSE_BETWEEN_MAG_DL}s avant de telecharger le prochain numero")
                     TimeUnit.SECONDS.sleep(Tools.PAUSE_BETWEEN_MAG_DL)
@@ -149,17 +150,17 @@ class CliLauncherServiceImpl : CliLauncherService {
 
         if (doIndex) {
             log.info("creation de l'index de tous les numeros disponibles")
-            val file = File(directory + "/CPC-index.csv")
+            val file = File("$directory/CPC-index.csv")
             val writerService: IndexWriterService = kodein.instance()
             writerService.write(auth, headers, file)
         }
 
         if (doHome) {
             log.info("creation de la page d'accueil CPC-home.html")
-            val file = File(directory + "/CPC-home.html")
+            val file = File("$directory/CPC-home.html")
             val localReaderService: LocalReaderService = kodein.instance()
             val writerService: HtmlWriterService = kodein.instance()
-            writerService.write(localReaderService.listDownloadedMagazines(File("./")), file)
+            writerService.write(localReaderService.listDownloadedMagazines(File("./")), file, doDysfont)
         }
 
         log.info("termine !")
