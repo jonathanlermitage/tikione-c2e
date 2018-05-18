@@ -21,7 +21,8 @@ import java.util.*
 data class MagasineInfo(var downloaded: Boolean = false,
                         var number: Int = 0,
                         var date: DateCustom,
-                        var isMostRecent: Boolean = false)
+                        var isMostRecent: Boolean = false,
+                        var bitmap: Bitmap? = null)
 
 
 open class MagListRecycler : IRecycler<MagasineInfo>() {
@@ -31,14 +32,14 @@ open class MagListRecycler : IRecycler<MagasineInfo>() {
     override val recycleId: Int = R.id.recycleView
     override val requestObjectName: String = ""
 
-    override val binder = MagListBinder()
+    override var binder = MagListBinder()
     override val itemDecoration = LinearItemDecoration(2)
 
     private lateinit var lastNum: MagasineInfo
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = super.onCreateView(inflater, container, savedInstanceState)
-
         val recycler = rootView!!.findViewById<RecyclerView>(recycleId)
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -55,20 +56,23 @@ open class MagListRecycler : IRecycler<MagasineInfo>() {
             binder.imageUrlMap = TmpUtils.readObjectFile(binder.imageUrlMapFilename, context!!)
         } catch (e: FileNotFoundException) {
         }
-
-        createFirstMagasines()
         return rootView
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        createFirstMagasines()
     }
 
     private fun createFirstMagasines() {
         val list = mutableListOf<MagasineInfo>()
         val cal = Calendar.getInstance();
         val week = cal.get(Calendar.WEEK_OF_MONTH)
-        val date = DateCustom(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), week < 3)
+        val date = DateCustom(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, week < 3)
         val todayDate = date.copy()
 
         val num376 = DateCustom(2018, 3, true) //376: March 1 2018
-        var addNum = 1
+        var addNum = 0
         while (date != num376) {
             list.add(MagasineInfo(false, 0, date.copy()))
             addNum++
@@ -90,9 +94,7 @@ open class MagListRecycler : IRecycler<MagasineInfo>() {
         lastNum = list.last().copy()
         lastNum.date = lastNum.date.copy()
         adapter?.add(list)
-        adapter?.notifyDataSetChanged()
         addLatestMagasine(nextNum)
-
         LoadingUtils.EndLoadingView(rootView)
 
     }
@@ -110,18 +112,18 @@ open class MagListRecycler : IRecycler<MagasineInfo>() {
         }
         if (list.size != 0) {
             adapter?.add(list)
-            adapter?.notifyDataSetChanged()
         }
     }
 
     private fun addLatestMagasine(mag: MagasineInfo) {
-        if (mag.downloaded)
+        if (mag.downloaded || binder.imageUrlMap.containsKey(mag.number))
             adapter?.addElemAtStart(mag)
         else {
             NetworkUtils.HTMLrequest(context!!, com.android.volley.Request.Method.GET,
                     "https://www.canardpc.com/numero/" + mag.number,
                     Response.Listener { _ ->
                         this.adapter!!.addElemAtStart(mag)
+                        binder.imageUrlMap[mag.number] = ""
                     }, null)
         }
     }
