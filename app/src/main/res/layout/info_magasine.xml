@@ -20,7 +20,8 @@
         android:layout_width="130dp"
         android:layout_height="180dp"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="15dp"
+        android:paddingBottom="17dp"
+        android:paddingTop="8dp"
         android:visibility="visible"
         app:srcCompat="@drawable/couvencours"
         tools:srcCompat="@drawable/couv380" />

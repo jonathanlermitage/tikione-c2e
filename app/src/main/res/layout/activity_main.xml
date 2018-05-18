@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,116 +11,91 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/progressLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:background="@color/CPCMainColorDark"
         android:orientation="horizontal"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        tools:visibility="visible">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="100"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:padding="5dp">
 
-            <android.support.v4.widget.Space
-                android:layout_width="wrap_content"
-                android:layout_height="20sp" />
-
-            <EditText
-                android:id="@+id/editTextLogin"
+            <TextView
+                android:id="@+id/progressInfoTextview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/login_hint"
-                android:inputType="textPersonName"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/editTextPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/password_hint"
-                android:inputType="textPassword"
-                android:visibility="gone" />
-
-            <CheckBox
-                android:id="@+id/saveCredentialsCheckbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="false"
-                android:text="@string/save_credentials"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/editTextMagNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/magnumber_hint"
-                android:inputType="number" />
-
-            <CheckBox
-                android:id="@+id/checkboxIncludePictures"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:checked="true"
-                android:text="@string/images_on"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/buttonDownload"
-                style="@style/AppTheme.coloredButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:onClick="downloadMag"
-                android:text="@string/button_dl" />
-
-            <Button
-                android:id="@+id/buttonCancelDownload"
-                style="@style/AppTheme.coloredButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:onClick="stopService"
-                android:text="@string/stop_dl" />
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="100"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@color/background_material_lighter"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Téléchargement du numéro 380..." />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="33sp"
-                android:layout_margin="5sp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="100"
                 android:max="100"
-                android:min="0" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5sp"
-                android:text="@string/notice"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/buttonLogout"
-                style="@style/AppTheme.coloredButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:onClick="logout"
-                android:text="@string/logout" />
-
-            <android.support.v4.widget.Space
-                android:layout_width="wrap_content"
-                android:layout_height="80sp" />
-
+                android:min="0"
+                android:paddingBottom="3dp"
+                android:progress="0"
+                android:progressTint="@android:color/background_light"
+                android:scaleY="1.8"
+                tools:progress="42" />
         </LinearLayout>
-    </ScrollView>
+
+        <Button
+            android:id="@+id/buttonCancelDownload"
+            style="@style/AppTheme.coloredButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:onClick="stopService"
+            android:text="@string/stop_dl" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="@string/notice"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonLogout"
+            style="@style/AppTheme.coloredButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:onClick="logout"
+            android:text="@string/logout"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
 </FrameLayout>
 

@@ -8,6 +8,13 @@
     <string name="images_on">Inclure les images</string>
     <string name="button_dl">Télécharger le numéro</string>
 
+    <string name="dl_with_images">Télécharger avec les images</string>
+    <string name="dl_no_images">Télécharger sans les images</string>
+
+    <string name="downloading_number">Téléchargement du numéro %1$d&#8230;</string>
+    <string name="dl_already_pending">un téléchargement est déjà en cours!</string>
+
+
     <string name="password_hint">mot de passe</string>
     <string name="magnumber_hint">numéro du magazine (ex: 375)</string>
     <string name="login_hint">pseudo CanardPC</string>
@@ -44,6 +51,8 @@
         \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.
         \nSi vous choisissez de ne pas inclure les images, le nom du fichier sera dy type cpcXXX-nopic.html
         (pour information, le total des images représente généralement entre 50Mo et 250Mo, le reste du magazine 1Mo).</string>
+
+    <string name="error_opening_file">erreur à l\'ouverture du magasine</string>
 
     <string name="no_network">Problème de réseau</string>
     <string name="no_wifi_home">Erreur de réseau.\n
