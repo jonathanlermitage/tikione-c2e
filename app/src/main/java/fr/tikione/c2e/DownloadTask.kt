@@ -15,6 +15,7 @@ import com.github.salomonbrys.kodein.instance
 import compat.AssetService
 import compat.EndServiceException
 import fr.tikione.c2e.AccountManager.AuthUtils
+import fr.tikione.c2e.Utils.TmpUtils
 import fr.tikione.c2e.core.kodein
 import fr.tikione.c2e.core.model.web.Auth
 import fr.tikione.c2e.core.service.html.HtmlWriterService
@@ -22,6 +23,9 @@ import fr.tikione.c2e.core.service.web.AbstractReader
 import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
 import org.jsoup.Jsoup
 import java.io.File
+import java.nio.file.Files.isDirectory
+
+
 
 class DownloadTask : IntentService("DownloadTask") {
 
@@ -140,11 +144,10 @@ class DownloadTask : IntentService("DownloadTask") {
     {
         var output = File("")
         try {
-            val dlFolder = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
-                    + File.separator + getString(R.string.folder_name))
+            val dlFolder = File(TmpUtils.getFilesPath(this.baseContext), magNumber)
             if (!dlFolder.exists())
                 dlFolder.mkdirs()
-            val filename = "cpc" + magNumber + (if (incPictures) "" else "-nopic") + ".html"
+            val filename = "mag.html"
             output = File(dlFolder, filename)
             if (!output.exists()) {
                 output.parentFile.mkdirs()
@@ -205,14 +208,24 @@ class DownloadTask : IntentService("DownloadTask") {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
         stopForeground(false)
+        val intent = Intent(DOWNLOAD_ENDED)
+
 
         if (downloadStatus != 100.0f && errorString.isEmpty())
         {
             cpcReaderService.cancelDl = true
             writerService.cancelDl = true
+            getFile()?.delete()
+            intent.putExtra("interrupted", true)
+            /*
+            if (fileOrDirectory.isDirectory())
+                for (child in fileOrDirectory.listFiles())
+                    deleteRecursive(child)
+
+            fileOrDirectory.delete()
+            */
         }
 
-        val intent = Intent(DOWNLOAD_ENDED)
         if (!errorString.isBlank())
             intent.putExtra("error", errorString)
         sendBroadcast(intent)

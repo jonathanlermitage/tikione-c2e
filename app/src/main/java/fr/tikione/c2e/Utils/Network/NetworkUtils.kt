@@ -65,7 +65,7 @@ object NetworkUtils {
     }
 
     fun ImageRequest(context: Context, url: String,
-                     listener: Response.Listener<Drawable>,
+                     listener: Response.Listener<Bitmap>,
                      errorListener: Response.ErrorListener?) {
         if (!isConnected(context)) { return showConnectionErrorToast(context) }
         val req = PictureRequest(url, listener, errorListener, context)
@@ -83,10 +83,10 @@ object NetworkUtils {
     }
 
 
-    class PictureRequest(url: String, listener: Response.Listener<Drawable>, errorListener: Response.ErrorListener?, context: Context) :
+    class PictureRequest(url: String, listener: Response.Listener<Bitmap>, errorListener: Response.ErrorListener?, context: Context) :
             ImageRequest(url,
                     Response.Listener { bitmap ->
-                        listener.onResponse(BitmapDrawable(context.resources, bitmap))
+                        listener.onResponse(bitmap)
                     }, 0, 0, null, Bitmap.Config.RGB_565,
                     Response.ErrorListener { error ->
                         checkNetworkError(context, error, url, errorListener)

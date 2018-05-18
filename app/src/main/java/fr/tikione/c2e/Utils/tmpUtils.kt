@@ -24,15 +24,17 @@ class TmpUtils {
             if (!(file.isFile && file.canRead()))
                 throw FileNotFoundException()
 
-            val stream = FileInputStream(file)
-            val ois = ObjectInputStream(stream)
-            val res: T =  (ois.readObject() as T)
-            ois.close()
-            return res
+            try {
+                val stream = FileInputStream(file)
+                val ois = ObjectInputStream(stream)
+                val res: T = (ois.readObject() as T)
+                ois.close()
+                return res
+            } catch (E: Exception) { }
+            throw FileNotFoundException()
         }
 
-        fun <T> writeObjectFile(obj: T, filename: String, context: Context)
-        {
+        fun <T> writeObjectFile(obj: T, filename: String, context: Context) {
             val file = File(context.filesDir, filename)
             val stream = FileOutputStream(file)
             val out = ObjectOutputStream(stream)

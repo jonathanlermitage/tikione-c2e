@@ -13,7 +13,7 @@ import android.view.ViewGroup
 
 interface ViewHolderBinder<T: Any> {
     fun bind(holder: Adapter.ViewHolder<T>, item: T)
-    fun setClickListener(holder: Adapter.ViewHolder<T>, data: MutableList<T>)
+    fun setClickListener(holder: Adapter.ViewHolder<T>, data: MutableList<T>, context: Context)
 /*    {
         val clickListener = View.OnClickListener {view ->
             view.context;
@@ -35,8 +35,8 @@ open class Adapter<T: Any>(private  val context : Context,
             binder.bind(this, item)
         }
 
-        fun setClickListener(data: MutableList<T>) {
-            binder.setClickListener(this, data)
+        fun setClickListener(data: MutableList<T>, context: Context) {
+            binder.setClickListener(this, data, context)
         }
     }
 
@@ -50,7 +50,7 @@ open class Adapter<T: Any>(private  val context : Context,
     override fun onBindViewHolder(holder: ViewHolder<T>, position: Int) {
         val item = data[position]
         holder.bind(item)
-        holder.setClickListener(data)
+        holder.setClickListener(data, context)
     }
 
     fun clear() {

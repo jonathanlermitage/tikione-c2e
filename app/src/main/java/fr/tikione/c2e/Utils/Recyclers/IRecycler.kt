@@ -1,5 +1,6 @@
 package fr.tikione.c2e.Utils.Recyclers
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -12,7 +13,6 @@ import fr.tikione.c2e.Utils.LoadingUtils
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import android.widget.Toast
 
 
 
@@ -58,23 +58,12 @@ abstract class IRecycler<T: Any> : Fragment() {
         //LoadingUtils.EndLoadingView(rootView)
         val recycler = rootView.findViewById<RecyclerView>(recycleId)
         recycler.setHasFixedSize(true)
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView!!.canScrollVertically(1)) {
-
-                }
-            }
-        })
-
 
         val layoutManager = setLayoutManager()
         if (itemDecoration != null)
             recycler.addItemDecoration(itemDecoration)
         recycler.layoutManager = layoutManager
 
-        adapter = Adapter(context!!, ArrayList(), layoutObjectId, binder!!)
-        recycler.adapter = adapter
         return rootView
     }
 
@@ -141,6 +130,11 @@ abstract class IRecycler<T: Any> : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val recycler = rootView.findViewById<RecyclerView>(recycleId)
+        adapter = Adapter(activity as Context, ArrayList(), layoutObjectId, binder!!)
+        recycler.adapter = adapter
+
         if (savedInstanceState != null) {
             val json =  savedInstanceState.getString("json")
             add(JSONArray(json), true)
