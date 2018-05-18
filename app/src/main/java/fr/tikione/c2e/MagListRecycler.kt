@@ -139,9 +139,15 @@ open class MagListRecycler : IRecycler<MagasineInfo>() {
     override fun setLayoutManager(): RecyclerView.LayoutManager {
         //first result will be bigger than the rest
         val manager = GridLayoutManager(activity, 2)
+        var dataSize = 101
+        val that = this;
+
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 if (position == 0)
+                    return 2
+                dataSize = that.adapter!!.itemCount
+                if (position == (dataSize - 1) && (dataSize % 2) == 0)
                     return 2
                 return 1
             }
@@ -167,6 +173,11 @@ class LinearItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDeco
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView,
                                 state: RecyclerView.State?) {
-        outRect.top = spaceHeight
+        val itemPosition = (view.layoutParams as RecyclerView.LayoutParams).viewAdapterPosition
+        if (itemPosition != 0)
+            outRect.top = spaceHeight
+        if (itemPosition % 2 == 0)
+            return
+        outRect.right = spaceHeight
     }
 }
