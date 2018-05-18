@@ -216,6 +216,7 @@ a.article-ext-lnk {
     margin-bottom: 0.75em;
     padding-bottom: 0.75em;
     line-height: 1.5em;
+    column-gap: 1em;
 }
 
 .article-content {
@@ -225,6 +226,7 @@ a.article-ext-lnk {
     padding-top: 0.5em;
     margin-bottom: 1em;
     line-height: 1.5em;
+    column-gap: 1em;
 }
 
 .news > .article-content {
@@ -240,6 +242,31 @@ a.article-ext-lnk {
     margin: 1em 0;
     border-bottom: 1px double gray;
     border-top: 1px double gray;
+    column-gap: 1em;
+}
+
+@media (min-width: 475px) and (max-width: 949px) {
+    .article-content, .article-content, .article-encadre, .article-headercontent {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 950px) and (max-width: 1424px) {
+    .article-content, .article-content, .article-encadre, .article-headercontent {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1425px) and (max-width: 1899px) {
+    .article-content, .article-content, .article-encadre, .article-headercontent {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1900px) {
+    .article-content, .article-content, .article-encadre, .article-headercontent {
+        column-count: 4;
+    }
 }
 
 .article-opinion, .article-state {

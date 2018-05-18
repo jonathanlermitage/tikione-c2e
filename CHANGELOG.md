@@ -1,7 +1,7 @@
 ## TikiOne C2E Change Log
 
 ### 1.3.16 (dev en cours, axé sur l'accessibilité)
-* (todo) affiche le texte des articles sur plusieurs colonnes (comme le sommaire) pour améliorer le confort de lecture.
+* affiche le texte des articles sur plusieurs colonnes (comme le sommaire) pour améliorer le confort de lecture.
 * ajout du paramètre `-dysfont` pour charger une police pensée pour améliorer le confort de lecture des personnes dyslexiques.
 * (todo) ajout du paramètre `-highcontrast` pour augmenter le contraste des pages générées, ceci afin d'améliorer le confort de lecture.
 * (todo) ajout du paramètre `-lineheight:XXuu` pour spécifier, et généralement augmenter, l'espace vertical entre chaque ligne (où `XX` est un nombre et `uu` une unité, par exemple `-lineheight:1.5em`), ceci afin d'améliorer le confort de lecture.
