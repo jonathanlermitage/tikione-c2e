@@ -1,13 +1,13 @@
 package fr.tikione.c2e
 
-import android.graphics.BitmapFactory
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.content.Context
+import android.content.Intent
+import android.graphics.*
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.android.volley.Response
 import com.tuxlu.polyvox.Utils.Recyclers.Adapter
 import com.tuxlu.polyvox.Utils.Recyclers.ViewHolderBinder
@@ -16,8 +16,19 @@ import fr.tikione.c2e.Utils.TmpUtils
 import jp.wasabeef.blurry.Blurry
 import java.io.File
 import java.util.HashMap
+import android.graphics.Bitmap
+import android.app.Dialog
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import java.io.FileOutputStream
+import java.io.OutputStream
+import android.graphics.BitmapFactory
+import android.support.v4.content.FileProvider
+
 
 open class MagListBinder : ViewHolderBinder<MagasineInfo> {
+
+    val couvName = "couv.jpg"
 
     var imageUrlMap = HashMap<Int, String>()
     val imageUrlMapFilename = "imageUrlMap.hmap"
@@ -36,15 +47,16 @@ open class MagListBinder : ViewHolderBinder<MagasineInfo> {
         if (item.downloaded) {
             val dlFolder = TmpUtils.getFilesPath(holder.v.context)
             val numDirFolder = File(dlFolder, item.number.toString())
-            val couv = File(numDirFolder, "couv.jpg")
+            val couv = File(numDirFolder, couvName)
             if (couv.exists() && couv.isFile && couv.canRead()) {
-                setImages(BitmapDrawable(context.resources, BitmapFactory.decodeFile(couv.absolutePath)), false, false, holder)
+                val bit = BitmapFactory.decodeFile(couv.absolutePath)
+                setImages(bit, false, true, holder)
             }
         } else {
             var imageUrl: String;
-            if (imageUrlMap.containsKey(item.number)) {
+            if (imageUrlMap.containsKey(item.number) && imageUrlMap[item.number]!!.isNotEmpty()) {
                 imageUrl = imageUrlMap[item.number]!!
-                setImageFromUrl(imageUrl, holder)
+                setImageFromUrl(imageUrl, holder, item)
             } else {
                 NetworkUtils.HTMLrequest(context!!, com.android.volley.Request.Method.GET,
                         "https://www.canardpc.com/numero/" + item.number,
@@ -54,24 +66,25 @@ open class MagListBinder : ViewHolderBinder<MagasineInfo> {
                             imageUrl = "https://www.canardpc.com/$imageUrl";
                             //imageUrl = imageUrl.substring(0, imageUrl.lastIndexOf('?'))
                             imageUrlMap[item.number] = imageUrl
-                            setImageFromUrl(imageUrl, holder)
+                            setImageFromUrl(imageUrl, holder, item)
                         }, null)
             }
         }
 
     }
 
-    private fun setImageFromUrl(url: String, holder: Adapter.ViewHolder<MagasineInfo>) {
+    private fun setImageFromUrl(url: String, holder: Adapter.ViewHolder<MagasineInfo>, item: MagasineInfo) {
         holder.v.findViewById<ImageView>(R.id.coverMagasineImage).visibility = View.INVISIBLE
         NetworkUtils.ImageRequest(holder.v.context, url,
                 Response.Listener { res ->
+                    item.bitmap = res
                     setImages(res, false, false, holder)
                 }, null)
     }
 
-    private fun setImages(drawable: Drawable, isTemp: Boolean, isDownloaded: Boolean, holder: Adapter.ViewHolder<MagasineInfo>) {
+    private fun setImages(drawable: Bitmap, isTemp: Boolean, isDownloaded: Boolean, holder: Adapter.ViewHolder<MagasineInfo>) {
         val imageView = holder.v.findViewById<ImageView>(R.id.coverMagasineImage)
-        imageView.setImageDrawable(drawable)
+        imageView.setImageBitmap(drawable)
         imageView.visibility = View.VISIBLE
 
         try {
@@ -88,10 +101,68 @@ open class MagListBinder : ViewHolderBinder<MagasineInfo> {
         }
     }
 
-    override fun setClickListener(holder: Adapter.ViewHolder<MagasineInfo>, data: MutableList<MagasineInfo>) {
-        val context = holder.v.context
-        data[holder.adapterPosition].downloaded
+    fun storeCoverOnDisk(mag: MagasineInfo, act: MainActivity) {
+        val dlFolder = File(TmpUtils.getFilesPath(act.baseContext), mag.number.toString())
+        if (!dlFolder.exists())
+            dlFolder.mkdirs()
+        val coverFile = File(dlFolder, couvName)
+        coverFile.createNewFile()
+        if (!coverFile.exists() || mag.bitmap == null)
+            return
+
+        val os: OutputStream
+        try {
+            os = FileOutputStream(coverFile)
+            mag.bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.flush()
+            os.close()
+        } catch (e: Exception) {
+            Log.e(javaClass.simpleName, "Error writing bitmap", e)
+        }
+
+    }
+
+    fun buttonDlListener(mag: MagasineInfo, incPicture: Boolean, dialog: Dialog, act: MainActivity) {
+        act.downloadMag(mag.number, true);
+        dialog.dismiss()
+        storeCoverOnDisk(mag, act)
+        mag.downloaded = true;
+    }
+
+    fun createDlDialog(mag: MagasineInfo, act: MainActivity) {
+        val dialog = android.app.Dialog(act)
+        dialog.setContentView(R.layout.dialog_download_mag)
+        //holder.v.findViewById<ImageView>(R.id.coverMagasineImage)
+        dialog.findViewById<Button>(R.id.button_dl_with_pic).setOnClickListener({ buttonDlListener(mag, true, dialog, act) })
+        dialog.findViewById<Button>(R.id.button_dl_without_pic).setOnClickListener({ buttonDlListener(mag, false, dialog, act) })
+        dialog.show()
+    }
+
+    override fun setClickListener(holder: Adapter.ViewHolder<MagasineInfo>, data: MutableList<MagasineInfo>, context: Context) {
+        val mag = data[holder.adapterPosition]
+        val act = context as MainActivity
+
         val clickListener = View.OnClickListener { _ ->
+
+            if (act.dlStarted) {
+                Toast.makeText(act, act.getString(R.string.dl_already_pending), Toast.LENGTH_LONG).show()
+                return@OnClickListener
+            }
+
+            if (data[holder.adapterPosition].downloaded) {
+                val file = File(TmpUtils.getFilesPath(holder.v.context).absolutePath +
+                        File.separator + mag.number.toString() + File.separator + "mag.html")
+                if (!file.exists() || !file.canRead() || !file.isFile) {
+                    createDlDialog(mag, act)
+                    return@OnClickListener
+                }
+                val browserIntent = Intent(Intent.ACTION_VIEW);
+                browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+                browserIntent.data = FileProvider.getUriForFile(context, "fr.tikione.fileprovider", file)
+                browserIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                act.startActivity(browserIntent)
+            } else
+                createDlDialog(mag, act)
         }
         holder.v.findViewById<View>(R.id.rootview).setOnClickListener(clickListener)
     }
