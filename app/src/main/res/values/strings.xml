@@ -12,6 +12,7 @@
     <string name="dl_no_images">Télécharger sans les images</string>
 
     <string name="downloading_number">Téléchargement du numéro %1$d&#8230;</string>
+    <string name="downloaded_number">numéro %1$d téléchargé</string>
     <string name="dl_already_pending">un téléchargement est déjà en cours!</string>
 
 
@@ -49,6 +50,8 @@
     <string name="stop_dl">annuler</string>
     <string name="stop_dl_question">Voulez vous annuler le téléchargement?</string>
     <string name="stop_dl_done">Téléchargement annulé</string>
+
+    <string name="open">ouvrir</string>
 
     <string name="notice">Le téléchargement du magazine se fera dans votre dossier de téléchargements.
         \nLe Fichier téléchargé aura pour nom cpcXXX.html où XXX est le numéro du magazine. Il sera écrasé si nécessaire.

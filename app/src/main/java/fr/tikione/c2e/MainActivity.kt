@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val hideBarHandler = Handler()
+
     private var receiver: DataUpdateReceiver? = null
     var dlStarted: Boolean = false
     private var numberDl: Int = 0
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
             dlStarted = true
             numberDl = number
             progressLayout.visibility = View.VISIBLE
+            progressDownloadingLayout.visibility = View.VISIBLE
+            progressFinishedLayout.visibility = View.GONE
             progressInfoTextview.text = getString(R.string.downloading_number, number)
 
             val dlIntent = Intent(this, DownloadTask::class.java)
@@ -67,7 +71,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun stopService(v: View) {
+
+    fun openMag(v: View) { //UI button
+        progressLayout.visibility = View.INVISIBLE
+        hideBarHandler.removeCallbacksAndMessages(null)
+        TmpUtils.openMag(numberDl, this)
+    }
+
+
+    private fun UIShowDlEnded()
+    {
+        progressLayout.visibility = View.VISIBLE
+        progressDownloadingLayout.visibility = View.GONE
+        progressFinishedLayout.visibility = View.VISIBLE
+        dlFinishedTextview.text = getString(R.string.downloaded_number, numberDl)
+        hideBarHandler.postDelayed({ progressLayout.visibility = View.INVISIBLE }, 8000)
+    }
+
+    private fun onDlEnded(intent: Intent) {
+        dlStarted = false
+        if (intent.hasExtra("error")) {
+            progressLayout.visibility = View.GONE
+            val error = intent.getStringExtra("error")
+            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && error == getString(R.string.invalid_permissions))
+                TmpUtils.checkPermissions(this)
+        } else if (!intent.hasExtra("interrupted")) {
+            UIShowDlEnded()
+        }
+    }
+
+    fun stopService(v: View) { //UI button
         if (!dlStarted)
             return
         val builder = AlertDialog.Builder(this@MainActivity)
@@ -98,6 +132,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        hideBarHandler.removeCallbacksAndMessages(null)
         if (receiver != null) {
             unregisterReceiver(receiver)
             receiver = null
@@ -125,19 +160,6 @@ class MainActivity : AppCompatActivity() {
         intentFilter.addAction(DownloadTask.DOWNLOAD_ENDED)
         intentFilter.addAction(DownloadTask.PROGRESSION_UPDATE)
         registerReceiver(receiver, intentFilter)
-    }
-
-    private fun onDlEnded(intent: Intent) {
-        dlStarted = false
-        progressLayout.visibility = View.GONE
-        if (intent.hasExtra("error")) {
-            val error = intent.getStringExtra("error")
-            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && error == getString(R.string.invalid_permissions))
-                checkPermissions()
-        } else if (!intent.hasExtra("interrupted")) {
-            Toast.makeText(baseContext, R.string.notif_ended, Toast.LENGTH_LONG).show()
-        }
     }
 
     private inner class DataUpdateReceiver : BroadcastReceiver() {

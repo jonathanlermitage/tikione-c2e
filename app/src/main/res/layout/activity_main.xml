@@ -22,53 +22,100 @@
         tools:visibility="visible">
 
         <LinearLayout
+            android:id="@+id/progressDownloadingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="100"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:layout_weight="32"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-            <TextView
-                android:id="@+id/progressInfoTextview"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="100"
-                android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textColor="@color/background_material_lighter"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="Téléchargement du numéro 380..." />
+                android:layout_height="match_parent"
+                android:layout_weight="32"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                <TextView
+                    android:id="@+id/progressInfoTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="100"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textColor="@color/background_material_lighter"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="Téléchargement du numéro 380..." />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="100"
+                    android:max="100"
+                    android:min="0"
+                    android:paddingBottom="3dp"
+                    android:progress="0"
+                    android:progressTint="@android:color/background_light"
+                    android:scaleY="1.8"
+                    tools:progress="42" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonCancelDownload"
+                style="@style/AppTheme.coloredButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
                 android:layout_weight="100"
-                android:max="100"
-                android:min="0"
-                android:paddingBottom="3dp"
-                android:progress="0"
-                android:progressTint="@android:color/background_light"
-                android:scaleY="1.8"
-                tools:progress="42" />
+                android:background="@android:color/transparent"
+                android:onClick="stopService"
+                android:text="@string/stop_dl" />
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonCancelDownload"
-            style="@style/AppTheme.coloredButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/transparent"
-            android:onClick="stopService"
-            android:text="@string/stop_dl" />
+        <LinearLayout
+            android:id="@+id/progressFinishedLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/dlFinishedTextview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="45"
+                android:gravity="center_vertical"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@color/background_material_lighter"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="numéro 380 téléchargé" />
+
+            <Button
+                android:id="@+id/buttonOpenMag"
+                style="@style/AppTheme.coloredButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="100"
+                android:background="@android:color/transparent"
+                android:onClick="openMag"
+                android:text="@string/open"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -86,7 +133,6 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/buttonLogout"
             style="@style/AppTheme.coloredButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
