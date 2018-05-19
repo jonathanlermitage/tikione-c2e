@@ -45,6 +45,8 @@ Placez-vous dans le répertoire de l'application et lancez une console (<kbd>Maj
 | `-up` | télécharger toute nouvelle version de l'application (version ZIP minimale, sans JRE ni ImageMagick) dans le répertoire courant. Son installation reste à la charge de l'utilisateur (dézipper l'archive téléchargée). |
 | `-directory:mon_dossier` | créer les fichiers dans le dossier spécifié. |
 | `-home` | génèrer une page d'accueil HTML `CPC-home.html` listant tous les magazines téléchargés (présents dans le répertoire courant), avec un lien pour ouvrir chaque numéro. L'idée est de mettre cette page en favoris dans votre navigateur, ainsi vous n'aurez pas à chercher le bon fichier HTML à chaque fois que vous voudrez consulter un numéro. |
+| `-dysfont` | charger une police pensée pour améliorer le confort de lecture des personnes dyslexiques. |
+| `-nocolumn` | afficher le texte des articles sur une seule colonne (si paramètre absent, affichage sur plusieurs colonnes en fonction de la taille de l'écran pour améliorer le confort de lecture). |
         
 Exemples :
 
