@@ -1,6 +1,11 @@
 ## TikiOne C2E Change Log
 
+### 1.3.17 (dev en cours)
+
+* (todo) paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
+
 ### 1.3.16 (2018/05/19)
+
 * affiche le texte des articles sur plusieurs colonnes pour améliorer le confort de lecture. Peut être désactivé avec le paramètre `-nocolumn`.
 * ajout du paramètre `-dysfont` pour charger une police pensée pour améliorer le confort de lecture des personnes dyslexiques.
 * lien de donation PayPal mis à jour: le don se fait maintenant en Euro plutôt qu'en Dollar, et ne passe plus par une redirection Sourceforge.net.
