@@ -1,0 +1,23 @@
+@media (min-width: 475px) and (max-width: 949px) {
+    .article-content, .article-encadre, .article-headercontent {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 950px) and (max-width: 1424px) {
+    .article-content, .article-encadre, .article-headercontent {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1425px) and (max-width: 1899px) {
+    .article-content, .article-encadre, .article-headercontent {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1900px) {
+    .article-content, .article-encadre, .article-headercontent {
+        column-count: 4;
+    }
+}

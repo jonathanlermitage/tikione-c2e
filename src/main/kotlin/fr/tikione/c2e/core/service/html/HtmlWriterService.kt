@@ -19,7 +19,7 @@ interface HtmlWriterService {
      * @param dysfont use font for dyslexic users.
      */
     @Throws(IOException::class)
-    fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?, dysfont: Boolean)
+    fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?, dysfont: Boolean, column: Boolean)
 
     /**
      * Write a home page that enumerates downloaded magazines.

@@ -39,7 +39,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     }
 
     @Throws(IOException::class)
-    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?, dysfont: Boolean) {
+    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?, dysfont: Boolean, column: Boolean) {
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
@@ -49,6 +49,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         val cssDay = resourceAsStr("tmpl/html-export/style/day.css")
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
         val cssNight = resourceAsStr("tmpl/html-export/style/night.css")
+        val cssColumn = resourceAsStr("tmpl/html-export/style/column.css")
         val js = resourceAsStr("tmpl/html-export/main.js")
         val forceDarkModeJs = if (dark) resourceAsStr("tmpl/html-export/force-dark-mode.js") else ""
         val header = resourceAsStr("tmpl/html-export/header.html")
@@ -60,6 +61,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                 .replace("/*$\$css_custom$$*/", customCss ?: "font-size:1em;")
                 .replace("/*$\$css_day$$*/", cssDay)
                 .replace("/*$\$css_night$$*/", cssNight)
+                .replace("/*$\$css_column$$*/", if (column) cssColumn else "")
                 .replace("/*$\$js$$*/", js)
         val footer = resourceAsStr("tmpl/html-export/footer.html")
                 .replace("/*$\$force_dark_mode$$*/", forceDarkModeJs)

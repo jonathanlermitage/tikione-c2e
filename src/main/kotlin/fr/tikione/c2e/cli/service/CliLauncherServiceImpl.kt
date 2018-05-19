@@ -79,6 +79,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
         val doHome = switchList.contains("-home")
         val doDysfont = switchList.contains("-dysfont")
+        val doColumn = !switchList.contains("-nocolumn")
 
         var directory = "."
         args.filter { arg -> arg.startsWith("-directory:") }
@@ -139,7 +140,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
                 val file = File(makeMagFilename(directory, magNumber, doIncludePictures, doResize))
                 val writerService: HtmlWriterService = kodein.instance()
-                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss, doDysfont)
+                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss, doDysfont, doColumn)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de ${Tools.PAUSE_BETWEEN_MAG_DL}s avant de telecharger le prochain numero")
                     TimeUnit.SECONDS.sleep(Tools.PAUSE_BETWEEN_MAG_DL)
