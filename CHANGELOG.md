@@ -3,6 +3,7 @@
 ### 1.3.17 (dev en cours)
 
 * (todo) paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
+* interne : refactoring, centralisation des paramètres d'application dans un singleton.
 
 ### 1.3.16 (2018/05/19)
 
