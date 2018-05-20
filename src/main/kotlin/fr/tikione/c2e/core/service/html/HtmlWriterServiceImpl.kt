@@ -1,8 +1,11 @@
 package fr.tikione.c2e.core.service.html
 
+import com.github.salomonbrys.kodein.instance
 import compat.Tools
 import compat.Tools.Companion.fileAsBase64
 import compat.Tools.Companion.readRemoteToBase64
+import fr.tikione.c2e.core.cfg.Cfg
+import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.model.home.MagazineSummary
 import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
@@ -39,29 +42,30 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     }
 
     @Throws(IOException::class)
-    override fun write(magazine: Magazine, file: File, incluePictures: Boolean, resize: String?, dark: Boolean, customCss: String?, dysfont: Boolean, column: Boolean) {
+    override fun write(magazine: Magazine, file: File) {
         file.delete()
         if (file.exists()) {
             throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
         }
+        val cfg: Cfg = coreKodein.instance()
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
-        val fontRobotoBase64 = findFontAsBase64(dysfont)
+        val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
         val cssDay = resourceAsStr("tmpl/html-export/style/day.css")
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
         val cssNight = resourceAsStr("tmpl/html-export/style/night.css")
         val cssColumn = resourceAsStr("tmpl/html-export/style/column.css")
         val js = resourceAsStr("tmpl/html-export/main.js")
-        val forceDarkModeJs = if (dark) resourceAsStr("tmpl/html-export/force-dark-mode.js") else ""
+        val forceDarkModeJs = if (cfg.doDarkMode) resourceAsStr("tmpl/html-export/force-dark-mode.js") else ""
         val header = resourceAsStr("tmpl/html-export/header.html")
                 .replace("$\$login$$", magazine.login!!)
                 .replace("$\$version$$", Tools.VERSION)
                 .replace("$\$timestamp$$", Date().toString())
                 .replace("$\$mag_number$$", magazine.number)
                 .replace("$\$favicon_base64$$", faviconBase64)
-                .replace("/*$\$css_custom$$*/", customCss ?: "font-size:1em;")
+                .replace("/*$\$css_custom$$*/", cfg.customCss ?: "font-size:1em;")
                 .replace("/*$\$css_day$$*/", cssDay)
                 .replace("/*$\$css_night$$*/", cssNight)
-                .replace("/*$\$css_column$$*/", if (column) cssColumn else "")
+                .replace("/*$\$css_column$$*/", if (cfg.doColumn) cssColumn else "")
                 .replace("/*$\$js$$*/", js)
         val footer = resourceAsStr("tmpl/html-export/footer.html")
                 .replace("/*$\$force_dark_mode$$*/", forceDarkModeJs)
@@ -118,7 +122,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                             + " <a class='toc-ext-lnk article-ext-lnk' href='" + tocItem.url + "' target='_blank' title='Vers le site CanardPC - nouvelle page'>"
                             + AbstractWriter.EXT_LNK
                             + "</a></div>\n\n")
-                    tocItem.articles!!.forEach { article -> writeArticle(w, article, incluePictures, resize, magazine.authorsPicture) }
+                    tocItem.articles!!.forEach { article -> writeArticle(w, article, magazine.authorsPicture) }
                 }
             }
             w.write("</div>\n")
@@ -145,7 +149,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         )
     }
 
-    private fun writeArticle(w: Writer, article: Article, incluePictures: Boolean, resize: String?, authorsPicture: Map<String, AuthorPicture>) {
+    private fun writeArticle(w: Writer, article: Article, authorsPicture: Map<String, AuthorPicture>) {
+        val cfg: Cfg = coreKodein.instance()
         w.write("\n<!--article.getType()=" + article.type + "-->\n\n")
         if (ArticleType.NEWS === article.type) {
             w.write("<div class='news'>\n")
@@ -155,17 +160,17 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             if (filled(article.title)) {
                 w.write("<div class='news-title'>" + article.title + "</div>\n")
             }
-            writeArticleAuthorCreationdate(w, article, incluePictures, authorsPicture)
+            writeArticleAuthorCreationdate(w, article, authorsPicture)
             writeArticleContents(w, article)
         } else {
             w.write("<div class='article'>\n")
             writeArticleSpecs(w, article)
             writeArticleSubtitle(w, article)
             writeArticleHeaderContent(w, article)
-            writeArticleAuthorCreationdate(w, article, incluePictures, authorsPicture)
+            writeArticleAuthorCreationdate(w, article, authorsPicture)
             writeArticleContents(w, article)
-            if (incluePictures) {
-                writeArticlePictures(w, article, resize)
+            if (cfg.doIncludePictures) {
+                writeArticlePictures(w, article)
             }
             writeArticleOpinion(w, article)
             writeArticleState(w, article)
@@ -182,7 +187,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         }
     }
 
-    private fun writeArticleAuthorCreationdate(w: Writer, article: Article, incluePictures: Boolean, authorsPicture: Map<String, AuthorPicture>) {
+    private fun writeArticleAuthorCreationdate(w: Writer, article: Article, authorsPicture: Map<String, AuthorPicture>) {
+        val cfg: Cfg = coreKodein.instance()
         val content = ArrayList<String>()
 
         if (!article.author.isNullOrBlank()) {
@@ -193,7 +199,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             content.add("${if (content.isEmpty()) "Le " else "le "} ${article.getFormattedDate()}")
         }
 
-        if (incluePictures) {
+        if (cfg.doIncludePictures) {
             val normalizedAuthor = article.author?.toUpperCase()?.replace("Par", "")?.trim()
             if (authorsPicture.containsKey(normalizedAuthor)) {
                 w.write(img("author-picture-img",
@@ -261,7 +267,8 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         }
     }
 
-    private fun writeArticlePictures(w: Writer, article: Article, resize: String?) {
+    private fun writeArticlePictures(w: Writer, article: Article) {
+        val cfg: Cfg = coreKodein.instance()
         val hasPictures = article.pictures.any { picture -> picture.url != null && !picture.url!!.trim { it <= ' ' }.isEmpty() }
         if (hasPictures) {
             w.write("<div class='article-pictures'>\n")
@@ -274,7 +281,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                     val magicmatch = Magic.getMagicMatch(picBytes)
                     var ext = magicmatch.extension
 
-                    if (resize != null && !resize.isBlank()) {
+                    if (cfg.resize != null && !cfg.resize!!.isBlank()) {
                         val tmpSrc = "c2e.src.tmp.$ext"
                         val tmpDest = "c2e.dest.tmp.jpg"
                         val tmpSrcFile = File(tmpSrc)
@@ -282,7 +289,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                         tmpSrcFile.delete()
                         tmpDestFile.delete()
                         FileUtils.writeByteArrayToFile(File(tmpSrc), picBytes)
-                        Tools.resizePicture(tmpSrc, tmpDest, resize.toString())
+                        Tools.resizePicture(tmpSrc, tmpDest, cfg.resize.toString())
                         if (tmpDestFile.exists()) {
                             ext = "jpeg"
                             picBytes = FileUtils.readFileToByteArray(tmpDestFile)
@@ -431,12 +438,13 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             """.trimIndent()
     }
 
-    override fun write(magazines: List<MagazineSummary>, file: File, dysfont: Boolean) {
+    override fun write(magazines: List<MagazineSummary>, file: File) {
         if (magazines.isEmpty()) {
             return
         }
+        val cfg: Cfg = coreKodein.instance()
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
-        val fontRobotoBase64 = findFontAsBase64(dysfont)
+        val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
         var magazineList = ""
         val sortedMagazines = magazines.sortedWith(compareByDescending { it.number })
         var idx = 1

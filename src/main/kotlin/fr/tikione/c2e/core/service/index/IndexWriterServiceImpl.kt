@@ -1,7 +1,7 @@
 package fr.tikione.c2e.core.service.index
 
 import com.github.salomonbrys.kodein.instance
-import fr.tikione.c2e.core.kodein
+import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.model.index.GameEntries
 import fr.tikione.c2e.core.model.index.GameEntry
 import fr.tikione.c2e.core.model.web.Article
@@ -30,7 +30,7 @@ class IndexWriterServiceImpl : IndexWriterService {
         }
 
         val games = ArrayList<GameEntry>(magNumbers.size * 24)
-        val indexReader: IndexReaderService = kodein.instance()
+        val indexReader: IndexReaderService = coreKodein.instance()
 
         //whenever we have an issue reading the index file, we rebuild it. This is quite rude, but it will avoid a crash
         //if the file has been compromised or if the index format has changed
@@ -56,7 +56,7 @@ class IndexWriterServiceImpl : IndexWriterService {
         log.info("creation de l'index des numeros : {}", magNumbers)
 
         deleteIndexFile(file)
-        val reader: CPCReaderService = kodein.instance()
+        val reader: CPCReaderService = coreKodein.instance()
         magNumbers.forEach { number ->
             val mag = reader.downloadMagazine(auth, number)
             mag.toc.forEach { toc ->

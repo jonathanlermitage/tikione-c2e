@@ -3,7 +3,7 @@ package fr.tikione.c2e.core.service
 import com.github.salomonbrys.kodein.instance
 import compat.AssetService
 import compat.Tools
-import fr.tikione.c2e.core.kodein
+import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.service.web.AbstractReader
 import java.io.IOException
 import java.text.Normalizer
@@ -11,7 +11,7 @@ import java.text.Normalizer.Form.NFD
 
 abstract class AbstractWriter {
 
-    protected var assetService: AssetService = kodein.instance()
+    protected var assetService: AssetService = coreKodein.instance()
 
     fun filled(str: String?): Boolean = !str.isNullOrBlank()
 

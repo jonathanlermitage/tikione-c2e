@@ -2,7 +2,8 @@ package fr.tikione.c2e.cli.service
 
 import com.github.salomonbrys.kodein.instance
 import compat.Tools
-import fr.tikione.c2e.core.kodein
+import fr.tikione.c2e.core.cfg.Cfg
+import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.service.home.LocalReaderService
 import fr.tikione.c2e.core.service.html.HtmlWriterService
 import fr.tikione.c2e.core.service.index.IndexWriterService
@@ -69,25 +70,25 @@ class CliLauncherServiceImpl : CliLauncherService {
             log.warn("impossible de verifier la presence d'une nouvelle version de TikiOne C2E", e)
         }
 
-        val doList = switchList.contains("-list")
-        val doIncludePictures = !switchList.contains("-nopic")
-        val doIndex = switchList.contains("-index")
-        val doDarkMode = switchList.contains("-dark")
-        var doHtml = false
-        val doAllMags = switchList.contains("-cpcall")
-        val doAllMissing = switchList.contains("-cpcmissing")
-        val doResize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
-        val doHome = switchList.contains("-home")
-        val doDysfont = switchList.contains("-dysfont")
-        val doColumn = !switchList.contains("-nocolumn")
+        val cfg: Cfg = coreKodein.instance()
+        cfg.doList = switchList.contains("-list")
+        cfg.doIncludePictures = !switchList.contains("-nopic")
+        cfg.doIndex = switchList.contains("-index")
+        cfg.doDarkMode = switchList.contains("-dark")
+        cfg.doHtml = false
+        cfg.doAllMags = switchList.contains("-cpcall")
+        cfg.doAllMissing = switchList.contains("-cpcmissing")
+        cfg.resize = args.firstOrNull { it.startsWith("-resize") }?.substring("-resize".length)
+        cfg.doHome = switchList.contains("-home")
+        cfg.doDysfont = switchList.contains("-dysfont")
+        cfg.doColumn = !switchList.contains("-nocolumn")
 
-        var directory = "."
         args.filter { arg -> arg.startsWith("-directory:") }
                 .map { arg -> arg.substring("-directory:".length) }
-                .forEach { dd -> directory = dd }
+                .forEach { dd -> cfg.directory = dd }
         try {
-            log.info("Le dossier de destination est {}", directory)
-            File(directory).mkdirs()
+            log.info("Le dossier de destination est {}", cfg.directory)
+            File(cfg.directory).mkdirs()
         } catch (e: Exception) {
             log.warn("impossible de creer le dossier de destination", e)
         }
@@ -96,40 +97,40 @@ class CliLauncherServiceImpl : CliLauncherService {
         args.filter { arg -> arg.startsWith("-fontsize:") }
                 .map { arg -> arg.substring("-fontsize:".length) }
                 .forEach { fs -> fontsize = fs }
-        val customCss = "body { font-size: $fontsize; }"
+        cfg.customCss = "body { font-size: $fontsize; }"
 
-        val cpcAuthService: CPCAuthService = kodein.instance()
-        val cpcReaderService: CPCReaderService = kodein.instance()
+        val cpcAuthService: CPCAuthService = coreKodein.instance()
+        val cpcReaderService: CPCReaderService = coreKodein.instance()
 
         val auth = cpcAuthService.authenticate(args[0], args[1])
         val headers = cpcReaderService.listDownloadableMagazines(auth)
         val magNumbers = ArrayList<String>()
 
         when {
-            doAllMags -> {
+            cfg.doAllMags -> {
                 magNumbers.addAll(headers)
-                doHtml = true
+                cfg.doHtml = true
             }
-            doAllMissing -> {
+            cfg.doAllMissing -> {
                 magNumbers.addAll(headers)
-                val existing = listDownloadedMags(directory)
+                val existing = listDownloadedMags()
                 if (existing.isNotEmpty()) {
                     log.info("les numeros deja presents ne seront pas telecharges : {}", existing)
                 }
                 magNumbers.removeAll(existing)
-                doHtml = true
+                cfg.doHtml = true
             }
             else -> args.filter { it.startsWith("-cpc") }.forEach {
                 magNumbers.add(it.substring("-cpc".length))
-                doHtml = true
+                cfg.doHtml = true
             }
         }
 
-        if (doList) {
+        if (cfg.doList) {
             log.info("les numeros disponibles sont : {}", headers)
         }
 
-        if (doHtml) {
+        if (cfg.doHtml) {
             if (magNumbers.size > 1) {
                 log.info("telechargement des numeros : {}", magNumbers)
             } else if (magNumbers.isEmpty()) {
@@ -138,9 +139,9 @@ class CliLauncherServiceImpl : CliLauncherService {
             for (i in magNumbers.indices) {
                 val magNumber = magNumbers[i]
                 val magazine = cpcReaderService.downloadMagazine(auth, magNumber)
-                val file = File(makeMagFilename(directory, magNumber, doIncludePictures, doResize))
-                val writerService: HtmlWriterService = kodein.instance()
-                writerService.write(magazine, file, doIncludePictures, doResize, doDarkMode, customCss, doDysfont, doColumn)
+                val file = File(makeMagFilename(cfg.directory, magNumber))
+                val writerService: HtmlWriterService = coreKodein.instance()
+                writerService.write(magazine, file)
                 if (i != magNumbers.size - 1) {
                     log.info("pause de ${Tools.PAUSE_BETWEEN_MAG_DL}s avant de telecharger le prochain numero")
                     TimeUnit.SECONDS.sleep(Tools.PAUSE_BETWEEN_MAG_DL)
@@ -149,19 +150,19 @@ class CliLauncherServiceImpl : CliLauncherService {
             }
         }
 
-        if (doIndex) {
+        if (cfg.doIndex) {
             log.info("creation de l'index de tous les numeros disponibles")
-            val file = File("$directory/CPC-index.csv")
-            val writerService: IndexWriterService = kodein.instance()
+            val file = File("${cfg.directory}/CPC-index.csv")
+            val writerService: IndexWriterService = coreKodein.instance()
             writerService.write(auth, headers, file)
         }
 
-        if (doHome) {
+        if (cfg.doHome) {
             log.info("creation de la page d'accueil CPC-home.html")
-            val file = File("$directory/CPC-home.html")
-            val localReaderService: LocalReaderService = kodein.instance()
-            val writerService: HtmlWriterService = kodein.instance()
-            writerService.write(localReaderService.listDownloadedMagazines(File("./")), file, doDysfont)
+            val file = File("${cfg.directory}/CPC-home.html")
+            val localReaderService: LocalReaderService = coreKodein.instance()
+            val writerService: HtmlWriterService = coreKodein.instance()
+            writerService.write(localReaderService.listDownloadedMagazines(File("./")), file)
         }
 
         log.info("termine !")
@@ -172,7 +173,8 @@ class CliLauncherServiceImpl : CliLauncherService {
                     .map { file -> file.name.substring("CPC".length, file.name.indexOf('-')) }
                     .sortedDescending()
 
-    private fun makeMagFilename(directory: String = ".", magNumber: String, doIncludePictures: Boolean, doResize: String?): String =
-            directory + "/CPC" + magNumber + (if (doIncludePictures) "" else "-nopic") + (if (doResize == null) "" else "-resize$doResize") + ".html"
-
+    private fun makeMagFilename(directory: String = ".", magNumber: String): String {
+        val cfg: Cfg = coreKodein.instance()
+        return """$directory/CPC$magNumber${if (cfg.doIncludePictures) "" else "-nopic"}${if (cfg.resize == null) "" else "-resize${cfg.resize}"}.html"""
+    }
 }

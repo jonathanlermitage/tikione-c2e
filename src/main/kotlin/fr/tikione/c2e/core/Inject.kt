@@ -5,6 +5,7 @@ import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
 import compat.AssetService
 import compat.AssetServiceImpl
+import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.service.home.LocalReaderService
 import fr.tikione.c2e.core.service.home.LocalReaderServiceImpl
 import fr.tikione.c2e.core.service.html.HtmlWriterService
@@ -20,7 +21,7 @@ import fr.tikione.c2e.core.service.web.scrap.CPCReaderServiceImpl
 import fr.tikione.c2e.core.service.web.scrap.CPCScraperService
 import fr.tikione.c2e.core.service.web.scrap.CPCScraperServiceImpl
 
-val kodein = Kodein {
+val coreKodein = Kodein {
     bind<AssetService>() with singleton { AssetServiceImpl(null) }
     bind<CPCAuthService>() with singleton { CPCAuthServiceImpl() }
     bind<CPCReaderService>() with singleton { CPCReaderServiceImpl() }
@@ -29,4 +30,5 @@ val kodein = Kodein {
     bind<IndexWriterService>() with singleton { IndexWriterServiceImpl() }
     bind<IndexReaderService>() with singleton { IndexReaderServiceImpl() }
     bind<LocalReaderService>() with singleton { LocalReaderServiceImpl() }
+    bind<Cfg>() with singleton { Cfg() }
 }

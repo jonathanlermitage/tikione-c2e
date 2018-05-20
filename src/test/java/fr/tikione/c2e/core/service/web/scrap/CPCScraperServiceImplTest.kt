@@ -1,18 +1,16 @@
 package fr.tikione.c2e.core.service.web.scrap
 
-import fr.tikione.c2e.core.service.web.scrap.CPCScraperServiceImpl
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.test.assertEquals
-
 
 /**
  * @author GUAM
  * 10.11.2017 - 13:50
  */
 internal class CPCScraperServiceImplTest {
-    val scrapper = CPCScraperServiceImpl()
+    private val scrapper = CPCScraperServiceImpl()
 
     @Test
     fun testArticleDateParsing() {

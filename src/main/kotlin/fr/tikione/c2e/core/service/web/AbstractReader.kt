@@ -74,20 +74,19 @@ abstract class AbstractReader {
             if (elt?.attr(attr) == null || elt.attr(attr).trim { it <= ' ' }.isEmpty()) null else baseUrl + elt.attr(attr)
 
     companion object {
-        val CPC_BASE_URL = "https://www.canardpc.com"
-        val CPC_LOGIN_FORM_POST_URL = "$CPC_BASE_URL/user/login"
-        val CPC_MAG_NUMBER_BASE_URL = "$CPC_BASE_URL/numero/_NUM_"
-        val CPC_AUTHORS_URL = "$CPC_BASE_URL/qui-sommes-nous"
-        val CUSTOMTAG_EM_START = "__c2e_emStart__"
-        val CUSTOMTAG_EM_END = "__c2e_emEnd__"
-        val CUSTOMTAG_STRONG_START = "__c2e_strongStart__"
-        val CUSTOMTAG_STRONG_END = "__c2e_strongEnd__"
-        private val EM_START = "<em>"
-        private val EM_END = "</em>"
-        private val STRONG_START = "<span class=\"title\">"
-        private val STRONG_END = "</span>"
+        const val CPC_BASE_URL = "https://www.canardpc.com"
+        const val CPC_LOGIN_FORM_POST_URL = "$CPC_BASE_URL/user/login"
+        const val CPC_MAG_NUMBER_BASE_URL = "$CPC_BASE_URL/numero/_NUM_"
+        const val CUSTOMTAG_EM_START = "__c2e_emStart__"
+        const val CUSTOMTAG_EM_END = "__c2e_emEnd__"
+        const val CUSTOMTAG_STRONG_START = "__c2e_strongStart__"
+        const val CUSTOMTAG_STRONG_END = "__c2e_strongEnd__"
+        private const val EM_START = "<em>"
+        private const val EM_END = "</em>"
+        private const val STRONG_START = "<span class=\"title\">"
+        private const val STRONG_END = "</span>"
 
         /** UserAgent to include when scrapping CanardPC website. This is not mandatory, but a good practice.  */
-        val UA = "fr.tikione.c2e"
+        const val UA = "fr.tikione.c2e"
     }
 }
