@@ -1,15 +1,9 @@
-[![GitHub release](https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![license](https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) [![Github All Releases](https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tikione-c2e)
+[![GitHub release](https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![license](https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) [![Github All Releases](https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases)
 
 # TikiOne C2E
 
-Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) pour une lecture hors-ligne sur PC, tablette et smartphone.  
-Fonctionne sous Windows, MacOS, Linux, BSD. Appli Android en cours de développement.
-
-Trois branches sont développées :
-
-* [master](https://github.com/jonathanlermitage/tikione-c2e) : la version stable de l'application pour PC.
-* [desktop-x.y.z](https://github.com/jonathanlermitage/tikione-c2e/branches) : la prochaine version de l'application pour PC. Par exemple `desktop-1.3.11` pour la version 1.3.11.
-* [android](https://github.com/jonathanlermitage/tikione-c2e/tree/android) : l'application pour Android 5 et supérieur, en cours de dev.
+Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) dans un format optimisé pour une lecture hors-ligne sur PC, tablette et smartphone.  
+Fonctionne sous Windows, MacOS, Linux, BSD.
 
 ## Téléchargement et utilisation en ligne de commande
 
@@ -110,17 +104,6 @@ Merci !
    * nommez correctement vos commits : indiquez ce que vous avez voulu faire en quelques mots.
    * réduisez le nombre de commits au minimum via un `squash`, et faites un `rebase` avant de soumettre une Pull Request : l'historique Git doit rester cohérent.
  * n'hésitez pas à me contacter par email à *jonathan.lermitage@gmail.com*, ou ouvez un [ticket](https://github.com/jonathanlermitage/tikione-c2e/issues).
-
-## Motivation
-
-Lors du Kickstarter ayant financé la version numérique de CanardPC, une compatibilité Pocket avait été annoncée - Pocket permettant de télécharger une page web pour la consulter hors ligne. Des raisons techniques empêchent aujourd'hui CanardPC de respecter cette promesse.  
-TikiOne C2E a pour objectif de contenter les canards laisés, en leur permettant de télécharger leurs magazines dans divers formats pour une lecture hors-ligne.  
-
-## A savoir
-
-* L'export d'un numéro peut mal fonctionner et certains articles être vides : recommencez simplement l'export, cela devrait fonctionner.
-* Le programme se connecte avec votre compte CanardPC. Le site détecte cette connexion et vous force à vous authentifier à nouveau lorsque vous revennez via votre navigateur web. C'est le comportement normal du site (sans doute pour éviter le partage de compte), ne soyez donc pas surpris.
-* les exports PDF et EPUB sont annulés car leur niveau d'intégration est loin d'égaler celui d'un HTML dit "responsive" (adapté au PC, tablettes et smartphones). Ce sont aussi des formats favorisant le piratage du magazine, phénomène que je souhaite minimiser autant que possible.
 
 ## Licence
 
