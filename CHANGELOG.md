@@ -1,8 +1,15 @@
 ## TikiOne C2E Change Log
 
-### 1.3.17 (dev en cours)
+### 1.5.0 (dev en cours)
 
-* (todo) paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
+* **(en cours)** paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
+
+### 1.4.0 (dev en cours)
+
+*On revient à une numérotation des versions plus [classique](https://semver.org/lang/fr/) : majeure, mineure, patch.*
+
+* **(en cours)** la création du sommaire (via `-index`) crée maintenant un sommaire HTML `CPC-index.html` en plus de la version CSV `CPC-index.csv`.
+* **(en cours)** la création de la page d'accueil HTML (via `-home`) rajoute un lien vers le sommaire HTML `CPC-index.html` s'il existe.
 * interne : refactoring, centralisation des paramètres d'application dans un singleton.
 
 ### 1.3.16 (2018/05/19)
