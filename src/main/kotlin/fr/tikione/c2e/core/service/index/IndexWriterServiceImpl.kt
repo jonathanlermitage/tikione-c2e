@@ -162,7 +162,7 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
         }
 
         val cfg: Cfg = coreKodein.instance()
-        val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
+        val faviconBase64 = resourceAsBase64("tmpl/html-export/img/cpcindex_favicon.png")
         val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
         val content = resourceAsStr("tmpl/index/index.html")
                 .replace("$\$favicon_base64$$", faviconBase64)
