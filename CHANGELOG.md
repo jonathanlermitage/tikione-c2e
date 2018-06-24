@@ -3,12 +3,13 @@
 ### 1.5.0 (dev en cours)
 
 * **(en cours)** paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
+* **(en cours)** ajout d'un module de recherche et de tri dans le sommaire HTML (pour chercher des noms de jeux, trier par numéro, etc).
 
 ### 1.4.0 (dev en cours)
 
 *On revient à une numérotation des versions plus [classique](https://semver.org/lang/fr/) : majeure, mineure, patch.*
 
-* la création du sommaire (via `-index`) crée maintenant un sommaire HTML `CPC-index.html` en plus de la version CSV `CPC-index.csv`.
+* la création du sommaire CSV (via `-index`) crée maintenant une version HTML `CPC-index.html` en plus de la version CSV `CPC-index.csv`.
 * amélioration de l'affichage des chemins de fichiers lorsque le chemin contient `/./` ou `/../`.
 * interne : refactoring, centralisation des paramètres d'application dans un singleton.
 
