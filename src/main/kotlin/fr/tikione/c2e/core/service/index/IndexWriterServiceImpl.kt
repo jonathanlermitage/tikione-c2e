@@ -153,7 +153,7 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
         val tableContent = StringBuilder()
 
         // table title
-        tableContent.append("\n<tr class=\"title\">\n <td>" + lines.get(0).replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
+        tableContent.append("\n<tr class=\"title\">\n <td>" + lines[0].replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
 
         // table games
         lines = lines.drop(1)
@@ -162,7 +162,7 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
         }
 
         val cfg: Cfg = coreKodein.instance()
-        val faviconBase64 = resourceAsBase64("tmpl/html-export/img/cpcindex_favicon.png")
+        val faviconBase64 = resourceAsBase64("tmpl/index/cpcindex_favicon.png")
         val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
         val content = resourceAsStr("tmpl/index/index.html")
                 .replace("$\$favicon_base64$$", faviconBase64)
