@@ -46,7 +46,6 @@ abstract class AbstractWriter {
     }
 
     companion object {
-
-        val EXT_LNK = "www"
+        const val EXT_LNK = "www"
     }
 }

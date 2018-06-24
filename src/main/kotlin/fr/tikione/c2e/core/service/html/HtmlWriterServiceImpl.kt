@@ -11,10 +11,6 @@ import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.AbstractWriter
 import net.sf.jmimemagic.Magic
 import org.apache.commons.codec.binary.Base64
-import org.apache.commons.io.FileUtils
-import org.apache.commons.io.FileUtils.ONE_KB
-import org.apache.commons.io.FileUtils.ONE_MB
-import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.*
@@ -27,6 +23,11 @@ import kotlin.collections.LinkedHashMap
 
 class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
+    companion object {
+        private const val ONE_KB = 1024
+        private const val ONE_MB = ONE_KB * ONE_KB
+    }
+
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
     private fun findFontAsBase64(dysfont: Boolean): String {
@@ -36,7 +37,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             else resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
 
         } else {
-            log.info("utilisation de la police de caracteres {}", ttfs[0].absolutePath)
+            log.info("utilisation de la police de caracteres {}", ttfs[0].canonicalPath)
             fileAsBase64(ttfs[0], assetService.getAssetManager())
         }
     }
@@ -45,7 +46,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     override fun write(magazine: Magazine, file: File) {
         file.delete()
         if (file.exists()) {
-            throw IOException("impossible d'ecraser le fichier : " + file.absolutePath)
+            throw IOException("impossible d'ecraser le fichier : " + file.canonicalPath)
         }
         val cfg: Cfg = coreKodein.instance()
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
@@ -129,10 +130,10 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
 
             w.write(footer)
         }
-        val fileSize = FileUtils.sizeOf(file)
+        val fileSize = file.length()
         val sizeInMb = fileSize > ONE_MB
         log.info("fichier HTML cree : {} (environ {}{})",
-                file.absolutePath,
+                file.canonicalPath,
                 if (sizeInMb) fileSize / ONE_MB else fileSize / ONE_KB,
                 if (sizeInMb) "MB" else "KB")
     }
@@ -276,7 +277,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             for (picture in article.pictures) {
                 if (picture.url != null && !picture.url!!.isEmpty()) {
                     log.info("recuperation de l'image {}", picture.url as String)
-                    var picBytes = IOUtils.toByteArray(URL(picture.url!!))
+                    var picBytes = URL(picture.url!!).readBytes()
                     TimeUnit.MILLISECONDS.sleep(250) // be nice with CanardPC website
                     val magicmatch = Magic.getMagicMatch(picBytes)
                     var ext = magicmatch.extension
@@ -288,11 +289,11 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                         val tmpDestFile = File(tmpDest)
                         tmpSrcFile.delete()
                         tmpDestFile.delete()
-                        FileUtils.writeByteArrayToFile(File(tmpSrc), picBytes)
+                        File(tmpSrc).writeBytes(picBytes)
                         Tools.resizePicture(tmpSrc, tmpDest, cfg.resize.toString())
                         if (tmpDestFile.exists()) {
                             ext = "jpeg"
-                            picBytes = FileUtils.readFileToByteArray(tmpDestFile)
+                            picBytes = tmpDestFile.readBytes()
                         }
                         tmpSrcFile.delete()
                         tmpDestFile.delete()
@@ -476,7 +477,7 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
                 .replace("/*$\$content$$*/", magazineList)
         file.delete()
-        FileUtils.write(file, content, StandardCharsets.UTF_8)
-        log.info("page d'accueil cree : ${file.absolutePath}")
+        file.writeText(content, StandardCharsets.UTF_8)
+        log.info("page d'accueil cree : ${file.canonicalPath}")
     }
 }

@@ -1,7 +1,6 @@
 package fr.tikione.c2e.core.service.home
 
 import fr.tikione.c2e.core.model.home.MagazineSummary
-import org.apache.commons.io.FileUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -18,7 +17,7 @@ class LocalReaderServiceImpl : LocalReaderService {
                 .map { file ->
                     val filename = file.name
                     val mag = MagazineSummary()
-                    val size = FileUtils.sizeOf(file)
+                    val size = file.length()
                     if (size > 4 * 1024 * 1014) mag.humanSize = ((size / (1024 * 1014)).toString() + " Mo") else mag.humanSize = ((size / 1024).toString() + " Ko")
                     if (filename.contains("-")) {
                         mag.number = filename.substring("CPC".length, filename.indexOf("-"))

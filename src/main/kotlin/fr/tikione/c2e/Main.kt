@@ -17,7 +17,7 @@ object Main {
     @Throws(Exception::class)
     @JvmStatic
     fun main(args: Array<String>) {
-        log.info("TikiOne C2E version {}, Java {}, {} {} by {}, on {} with {} file encoding",
+        log.info("TikiOne C2E version {}, Java {}, {} {} par {}, sur {} avec le codage {}",
                 Tools.VERSION,
                 System.getProperty("java.version"),
                 System.getProperty("java.vm.name"),

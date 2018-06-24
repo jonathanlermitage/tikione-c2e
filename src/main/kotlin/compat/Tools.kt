@@ -19,8 +19,8 @@ class Tools {
 
     companion object {
 
-        val PAUSE_BETWEEN_MAG_DL = 30L
-        val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
+        const val PAUSE_BETWEEN_MAG_DL = 30L
+        const val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
         val VERSION = resourceAsStr("version.txt", AssetManager())
 
         var debug = false
@@ -31,7 +31,7 @@ class Tools {
         @Throws(IOException::class)
         @JvmStatic
         fun fileAsBase64(file: File, asset: AssetManager?): String =
-                Base64.encodeBase64String(IOUtils.toByteArray(file.toURI()))
+                Base64.encodeBase64String(file.readBytes())
 
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
@@ -48,7 +48,7 @@ class Tools {
         @Throws(IOException::class)
         @JvmStatic
         fun readRemoteToBase64(url: String?): String {
-            return Base64.encodeBase64String(IOUtils.toByteArray(URL(url)))
+            return Base64.encodeBase64String(URL(url).readBytes())
         }
 
         /**
