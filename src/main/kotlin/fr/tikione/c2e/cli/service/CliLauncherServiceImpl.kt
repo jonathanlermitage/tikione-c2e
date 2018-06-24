@@ -9,7 +9,6 @@ import fr.tikione.c2e.core.service.html.HtmlWriterService
 import fr.tikione.c2e.core.service.index.IndexWriterService
 import fr.tikione.c2e.core.service.web.CPCAuthService
 import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
-import org.apache.commons.io.FileUtils
 import org.jsoup.Jsoup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -35,7 +34,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val argsList = Arrays.asList(*args)
         Tools.debug = argsList.contains("-debug")
 
-        val switchList = Arrays.asList(*args).subList(2, args.size)
+        val switchList = Arrays.asList(*args).drop(2)
 
         // Proxy declaration
         if (args.contains("-sysproxy")) {
@@ -54,12 +53,12 @@ class CliLauncherServiceImpl : CliLauncherService {
                 if (doUpgrade) {
                     val upgradeFile = File("c2e-$latestVersion.zip")
                     if (upgradeFile.exists()) {
-                        log.info("<< une nouvelle version de TikiOne C2E ($latestVersion) a deja ete telechargee (${upgradeFile.absolutePath}), libre a vous de l'utiliser >>")
+                        log.info("<< une nouvelle version de TikiOne C2E ($latestVersion) a deja ete telechargee (${upgradeFile.canonicalPath}), libre a vous de l'utiliser >>")
                     } else {
                         log.info("<< une nouvelle version de TikiOne C2E va etre telechargee ($latestVersion) >>")
-                        val upgradeFileUrl = "https://github.com/jonathanlermitage/tikione-c2e/releases/download/v$latestVersion/c2e-$latestVersion.zip"
-                        FileUtils.copyURLToFile(URL(upgradeFileUrl), upgradeFile)
-                        log.info("<< TikiOne C2E $latestVersion a ete telechargee (${upgradeFile.absolutePath}), libre a vous de l'utiliser >>")
+                        val upgradeFileUrl = URL("https://github.com/jonathanlermitage/tikione-c2e/releases/download/v$latestVersion/c2e-$latestVersion.zip")
+                        upgradeFile.writeBytes(upgradeFileUrl.readBytes())
+                        log.info("<< TikiOne C2E $latestVersion a ete telechargee (${upgradeFile.canonicalPath}), libre a vous de l'utiliser >>")
                     }
                 } else {
                     log.warn("<< une nouvelle version de TikiOne C2E est disponible ($latestVersion), " +
@@ -151,10 +150,12 @@ class CliLauncherServiceImpl : CliLauncherService {
         }
 
         if (cfg.doIndex) {
-            log.info("creation de l'index de tous les numeros disponibles")
-            val file = File("${cfg.directory}/CPC-index.csv")
+            log.info("creation des index CSV et HTML de tous les numeros disponibles")
+            val csvFile = File("${cfg.directory}/CPC-index.csv")
+            val htmlFile = File("${cfg.directory}/CPC-index.html")
             val writerService: IndexWriterService = coreKodein.instance()
-            writerService.write(auth, headers, file)
+            writerService.writeCSV(auth, headers, csvFile)
+            writerService.writeHTMLFromCSV(htmlFile, csvFile)
         }
 
         if (cfg.doHome) {

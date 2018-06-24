@@ -1,13 +1,15 @@
 package fr.tikione.c2e.core.service.index
 
 import com.github.salomonbrys.kodein.instance
+import compat.Tools
+import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.model.index.GameEntries
 import fr.tikione.c2e.core.model.index.GameEntry
 import fr.tikione.c2e.core.model.web.Article
 import fr.tikione.c2e.core.model.web.Auth
+import fr.tikione.c2e.core.service.AbstractWriter
 import fr.tikione.c2e.core.service.web.scrap.CPCReaderService
-import org.apache.commons.io.FileUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -16,14 +18,15 @@ import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
 
-class IndexWriterServiceImpl : IndexWriterService {
+class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    private val csvDelimiterRegex = ",".toRegex()
+    private val csvDelimiter = ","
+    private val csvDelimiterRegex = csvDelimiter.toRegex()
 
     @Throws(IOException::class)
-    override fun write(auth: Auth, magNumbers: ArrayList<String>, file: File) {
+    override fun writeCSV(auth: Auth, magNumbers: ArrayList<String>, file: File) {
 
         if (magNumbers.contains("hs22")) {
             magNumbers.remove("hs22") // TODO maybe detect and remove all HS mags? hs22 contains no game test.
@@ -37,25 +40,25 @@ class IndexWriterServiceImpl : IndexWriterService {
         val existingMags: GameEntries = try {
             indexReader.read(file)
         } catch (e: Exception) {
-            deleteIndexFile(file)
+            deleteFile(file)
             GameEntries()
         }
 
         if (existingMags.magNumbers.size > 0) {
-            log.info("les numeros suivants sont deja presents dans l'index, ils ne seront pas retelecharges: {}", existingMags.magNumbers)
+            log.info("les numeros suivants sont deja presents dans l'index CSV, ils ne seront pas retelecharges: {}", existingMags.magNumbers)
             magNumbers.removeAll(existingMags.magNumbers)
             games.addAll(existingMags.games)
             if (magNumbers.size > 0) {
                 log.info("il reste {} numeros a telecharger : {}", magNumbers.size, magNumbers)
             } else {
-                log.info("il ne reste plus rien a telecharger, l'index est deja a jour")
-                log.info("rappel : le fichier d'index est : {}", file.absolutePath)
+                log.info("il ne reste plus rien a telecharger, l'index CSV est deja a jour")
+                log.info("rappel, le fichier d'index CSV est : {}", file.canonicalPath)
                 return
             }
         }
-        log.info("creation de l'index des numeros : {}", magNumbers)
+        log.info("creation de l'index CSV des numeros : {}", magNumbers)
 
-        deleteIndexFile(file)
+        deleteFile(file)
         val reader: CPCReaderService = coreKodein.instance()
         magNumbers.forEach { number ->
             val mag = reader.downloadMagazine(auth, number)
@@ -103,16 +106,16 @@ class IndexWriterServiceImpl : IndexWriterService {
                     .append(formatCSV(game.gameScore)).append(",")
                     .append(formatCSV(game.gameTester)).append("\n")
         }
-        FileUtils.write(file, content.toString(), StandardCharsets.ISO_8859_1.name())
-        log.info("fichier d'index cree : {}", file.absolutePath)
+        file.writeText(content.toString(), StandardCharsets.ISO_8859_1)
+        log.info("fichier d'index cree : {}", file.canonicalPath)
     }
 
-    private fun deleteIndexFile(file: File) {
+    private fun deleteFile(file: File) {
         try {
-            if (file.exists())
-                file.delete()
+            if (file.exists() && !file.delete())
+                throw IOException("impossible de supprimer le fichier : " + file.canonicalPath)
         } catch (e: Exception) {
-            throw IOException("impossible de supprimer le fichier : " + file.absolutePath)
+            throw IOException("impossible de supprimer le fichier : " + file.canonicalPath)
         }
     }
 
@@ -137,5 +140,49 @@ class IndexWriterServiceImpl : IndexWriterService {
                 .replace("Téléchargement :", "")
                 .replace("Testé sur :", "")
                 .trim()
+    }
+
+    override fun writeHTMLFromCSV(htmlFile: File, existingCsvFile: File) {
+        if (!existingCsvFile.exists()) {
+            return
+        }
+        deleteFile(htmlFile)
+        var lines = existingCsvFile.readLines(StandardCharsets.ISO_8859_1)
+        if (lines.size < 2) {
+            return
+        }
+        val tableContent = StringBuilder()
+
+        // table title
+        tableContent.append("\n<tr class=\"title\">\n <td>" + lines.get(0).replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
+
+        // table games
+        lines = lines.drop(1)
+        lines.forEach {csvGameLine ->
+            tableContent.append("\n<tr class=\"game\">\n <td>" + csvGameLine.replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
+        }
+
+        val cfg: Cfg = coreKodein.instance()
+        val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
+        val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
+        val content = resourceAsStr("tmpl/index/index.html")
+                .replace("$\$favicon_base64$$", faviconBase64)
+                .replace("$\$robotoFont_base64$$", fontRobotoBase64)
+                .replace("/*$\$content$$*/", tableContent.toString())
+
+        htmlFile.writeText(content, StandardCharsets.ISO_8859_1)
+        log.info("fichier d'index HTML cree : {}", htmlFile.canonicalPath)
+    }
+
+    private fun findFontAsBase64(dysfont: Boolean): String {
+        val ttfs = File(".").listFiles { _, name -> name.toUpperCase().endsWith(".TTF") }
+        return if (ttfs.isEmpty()) {
+            if (dysfont) resourceAsBase64("tmpl/html-export/style/OpenDyslexic2-Regular.ttf")
+            else resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
+
+        } else {
+            log.info("utilisation de la police de caracteres {}", ttfs[0].canonicalPath)
+            Tools.fileAsBase64(ttfs[0], assetService.getAssetManager())
+        }
     }
 }

@@ -2,7 +2,6 @@ package fr.tikione.c2e.core.service.index
 
 import fr.tikione.c2e.core.model.index.GameEntries
 import fr.tikione.c2e.core.model.index.GameEntry
-import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -17,11 +16,11 @@ class IndexReaderServiceImpl : IndexReaderService {
         if (!file.exists()) {
             return gameEntries
         }
-        val lines = FileUtils.readLines(file, StandardCharsets.ISO_8859_1.name())
+        var lines = file.readLines(StandardCharsets.ISO_8859_1)
         if (lines.size < 2) {
             return gameEntries
         }
-        lines.removeAt(0) // header is useless here
+        lines = lines.drop(1) // header is useless here
         lines.filter { line -> line.count { c -> c == ',' } >= 11 }.forEach { line ->
             val tokens = line.split(csvDelimiterRegex).iterator()
             val ge = GameEntry()

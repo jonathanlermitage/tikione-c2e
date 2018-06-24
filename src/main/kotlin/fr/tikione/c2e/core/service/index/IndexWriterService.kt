@@ -7,8 +7,14 @@ import java.io.IOException
 interface IndexWriterService {
 
     /**
-     * Write an index file of given magazines.
+     * Write a CSV index file of given magazines.
      */
     @Throws(IOException::class)
-    fun write(auth: Auth, magNumbers: ArrayList<String>, file: File)
+    fun writeCSV(auth: Auth, magNumbers: ArrayList<String>, file: File)
+
+    /**
+     * Write an HTML index file of given magazines, from existing CSV index.
+     */
+    @Throws(IOException::class)
+    fun writeHTMLFromCSV(htmlFile: File, existingCsvFile: File)
 }
