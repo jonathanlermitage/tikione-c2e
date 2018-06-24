@@ -9,7 +9,6 @@
 *On revient à une numérotation des versions plus [classique](https://semver.org/lang/fr/) : majeure, mineure, patch.*
 
 * la création du sommaire (via `-index`) crée maintenant un sommaire HTML `CPC-index.html` en plus de la version CSV `CPC-index.csv`.
-* **(en cours)** la création de la page d'accueil HTML (via `-home`) rajoute un lien vers le sommaire HTML `CPC-index.html` s'il existe.
 * interne : refactoring, centralisation des paramètres d'application dans un singleton.
 
 ### 1.3.16 (2018/05/19)
