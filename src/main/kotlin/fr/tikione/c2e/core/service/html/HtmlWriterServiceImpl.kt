@@ -2,7 +2,6 @@ package fr.tikione.c2e.core.service.html
 
 import com.github.salomonbrys.kodein.instance
 import compat.Tools
-import compat.Tools.Companion.fileAsBase64
 import compat.Tools.Companion.readRemoteToBase64
 import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.coreKodein
@@ -29,18 +28,6 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
     }
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
-
-    private fun findFontAsBase64(dysfont: Boolean): String {
-        val ttfs = File(".").listFiles { _, name -> name.toUpperCase().endsWith(".TTF") }
-        return if (ttfs.isEmpty()) {
-            if (dysfont) resourceAsBase64("tmpl/html-export/style/OpenDyslexic2-Regular.ttf")
-            else resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
-
-        } else {
-            log.info("utilisation de la police de caracteres {}", ttfs[0].canonicalPath)
-            fileAsBase64(ttfs[0], assetService.getAssetManager())
-        }
-    }
 
     @Throws(IOException::class)
     override fun write(magazine: Magazine, file: File) {

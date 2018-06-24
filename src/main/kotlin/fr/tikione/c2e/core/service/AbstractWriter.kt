@@ -5,13 +5,17 @@ import compat.AssetService
 import compat.Tools
 import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.service.web.AbstractReader
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.io.File
 import java.io.IOException
 import java.text.Normalizer
 import java.text.Normalizer.Form.NFD
 
 abstract class AbstractWriter {
 
-    protected var assetService: AssetService = coreKodein.instance()
+    private val log: Logger = LoggerFactory.getLogger(this.javaClass)
+    private val assetService: AssetService = coreKodein.instance()
 
     fun filled(str: String?): Boolean = !str.isNullOrBlank()
 
@@ -43,6 +47,18 @@ abstract class AbstractWriter {
                 .replace(AbstractReader.CUSTOMTAG_EM_END.toRegex(), " </em> ")
                 .replace(AbstractReader.CUSTOMTAG_STRONG_START.toRegex(), " <strong> ")
                 .replace(AbstractReader.CUSTOMTAG_STRONG_END.toRegex(), " </strong> ")
+    }
+
+    fun findFontAsBase64(dysfont: Boolean): String {
+        val ttfs = File(".").listFiles { _, name -> name.toUpperCase().endsWith(".TTF") }
+        return if (ttfs.isEmpty()) {
+            if (dysfont) resourceAsBase64("tmpl/html-export/style/OpenDyslexic2-Regular.ttf")
+            else resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
+
+        } else {
+            log.info("utilisation de la police de caracteres {}", ttfs[0].canonicalPath)
+            Tools.fileAsBase64(ttfs[0], assetService.getAssetManager())
+        }
     }
 
     companion object {

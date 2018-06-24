@@ -1,7 +1,6 @@
 package fr.tikione.c2e.core.service.index
 
 import com.github.salomonbrys.kodein.instance
-import compat.Tools
 import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.model.index.GameEntries
@@ -158,7 +157,7 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
 
         // table games
         lines = lines.drop(1)
-        lines.forEach {csvGameLine ->
+        lines.forEach { csvGameLine ->
             tableContent.append("\n<tr class=\"game\">\n <td>" + csvGameLine.replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
         }
 
@@ -172,17 +171,5 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
 
         htmlFile.writeText(content, StandardCharsets.ISO_8859_1)
         log.info("fichier d'index HTML cree : {}", htmlFile.canonicalPath)
-    }
-
-    private fun findFontAsBase64(dysfont: Boolean): String {
-        val ttfs = File(".").listFiles { _, name -> name.toUpperCase().endsWith(".TTF") }
-        return if (ttfs.isEmpty()) {
-            if (dysfont) resourceAsBase64("tmpl/html-export/style/OpenDyslexic2-Regular.ttf")
-            else resourceAsBase64("tmpl/html-export/style/RobotoSlab-Light.ttf")
-
-        } else {
-            log.info("utilisation de la police de caracteres {}", ttfs[0].canonicalPath)
-            Tools.fileAsBase64(ttfs[0], assetService.getAssetManager())
-        }
     }
 }
