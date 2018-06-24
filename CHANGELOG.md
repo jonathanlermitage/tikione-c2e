@@ -5,7 +5,7 @@
 * **(en cours)** paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
 * **(en cours)** ajout d'un module de recherche et de tri dans le sommaire HTML (pour chercher des noms de jeux, trier par numéro, etc).
 
-### 1.4.0 (dev en cours)
+### 1.4.0 (2018/06/24)
 
 *On revient à une numérotation des versions plus [classique](https://semver.org/lang/fr/) : majeure, mineure, patch.*
 
