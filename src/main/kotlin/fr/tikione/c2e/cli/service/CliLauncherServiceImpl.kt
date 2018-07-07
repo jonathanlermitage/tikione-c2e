@@ -49,7 +49,7 @@ class CliLauncherServiceImpl : CliLauncherService {
         val doUpgrade = switchList.contains("-up")
         try {
             val latestVersion = Jsoup.connect(Tools.VERSION_URL).get().text().trim()
-            if (Tools.VERSION != latestVersion) {
+            if (versionStrToInt(latestVersion) > versionStrToInt(Tools.VERSION)) {
                 if (doUpgrade) {
                     val upgradeFile = File("c2e-$latestVersion.zip")
                     if (upgradeFile.exists()) {
@@ -62,7 +62,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                     }
                 } else {
                     log.warn("<< une nouvelle version de TikiOne C2E est disponible ($latestVersion), " +
-                            "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases ou relancez C2E avec la paramètre -up >>")
+                            "rendez-vous sur https://github.com/jonathanlermitage/tikione-c2e/releases ou relancez C2E avec la parametre -up >>")
                 }
             }
         } catch (e: Exception) {
@@ -86,7 +86,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                 .map { arg -> arg.substring("-directory:".length) }
                 .forEach { dd -> cfg.directory = dd }
         try {
-            log.info("Le dossier de destination est {}", cfg.directory)
+            log.info("le dossier de destination est : {}", if ("." == cfg.directory) "le répertoire de l'application" else cfg.directory)
             File(cfg.directory).mkdirs()
         } catch (e: Exception) {
             log.warn("impossible de creer le dossier de destination", e)
@@ -177,5 +177,14 @@ class CliLauncherServiceImpl : CliLauncherService {
     private fun makeMagFilename(directory: String = ".", magNumber: String): String {
         val cfg: Cfg = coreKodein.instance()
         return """$directory/CPC$magNumber${if (cfg.doIncludePictures) "" else "-nopic"}${if (cfg.resize == null) "" else "-resize${cfg.resize}"}.html"""
+    }
+
+    private fun versionStrToInt(version: String): Int {
+        return if ("\\d+\\.\\d+\\.\\d+".toRegex().matches(version)) {
+            val versionTokens = version.split('.')
+            Integer.parseInt(versionTokens[0]) * 10000 + Integer.parseInt(versionTokens[1]) * 100 + Integer.parseInt(versionTokens[2])
+        } else {
+            -1
+        }
     }
 }
