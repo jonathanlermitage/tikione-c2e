@@ -60,15 +60,69 @@
             text-transform: capitalize;
         }
 
+        #searchBox {
+            text-align: center;
+        }
+
+        #searchBox > input, #searchBox > button {
+            font-size: 1.1em;
+        }
+
     </style>
+
+    <script type="application/javascript">
+
+        /*$$js_libs$$*/
+
+        var index = elasticlunr(function () {
+            this.addField('title');
+            this.addField('mag');
+            this.setRef('id');
+        });
+
+        /*$$index_machine$$*/
+
+        function c2e_searchGame() {
+            var query = document.getElementById('searchBoxInput').value;
+            if (query === '') {
+                c2e_reset();
+            } else {
+                var resElts = [];
+                index.search(query).forEach(function (resElt) {
+                    resElts.push(resElt.ref)
+                });
+                for (var i = 0; i < index.documentStore.length; i++) {
+                    if (resElts.indexOf('gameidx' + i) >= 0) {
+                        document.getElementById('gameidx' + i).style.display = 'table-row';
+                    } else {
+                        document.getElementById('gameidx' + i).style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        function c2e_reset() {
+            document.getElementById('searchBoxInput').value = '';
+            for (var i = 0; i < index.documentStore.length; i++) {
+                document.getElementById('gameidx' + i).style.display = 'table-row';
+            }
+        }
+
+    </script>
+
 </head>
 <body>
 
 <h1>Index des magazines CanardPC t&eacute;l&eacute;charg&eacute;s</h1>
 
 <div class="mags">
+    <div id="searchBox">
+        <input id="searchBoxInput" type="text"/>
+        <button type="submit" onclick="c2e_searchGame()">Chercher par titre ou num&eacute;ro</button>
+        <button type="reset" onclick="c2e_reset()">Reset</button>
+    </div>
     <table>
-    /*$$content$$*/
+        /*$$content$$*/
     </table>
 </div>
 

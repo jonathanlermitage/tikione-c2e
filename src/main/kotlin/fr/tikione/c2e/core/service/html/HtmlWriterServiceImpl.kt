@@ -1,8 +1,8 @@
 package fr.tikione.c2e.core.service.html
 
 import com.github.salomonbrys.kodein.instance
-import compat.Tools
-import compat.Tools.Companion.readRemoteToBase64
+import fr.tikione.c2e.core.Tools
+import fr.tikione.c2e.core.Tools.Companion.readRemoteToBase64
 import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.model.home.MagazineSummary

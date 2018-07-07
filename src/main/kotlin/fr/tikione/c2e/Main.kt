@@ -1,8 +1,8 @@
 package fr.tikione.c2e
 
 import com.github.salomonbrys.kodein.instance
-import compat.Tools
 import fr.tikione.c2e.cli.service.CliLauncherService
+import fr.tikione.c2e.core.Tools
 import fr.tikione.c2e.gui.service.GuiLauncherService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

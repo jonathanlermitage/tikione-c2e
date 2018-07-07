@@ -1,7 +1,7 @@
 package fr.tikione.c2e.core.service.web.scrap
 
 import com.github.salomonbrys.kodein.instance
-import compat.Tools
+import fr.tikione.c2e.core.Tools
 import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.model.web.*
 import fr.tikione.c2e.core.service.web.AbstractReader

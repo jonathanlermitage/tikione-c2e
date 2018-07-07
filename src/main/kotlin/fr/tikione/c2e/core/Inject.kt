@@ -3,8 +3,6 @@ package fr.tikione.c2e.core
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.singleton
-import compat.AssetService
-import compat.AssetServiceImpl
 import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.service.home.LocalReaderService
 import fr.tikione.c2e.core.service.home.LocalReaderServiceImpl
@@ -22,7 +20,6 @@ import fr.tikione.c2e.core.service.web.scrap.CPCScraperService
 import fr.tikione.c2e.core.service.web.scrap.CPCScraperServiceImpl
 
 val coreKodein = Kodein {
-    bind<AssetService>() with singleton { AssetServiceImpl(null) }
     bind<CPCAuthService>() with singleton { CPCAuthServiceImpl() }
     bind<CPCReaderService>() with singleton { CPCReaderServiceImpl() }
     bind<CPCScraperService>() with singleton { CPCScraperServiceImpl() }

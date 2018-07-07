@@ -1,9 +1,14 @@
 ## TikiOne C2E Change Log
 
-### 1.5.0 (dev en cours)
+### 1.6.0 (dev en cours)
 
 * **(en cours)** paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
-* **(en cours)** ajout d'un module de recherche et de tri dans le sommaire HTML (pour chercher des noms de jeux, trier par numéro, etc). Recherche basée sur [Elasticlunr.js](http://elasticlunr.com/).
+
+### 1.5.0 (2018/07/08)
+
+* ajout d'un module de recherche de jeu dans le sommaire HTML. La recherche est basée sur [Elasticlunr.js](http://elasticlunr.com/), et porte sur le titre des jeux et le numéro des magazines.
+* clarification de certains messages d'information.
+* interne : nettoyage et amélioration de code, suppression du support pour l'appli Android (les magazines téléchargés restent optimisés pour mobiles, c'est seulement le dev de l'appli Android qui est abandonné).
 
 ### 1.4.0 (2018/06/24)
 

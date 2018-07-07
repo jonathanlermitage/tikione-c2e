@@ -1,9 +1,6 @@
 package fr.tikione.c2e.core.service
 
-import com.github.salomonbrys.kodein.instance
-import compat.AssetService
-import compat.Tools
-import fr.tikione.c2e.core.coreKodein
+import fr.tikione.c2e.core.Tools
 import fr.tikione.c2e.core.service.web.AbstractReader
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -15,7 +12,6 @@ import java.text.Normalizer.Form.NFD
 abstract class AbstractWriter {
 
     private val log: Logger = LoggerFactory.getLogger(this.javaClass)
-    private val assetService: AssetService = coreKodein.instance()
 
     fun filled(str: String?): Boolean = !str.isNullOrBlank()
 
@@ -37,10 +33,10 @@ abstract class AbstractWriter {
     }
 
     @Throws(IOException::class)
-    fun resourceAsBase64(path: String): String = Tools.resourceAsBase64(path, assetService.getAssetManager())
+    fun resourceAsBase64(path: String): String = Tools.resourceAsBase64(path)
 
     @Throws(IOException::class)
-    fun resourceAsStr(path: String): String = Tools.resourceAsStr(path, assetService.getAssetManager())
+    fun resourceAsStr(path: String): String = Tools.resourceAsStr(path)
 
     fun richToHtml(rich: String): String {
         return rich.replace(AbstractReader.CUSTOMTAG_EM_START.toRegex(), " <em> ")
@@ -57,7 +53,7 @@ abstract class AbstractWriter {
 
         } else {
             log.info("utilisation de la police de caracteres {}", ttfs[0].canonicalPath)
-            Tools.fileAsBase64(ttfs[0], assetService.getAssetManager())
+            Tools.fileAsBase64(ttfs[0])
         }
     }
 

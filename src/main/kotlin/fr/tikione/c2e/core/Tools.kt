@@ -1,6 +1,5 @@
-package compat
+package fr.tikione.c2e.core
 
-import android.content.res.AssetManager
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
@@ -11,17 +10,13 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
-/**
- * Utility class that should be reworked in Android project to use standard
- * Android classes (Base64, classloader) instead of JDK or Apache Commons ones.
- */
 class Tools {
 
     companion object {
 
         const val PAUSE_BETWEEN_MAG_DL = 30L
         const val VERSION_URL = "https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/uc/latest_version.txt"
-        val VERSION = resourceAsStr("version.txt", AssetManager())
+        val VERSION = resourceAsStr("version.txt")
 
         var debug = false
 
@@ -30,19 +25,19 @@ class Tools {
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun fileAsBase64(file: File, asset: AssetManager?): String =
+        fun fileAsBase64(file: File): String =
                 Base64.encodeBase64String(file.readBytes())
 
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsBase64(path: String, asset: AssetManager?): String =
+        fun resourceAsBase64(path: String): String =
                 Base64.encodeBase64String(IOUtils.toByteArray(Tools::class.java.classLoader.getResourceAsStream(path)))
 
         @Suppress("UNUSED_PARAMETER")
         @Throws(IOException::class)
         @JvmStatic
-        fun resourceAsStr(path: String, asset: AssetManager?): String =
+        fun resourceAsStr(path: String): String =
                 IOUtils.toString(Tools::class.java.classLoader.getResourceAsStream(path), StandardCharsets.UTF_8)
 
         @Throws(IOException::class)

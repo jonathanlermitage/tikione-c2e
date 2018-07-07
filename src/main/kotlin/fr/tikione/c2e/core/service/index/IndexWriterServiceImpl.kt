@@ -151,23 +151,38 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
             return
         }
         val tableContent = StringBuilder()
+        val indexMachine = StringBuilder()
 
         // table title
-        tableContent.append("\n<tr class=\"title\">\n <td>" + lines[0].replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
+        tableContent.append("\n<tr class=\"title\">\n <td>")
+                .append(lines[0].replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>"))
+                .append("</td>\n</tr>\n")
 
-        // table games
+
         lines = lines.drop(1)
-        lines.forEach { csvGameLine ->
-            tableContent.append("\n<tr class=\"game\">\n <td>" + csvGameLine.replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>") + "</td>\n</tr>\n")
+        lines.forEachIndexed { idx, csvGameLine ->
+
+            // table games
+            tableContent.append("\n<tr class=\"game\" id=\"gameidx$idx\">\n <td>")
+                    .append(csvGameLine.replace("<>".toRegex(), "").replace(csvDelimiter, "</td>\n <td>"))
+                    .append("</td>\n</tr>\n")
+
+            // games index
+            val gameTitle = csvGameLine.substringBefore(csvDelimiter, "").replace("\"".toRegex(), "")
+            val magNumber = csvGameLine.substringAfter(csvDelimiter, "").substringBefore(csvDelimiter, "")
+            indexMachine.append("\n var gameidx$idx = { \"id\": \"gameidx$idx\", \"title\": \"$gameTitle\", \"mag\": \"$magNumber\" }; index.addDoc(gameidx$idx);")
         }
 
         val cfg: Cfg = coreKodein.instance()
         val faviconBase64 = resourceAsBase64("tmpl/index/cpcindex_favicon.png")
         val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
+        val jsLibs = resourceAsStr("tmpl/index/elasticlunr-0.9.5.min.js")
         val content = resourceAsStr("tmpl/index/index.html")
                 .replace("$\$favicon_base64$$", faviconBase64)
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
                 .replace("/*$\$content$$*/", tableContent.toString())
+                .replace("/*$\$js_libs$$*/", jsLibs)
+                .replace("/*$\$index_machine$$*/", indexMachine.toString())
 
         htmlFile.writeText(content, StandardCharsets.ISO_8859_1)
         log.info("fichier d'index HTML cree : {}", htmlFile.canonicalPath)

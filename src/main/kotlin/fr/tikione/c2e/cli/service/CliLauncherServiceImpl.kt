@@ -1,7 +1,7 @@
 package fr.tikione.c2e.cli.service
 
 import com.github.salomonbrys.kodein.instance
-import compat.Tools
+import fr.tikione.c2e.core.Tools
 import fr.tikione.c2e.core.cfg.Cfg
 import fr.tikione.c2e.core.coreKodein
 import fr.tikione.c2e.core.service.home.LocalReaderService
@@ -86,7 +86,7 @@ class CliLauncherServiceImpl : CliLauncherService {
                 .map { arg -> arg.substring("-directory:".length) }
                 .forEach { dd -> cfg.directory = dd }
         try {
-            log.info("le dossier de destination est : {}", if ("." == cfg.directory) "le répertoire de l'application" else cfg.directory)
+            log.info("le dossier de destination est : {}", if ("." == cfg.directory) "le repertoire de l'application" else cfg.directory)
             File(cfg.directory).mkdirs()
         } catch (e: Exception) {
             log.warn("impossible de creer le dossier de destination", e)
