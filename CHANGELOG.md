@@ -1,9 +1,5 @@
 ## TikiOne C2E Change Log
 
-### 1.6.0 (dev en cours)
-
-* **(en cours)** paramètres d'application gérés via [Picocli](http://picocli.info/#_kotlin).
-
 ### 1.5.0 (2018/07/08)
 
 * ajout d'un module de recherche de jeu dans le sommaire HTML. La recherche est basée sur [Elasticlunr.js](http://elasticlunr.com/), et porte sur le titre des jeux et le numéro des magazines.
