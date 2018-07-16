@@ -123,6 +123,7 @@
         <appender-ref ref="FILE-ENGINE-WARN"/>
         <appender-ref ref="FILE-ENGINE-INFO"/>
         <appender-ref ref="FILE-ENGINE-TRACE"/>
+        <appender-ref ref="FILE-ENGINE-DEBUG"/>
         <appender-ref ref="CONSOLE_ALL_TRACE"/>
     </root>
 

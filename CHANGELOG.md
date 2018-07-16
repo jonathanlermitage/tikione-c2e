@@ -1,5 +1,10 @@
 ## TikiOne C2E Change Log
 
+
+### 1.5.1 (dev en cours)
+
+* correction : les traces de niveau `debug` était affichées dans la console uniquement. Désormais, elles sont aussi écrites dans `logs/c2e-debug.log`.
+
 ### 1.5.0 (2018/07/08)
 
 * ajout d'un module de recherche de jeu dans le sommaire HTML. La recherche est basée sur [Elasticlunr.js](http://elasticlunr.com/), et porte sur le titre des jeux et le numéro des magazines.
