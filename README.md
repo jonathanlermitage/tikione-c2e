@@ -1,6 +1,11 @@
-[![GitHub release](https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases) [![license](https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg)](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) [![Github All Releases](https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg)](https://github.com/jonathanlermitage/tikione-c2e/releases)
-
-# TikiOne C2E
+<h1 align="center">
+    TikiOne C2E
+</h1>
+<p align="center">
+    <a href="https://github.com/jonathanlermitage/tikione-c2e/releases"><img src="https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg"/></a>
+    <a href="https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg"/></a>
+    <a href="https://github.com/jonathanlermitage/tikione-c2e/releases"><img src="https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg"/></a>
+</p>
 
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) dans un format optimisé pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
