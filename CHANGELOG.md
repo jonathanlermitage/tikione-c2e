@@ -1,7 +1,6 @@
 ## TikiOne C2E Change Log
 
-
-### 1.5.1 (dev en cours)
+### 1.5.1 (2018/07/29)
 
 * correction : les traces de niveau `debug` était affichées dans la console uniquement. Désormais, elles sont aussi écrites dans `logs/c2e-debug.log`.
 
