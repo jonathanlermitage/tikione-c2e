@@ -434,23 +434,38 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
         val faviconBase64 = resourceAsBase64("tmpl/html-export/img/french_duck.png")
         val fontRobotoBase64 = findFontAsBase64(cfg.doDysfont)
         var magazineList = ""
+        var hsList = ""
         val sortedMagazines = magazines.sortedWith(compareByDescending { it.number })
-        var idx = 1
-        var prevNumber = sortedMagazines[0].number
+        var magsColorIdx = 1 // cycle regular mags colors to beautify HTML home
+        var hsColorIdx = 1 // cycle hs mags colors to beautify HTML home
+        var magsPrevNumber = sortedMagazines[0].number
+        var hsPrevNumber = sortedMagazines[0].number
         sortedMagazines.forEach { mag ->
-            if (mag.number != prevNumber) {
-                idx++
-                if (idx > 15) {
-                    idx = 1
+            val isHs = mag.number.startsWith("hs")
+            if (isHs) {
+                if (mag.number != hsPrevNumber) {
+                    hsColorIdx++
+                    if (hsColorIdx > 15) {
+                        hsColorIdx = 1
+                    }
                 }
+                hsPrevNumber = mag.number
+            } else {
+                if (mag.number != magsPrevNumber) {
+                    magsColorIdx++
+                    if (magsColorIdx > 15) {
+                        magsColorIdx = 1
+                    }
+                }
+                magsPrevNumber = mag.number
             }
-            prevNumber = mag.number
             val sizeUnit = when {
                 mag.humanSize.endsWith("Mo") -> "Mo"
                 else -> "Ko"
             }
-            magazineList += """
-                <div class="magBox mag$idx">
+            if (isHs) {
+                hsList += """
+                <div class="magBox mag$hsColorIdx">
                     <div class="magBox-number"><a href="${mag.file.name}">${mag.number}</a></div>
                     <div class="magBox-details">
                         <div class="magBox-options">${mag.options}</div>
@@ -458,11 +473,23 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
                     </div>
                 </div>
                 """
+            } else {
+                magazineList += """
+                <div class="magBox mag$magsColorIdx">
+                    <div class="magBox-number"><a href="${mag.file.name}">${mag.number}</a></div>
+                    <div class="magBox-details">
+                        <div class="magBox-options">${mag.options}</div>
+                        <div class="magBox-size$sizeUnit">${mag.humanSize}</div>
+                    </div>
+                </div>
+                """
+            }
         }
         val content = resourceAsStr("tmpl/home/home.html")
                 .replace("$\$favicon_base64$$", faviconBase64)
                 .replace("$\$robotoFont_base64$$", fontRobotoBase64)
-                .replace("/*$\$content$$*/", magazineList)
+                .replace("/*$\$content_hs$$*/", hsList)
+                .replace("/*$\$content_mags$$*/", magazineList)
         file.delete()
         file.writeText(content, StandardCharsets.UTF_8)
         log.info("page d'accueil cree : ${file.canonicalPath}")

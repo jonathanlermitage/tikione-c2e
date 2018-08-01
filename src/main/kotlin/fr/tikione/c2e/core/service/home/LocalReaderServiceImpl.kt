@@ -13,7 +13,7 @@ class LocalReaderServiceImpl : LocalReaderService {
         log.info("analyse du repertoire $folder")
         return folder
                 .listFiles { _, name -> name.endsWith(".html") }
-                .filter { file -> !file.name.startsWith("CPC-") && !file.name.startsWith("CPChs") }
+                .filter { file -> !file.name.startsWith("CPC-") }
                 .map { file ->
                     val filename = file.name
                     val mag = MagazineSummary()

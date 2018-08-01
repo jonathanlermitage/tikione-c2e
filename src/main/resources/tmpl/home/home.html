@@ -17,21 +17,25 @@
             font-size: 1em;
             background-color: white;
             margin: 0;
+            margin-bottom: 4em;
             padding: 0;
             z-index: 100;
         }
 
-        h1 {
+        h1.mags, h1.hs {
             padding: 0;
             margin: 0;
             font-size: 0.9em;
             text-align: center;
-            background-color: #429bdd;
+            background-color: hotpink;
             color: #FEFEFE;
-            font-weight: normal;
+            font-weight: bold;
+        }
+        h1.hs {
+            background-color: #429bdd;
         }
 
-        .mags {
+        .mags, .hs {
             margin: 0.5em;
             padding: 0;
         }
@@ -163,10 +167,14 @@
 </head>
 <body>
 
-<h1>Magazines CanardPC téléchargés</h1>
-
+<h1 class="mags">Magazines CanardPC téléchargés</h1>
 <div class="mags">
-    /*$$content$$*/
+    /*$$content_mags$$*/
+</div>
+
+<h1 class="hs">Hors-série CanardPC téléchargés</h1>
+<div class="hs">
+    /*$$content_hs$$*/
 </div>
 
 </body>
