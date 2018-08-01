@@ -30,6 +30,9 @@ class IndexWriterServiceImpl : AbstractWriter(), IndexWriterService {
         if (magNumbers.contains("hs22")) {
             magNumbers.remove("hs22") // TODO maybe detect and remove all HS mags? hs22 contains no game test.
         }
+        if (magNumbers.contains("hs25")) {
+            magNumbers.remove("hs25")
+        }
 
         val games = ArrayList<GameEntry>(magNumbers.size * 24)
         val indexReader: IndexReaderService = coreKodein.instance()
