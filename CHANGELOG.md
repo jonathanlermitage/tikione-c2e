@@ -1,9 +1,9 @@
 ## TikiOne C2E Change Log
 
-### 1.5.2 (dev en cours)
+### 1.5.2 (2018/08/01)
 
-* (fait) exclusion du hors-série 25 du sommaire CSV `CPC-index.csv` et HTML `CPC-index.html`. Une solution générique sera implémentée plus tard.
-* (en cours) ajout des hors-série à la page d'accueil HTML `CPC-home.html`.
+* exclusion du hors-série 25 du sommaire CSV `CPC-index.csv` et HTML `CPC-index.html`. Une solution générique sera implémentée plus tard.
+* ajout des hors-série à la page d'accueil HTML `CPC-home.html`.
 
 ### 1.5.1 (2018/07/29)
 
