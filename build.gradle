@@ -6,8 +6,6 @@ buildscript {
 
     repositories {
         mavenCentral()
-    }
-    repositories {
         jcenter()
     }
     dependencies {
@@ -28,12 +26,11 @@ idea {
     }
 }
 
-sourceCompatibility = 1.8
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
 
 repositories {
@@ -49,7 +46,7 @@ dependencyUpdates.resolutionStrategy = {
                 selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
             }
             if (rejected) {
-                selection.reject('Release candidate')
+                selection.reject('snapshot')
             }
         }
     }
@@ -84,10 +81,7 @@ task copyLicense(type: Copy) {
 }
 jar {
     doFirst {
-        def file = new File("$buildDir/resources/main/version.txt")
-        file.write(project.version.toString())
-    }
-    doFirst {
+        new File("$buildDir/resources/main/version.txt").write(project.version.toString())
         manifest {
             if (!configurations.compile.isEmpty()) {
                 attributes(
@@ -105,8 +99,7 @@ jar {
 }
 build {
     doFirst {
-        def file = new File("$buildDir/resources/main/version.txt")
-        file.write(project.version.toString())
+        new File("$buildDir/resources/main/version.txt").write(project.version.toString())
     }
 }
 
