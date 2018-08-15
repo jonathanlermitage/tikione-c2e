@@ -466,7 +466,11 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             if (isHs) {
                 hsList += """
                 <div class="magBox mag$hsColorIdx">
-                    <div class="magBox-number"><a href="${mag.file.name}">${mag.number}</a></div>
+                    <div class="magBox-number">
+                        <a href="${mag.file.name}">${mag.number}<br/>
+                            <img class="edito-cover" src="${mag.coverAsBase64}"/>
+                        </a>
+                    </div>
                     <div class="magBox-details">
                         <div class="magBox-options">${mag.options}</div>
                         <div class="magBox-size$sizeUnit">${mag.humanSize}</div>
@@ -476,7 +480,11 @@ class HtmlWriterServiceImpl : AbstractWriter(), HtmlWriterService {
             } else {
                 magazineList += """
                 <div class="magBox mag$magsColorIdx">
-                    <div class="magBox-number"><a href="${mag.file.name}">${mag.number}</a></div>
+                    <div class="magBox-number">
+                        <a href="${mag.file.name}">${mag.number}<br/>
+                            <img class="edito-cover" src="${mag.coverAsBase64}"/>
+                        </a>
+                    </div>
                     <div class="magBox-details">
                         <div class="magBox-options">${mag.options}</div>
                         <div class="magBox-size$sizeUnit">${mag.humanSize}</div>

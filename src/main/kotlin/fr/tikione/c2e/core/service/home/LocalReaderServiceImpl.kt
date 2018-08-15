@@ -35,6 +35,13 @@ class LocalReaderServiceImpl : LocalReaderService {
                         mag.file = file
                         mag.options = "images ratio 100%"
                     }
+                    val coverImgTag = "<img class='edito-cover-img' src='"
+                    val coverLine = file.readLines().firstOrNull { s -> s.contains(coverImgTag) }
+                    if (coverLine == null) {
+                        mag.coverAsBase64 = ""
+                    } else {
+                        mag.coverAsBase64 = coverLine.substring(coverLine.indexOf(coverImgTag) + coverImgTag.length, coverLine.indexOf("'>"))
+                    }
                     log.info("magazine trouve : $mag")
                     mag
                 }
