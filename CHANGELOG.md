@@ -1,6 +1,6 @@
 ## TikiOne C2E Change Log
 
-### 1.6.0 (dev en cours)
+### 1.6.0 (2018/08/15)
 
 * la couverture de chaque magazine figure maintenant sur la page d'accueil HTML `CPC-home.html` (pour voir le changement, relancez sa génération avec le paramètre `-home`).
 * correction d'un possible bug de génération de la page d'accueil HTML `CPC-home.html` lorsque le répertoire de travail est changé via `-directory:mon_dossier`.
