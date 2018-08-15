@@ -1,5 +1,9 @@
 ## TikiOne C2E Change Log
 
+### 1.6.0 (dev en cours)
+
+* la couverture de chaque magazine figure maintenant sur la page d'accueil HTML `CPC-home.html` (pour voir le changement, relancez sa génération avec le paramètre `-home`).
+
 ### 1.5.2 (2018/08/01)
 
 * exclusion du hors-série 25 du sommaire CSV `CPC-index.csv` et HTML `CPC-index.html`. Une solution générique sera implémentée plus tard.
