@@ -163,7 +163,7 @@ class CliLauncherServiceImpl : CliLauncherService {
             val file = File("${cfg.directory}/CPC-home.html")
             val localReaderService: LocalReaderService = coreKodein.instance()
             val writerService: HtmlWriterService = coreKodein.instance()
-            writerService.write(localReaderService.listDownloadedMagazines(File("./")), file)
+            writerService.write(localReaderService.listDownloadedMagazines(File(cfg.directory)), file)
         }
 
         log.info("termine !")
