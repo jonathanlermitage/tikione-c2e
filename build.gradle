@@ -91,11 +91,6 @@ jar {
     dependsOn copyDoc
     dependsOn copy3rdPartyLicenses
 }
-build {
-    doFirst {
-        new File("$buildDir/resources/main/version.txt").write(project.version.toString())
-    }
-}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"

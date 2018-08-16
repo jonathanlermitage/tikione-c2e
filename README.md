@@ -84,7 +84,7 @@ Créez trois variables d'environnement :
 * `TK1_JRE` : chemin d'un JRE8 (par exemple `C:\Program Files\Java8\`, doit contenir `bin\java.exe`)
 * `TK1_MAGICK` : chemin d'un dossier ImageMagick (par exemple `C:\Program Files\ImageMagick-7.0.6-10-portable-Q16-x64\`, doit contenir `magick.exe`)
 
-Ensuite, lancez une compilation puis `make-windows.cmd x.y.z`, où `x.y.z` est un numéro de version, par exemple `make-windows.cmd 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
+Ensuite, lancez une compilation `gradlew clean jar` puis `make-windows.cmd x.y.z`, où `x.y.z` est un numéro de version, par exemple `make-windows.cmd 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
 
 ## Avancement
 
