@@ -74,11 +74,6 @@ task copy3rdPartyLicenses(type: Copy) {
     from "./3rdparty-licenses"
     into "$buildDir/libs/3rdparty-licenses"
 }
-task copyLicense(type: Copy) {
-    from "./"
-    into "$buildDir/libs"
-    include('LICENSE.txt')
-}
 jar {
     doFirst {
         new File("$buildDir/resources/main/version.txt").write(project.version.toString())
@@ -95,7 +90,6 @@ jar {
     dependsOn copyLaunchers
     dependsOn copyDoc
     dependsOn copy3rdPartyLicenses
-    dependsOn copyLicense
 }
 build {
     doFirst {
