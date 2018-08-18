@@ -4,6 +4,7 @@
 
 * réduction de la consommation mémoire maximale: de 512Mo à 256Mo, ce qui est largement suffisant pour tous les scénarios.
 * amélioration du script de lancement Windows : ajout du chemin potentiel des JRE (Java) 11 et 12.
+* interne : amélioration du script de build Gradle.
 
 ### 1.6.0 (2018/08/15)
 
