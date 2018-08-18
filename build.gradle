@@ -26,6 +26,7 @@ idea {
     }
 }
 
+sourceCompatibility = JavaVersion.VERSION_1_8
 compileKotlin {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
 }
@@ -56,24 +57,6 @@ configurations {
     jar.archiveName = 'c2e.jar'
 }
 
-task copyLibs(type: Copy) {
-    from configurations.runtime
-    into "$buildDir/libs/lib"
-}
-task copyLaunchers(type: Copy) {
-    from "./launcher"
-    into "$buildDir/libs"
-    include('*.cmd', "*.sh")
-}
-task copyDoc(type: Copy) {
-    from "."
-    into "$buildDir/libs"
-    include('CHANGELOG.md', 'LICENSE.txt', 'LISEZMOI.html')
-}
-task copy3rdPartyLicenses(type: Copy) {
-    from "./3rdparty-licenses"
-    into "$buildDir/libs/3rdparty-licenses"
-}
 jar {
     doFirst {
         new File("$buildDir/resources/main/version.txt").write(project.version.toString())
@@ -86,10 +69,26 @@ jar {
             }
         }
     }
-    dependsOn copyLibs
-    dependsOn copyLaunchers
-    dependsOn copyDoc
-    dependsOn copy3rdPartyLicenses
+    doLast {
+        copy {
+            from configurations.runtime
+            into "$buildDir/libs/lib"
+        }
+        copy {
+            from "./launcher"
+            into "$buildDir/libs"
+            include('*.cmd', "*.sh")
+        }
+        copy {
+            from "."
+            into "$buildDir/libs"
+            include('CHANGELOG.md', 'LICENSE.txt', 'LISEZMOI.html')
+        }
+        copy {
+            from "./3rdparty-licenses"
+            into "$buildDir/libs/3rdparty-licenses"
+        }
+    }
 }
 
 dependencies {
