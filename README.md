@@ -2,6 +2,7 @@
     TikiOne C2E
 </h1>
 <p align="center">
+    <a href="https://travis-ci.org/jonathanlermitage/tikione-c2e"><img src="https://travis-ci.org/jonathanlermitage/tikione-c2e.svg?branch=master"/></a>
     <a href="https://github.com/jonathanlermitage/tikione-c2e/releases"><img src="https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg"/></a>
     <a href="https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg"/></a>
     <a href="https://github.com/jonathanlermitage/tikione-c2e/releases"><img src="https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg"/></a>
