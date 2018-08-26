@@ -74,18 +74,18 @@ Ce script est testé sous Ubuntu 16.04 LTS et devrait fonctionner sur la majorit
 
 ### Compilation
   
-Il sagit d'un projet Kotlin (Java 8 jusqu'à la v1.2.2, Kotlin ensuite) construit avec Gradle. Installez un JDK8 et Gradle 3+, puis lancez `gradle jar` pour construire un applicatif dans le répertoire `build/libs` (ou `gradlew jar` pour utiliser le wrapper Gradle 4, conseillé).
+Il sagit d'un projet Kotlin construit avec Gradle. Installez un JDK8 et Gradle 4, puis lancez `do b` (ou `gradlew jar`) pour construire un applicatif dans le répertoire `build/libs`.
 
 ### Assembler un paquetage
 
 *Sous Windows uniquement (les scripts MacOS, Linux et BSD ne sont pas prêts).*
     
 Créez trois variables d'environnement :  
-* `TK1_7Z` : chemin de 7-zip (par exemple `C:\Program Files\7-Zip\`, doit contenir `7z.exe`)
-* `TK1_JRE` : chemin d'un JRE8 (par exemple `C:\Program Files\Java8\`, doit contenir `bin\java.exe`)
-* `TK1_MAGICK` : chemin d'un dossier ImageMagick (par exemple `C:\Program Files\ImageMagick-7.0.6-10-portable-Q16-x64\`, doit contenir `magick.exe`)
+* `TK1_7Z` : chemin de 7-zip sans espaces (par exemple `C:\Tools\7-Zip\`, doit contenir `7z.exe`)
+* `TK1_JRE` : chemin d'un JRE8 sans espaces (par exemple `C:\Tools\Java8\`, doit contenir `bin\java.exe`)
+* `TK1_MAGICK` : chemin d'un dossier ImageMagick sans espaces (par exemple `C:\Tools\ImageMagick-7.0.6-10-portable-Q16-x64\`, doit contenir `magick.exe`)
 
-Ensuite, lancez une compilation `gradlew clean jar` puis `make-windows.cmd x.y.z`, où `x.y.z` est un numéro de version, par exemple `make-windows.cmd 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
+Ensuite, lancez une compilation `do b` puis un assemblage `do p x.y.z`, où `x.y.z` est un numéro de version, par exemple `do p 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
 
 ## Avancement
 
