@@ -1,10 +1,12 @@
 ## TikiOne C2E Change Log
 
-### 1.7.0 (dev en cours)
+### 1.7.0 (2018/11/20)
 
 * réduction de la consommation mémoire maximale: de 512Mo à 256Mo, ce qui est largement suffisant pour tous les scénarios.
 * amélioration du script de lancement Windows : ajout du chemin potentiel des JRE (Java) 11 et 12.
 * interne : amélioration du script de build Gradle.
+* interne : mise à jour des librairies Kotlin et Janino
+* interne : mise à jour d'ImageMagick et de la JRE, maintenant basée sur l'initiative [AdoptOpenJDK](https://adoptopenjdk.net/releases.html#x64_win).
 
 ### 1.6.0 (2018/08/15)
 
