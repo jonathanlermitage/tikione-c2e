@@ -1,12 +1,6 @@
-<h1 align="center">
-    TikiOne C2E
-</h1>
-<p align="center">
-    <a href="https://travis-ci.org/jonathanlermitage/tikione-c2e"><img src="https://travis-ci.org/jonathanlermitage/tikione-c2e.svg?branch=master"/></a>
-    <a href="https://github.com/jonathanlermitage/tikione-c2e/releases"><img src="https://img.shields.io/github/release/jonathanlermitage/tikione-c2e.svg"/></a>
-    <a href="https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/jonathanlermitage/tikione-c2e.svg"/></a>
-    <a href="https://github.com/jonathanlermitage/tikione-c2e/releases"><img src="https://img.shields.io/github/downloads/jonathanlermitage/tikione-c2e/total.svg"/></a>
-</p>
+*Ce projet est maintenant archive. Parce qu'il n'y a que les andouilles qui ne changent pas d'avis, j'ai fini par considérer que même si ce programme ne favoriserait pas le piratage du magazine CanardPC (le rendu étant très différent du mag et répondant à un besoin perso, même si partagé par quelques camarades lecteurs), je me devais d'en arrêter le développement et la diffusion; question d'éthique et de respect pour ce magazine que j'affectionne (plus les gens qui le font que le mag hein, on se comprend ^^). Les releases binaires sont désormais supprimées.*  
+*Si vous êtes utilisateur de ce logiciel, et souhaitez continuer à recevoir des mises à jour, n'hésitez pas à m'envoyer un petit mail : je continue le développement dans un cadre personnel, et le partager avec quelques amis ne devrait pas poser problème, pour peu que vous gardiez ce logiciel (et les magazines ainsi téléchargés) pour vous.*  
+*A bientôt sur d'autres projets !*
 
 Télécharge vos magazines [CanardPC](https://www.canardpc.com/) (abo numérique) dans un format optimisé pour une lecture hors-ligne sur PC, tablette et smartphone.  
 Fonctionne sous Windows, MacOS, Linux, BSD.
@@ -70,23 +64,6 @@ Téléchargez et décompressez la version packagée `c2e-x.y.z.zip`. Comme Windo
 Java 8 doit être installé et accessible depuis le PATH (avec un Ubuntu récent, tapez `sudo apt-get install default-jre`). Aussi, `c2e.sh` doit être rendu exécutable : tapez `chmod +x c2e.sh`.  
 Ce script est testé sous Ubuntu 16.04 LTS et devrait fonctionner sur la majorité des distributions Linux.
 
-## Compilation et paquetage
-
-### Compilation
-  
-Il sagit d'un projet Kotlin construit avec Gradle. Installez un JDK8 et Gradle 4, puis lancez `do b` (ou `gradlew jar`) pour construire un applicatif dans le répertoire `build/libs`.
-
-### Assembler un paquetage
-
-*Sous Windows uniquement (les scripts MacOS, Linux et BSD ne sont pas prêts).*
-    
-Créez trois variables d'environnement :  
-* `TK1_7Z` : chemin de 7-zip sans espaces (par exemple `C:\Tools\7-Zip\`, doit contenir `7z.exe`)
-* `TK1_JRE` : chemin d'un JRE8 sans espaces (par exemple `C:\Tools\Java8\`, doit contenir `bin\java.exe`)
-* `TK1_MAGICK` : chemin d'un dossier ImageMagick sans espaces (par exemple `C:\Tools\ImageMagick-7.0.6-10-portable-Q16-x64\`, doit contenir `magick.exe`)
-
-Ensuite, lancez une compilation `do b` puis un assemblage `do p x.y.z`, où `x.y.z` est un numéro de version, par exemple `do p 1.3.11`. Cela créera les trois paquetages `c2e-x.y.z-withWin64JRE-withImageMagick.zip`, `c2e-x.y.z-withWin64JRE.zip` et `c2e-x.y.z.zip`.  
-
 ## Avancement
 
 Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master/CHANGELOG.md) pour l'avancée des travaux.
@@ -98,45 +75,9 @@ Voir le [changelog](https://github.com/jonathanlermitage/tikione-c2e/blob/master
 
 Merci !
 
-## Guide de contribution
-
- * le projet reste sous [license MIT](https://github.com/jonathanlermitage/tikione-c2e/blob/master/LICENSE.txt) et doit respecter la license des modules tiers (librairies, images).
- * le programme doit pouvoir fonctionner sous Windows et Linux, et si possible MacOS et BSD. A titre personnel, je teste sous Windows 10 et Ubuntu 16.04 LTS.
- * consultez la [liste de tickets ouvert](https://github.com/jonathanlermitage/tikione-c2e/issues) : cela pourrait vous donner des idées. N'hésitez pas à ouvrir de nouveaux tickets, que ce soit pour signaler un bug, proposer une amélioration ou une nouvelle fonctionnalité. Cette étape est facultative, mais elle a le mérite de laisser une trace et invite à la discussion.
- * conserver une qualité de code : 
-   * toute amélioration ou nouvelle fonctionnalité doit être un minimum testée.
-   * on développe en anglais (code et javadoc), mais les fichiers Markdown (`.md`) restent en français.
-   * le code est formaté avec les règles par défaut d'[IntelliJ IDEA](https://www.jetbrains.com/idea/) (<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd> : reformate de code, <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>O</kbd> : réorganise les imports).
-   * nommez correctement vos commits : indiquez ce que vous avez voulu faire en quelques mots.
-   * réduisez le nombre de commits au minimum via un `squash`, et faites un `rebase` avant de soumettre une Pull Request : l'historique Git doit rester cohérent.
- * n'hésitez pas à me contacter par email à *jonathan.lermitage@gmail.com*, ou ouvez un [ticket](https://github.com/jonathanlermitage/tikione-c2e/issues).
-
 ## Licence
 
 Licence MIT. En d'autres termes, ce logiciel est libre de droits et gratuit, vous pouvez en faire ce que vous voulez.
-
-## Captures d'écran
-
-Page d'accueil HTML
-
-[![page d'accueil HTML](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot1_welcome.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot1_welcome.png)
-
-Sommaire
-
-[![sommaire](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot2_toc_light.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot2_toc_light.png)
-
-Sommaire, thème sombre 
-
-[![sommaire, thème sombre](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot3_toc_dark_.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot3_toc_dark_.png)
-
-Article
-
-[![article](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot4_item_light.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot4_item_light.png)
-
-Article, thème sombre 
-
-[![article, thème sombre](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/mini_screenshot5_item_dark.png)](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/screenshot/screenshot5_item_dark.png)
-
 
 ## Outils
 
@@ -150,12 +91,3 @@ Je développe TikiOne C2E grâce à ces logiciels :
 |Gradle|
 |:--|
 |[![Gradle](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_gradle.png)](https://gradle.org)|
-
-|AZUL Zulu JDK|
-|:--|
-|[![JDK](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/logo_azul.png)](https://www.azul.com/downloads/zulu/)|
-
-|meow ?|
-|:--|
-|![cats](https://raw.githubusercontent.com/jonathanlermitage/tikione-c2e/master/misc/cats.gif)|
-
