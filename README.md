@@ -1,4 +1,4 @@
-*Ce projet est maintenant archivé. Parce qu'il n'y a que les andouilles qui ne changent pas d'avis, j'ai fini par considérer que même si ce programme ne favoriserait pas le piratage du magazine CanardPC (le rendu étant très différent du mag et répondant à un besoin perso, même si partagé par quelques camarades lecteurs), je me devais d'en arrêter le développement et la diffusion; question d'éthique et de respect pour ce magazine que j'affectionne (plus les gens qui le font que le mag hein, on se comprend ^^). Les releases binaires sont désormais supprimées.*  
+*Ce projet est maintenant archivé !*  
 *Si vous êtes utilisateur de ce logiciel, et souhaitez continuer à recevoir des mises à jour, n'hésitez pas à m'envoyer un petit mail : je continue le développement dans un cadre personnel, et le partager avec quelques amis ne devrait pas poser problème, pour peu que vous gardiez ce logiciel (et les magazines ainsi téléchargés) pour vous.*  
 *A bientôt sur d'autres projets !*
 
